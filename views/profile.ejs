@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - AgriBank Texas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      min-height: 100vh;
+      color: #1a1a2e;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #1a472a;
+    }
+
+    .logo-icon {
+      font-size: 28px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #1a472a;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a472a, #2d5a3f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .user-name {
+      font-weight: 500;
+      color: #1a1a2e;
+    }
+
+    .logout-btn {
+      background: #e53e3e;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #c53030;
+    }
+
+    /* Main Content */
+    .main-content {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .page-header {
+      margin-bottom: 30px;
+    }
+
+    .page-header h1 {
+      font-size: 32px;
+      color: white;
+      margin-bottom: 8px;
+    }
+
+    .page-header p {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 15px;
+    }
+
+    /* Messages */
+    .alert {
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background: rgba(72, 187, 120, 0.2);
+      border: 1px solid rgba(72, 187, 120, 0.4);
+      color: #9ae6b4;
+    }
+
+    .alert-error {
+      background: rgba(245, 101, 101, 0.2);
+      border: 1px solid rgba(245, 101, 101, 0.4);
+      color: #feb2b2;
+    }
+
+    /* Profile Grid */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .card-icon {
+      font-size: 24px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a472a;
+    }
+
+    /* Profile Info Display */
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .info-row:last-child {
+      border-bottom: none;
+    }
+
+    .info-label {
+      font-size: 13px;
+      color: #718096;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      color: #2d3748;
+      font-weight: 500;
+    }
+
+    .badge {
+      background: #1a472a;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-admin {
+      background: linear-gradient(135deg, #805ad5, #6b46c1);
+    }
+
+    /* Form Styles */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #1a472a;
+      box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #1a472a, #2d5a3f);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(26, 71, 42, 0.3);
+    }
+
+    /* Accounts List */
+    .accounts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px;
+      background: #f7fafc;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .account-item:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .account-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .account-icon {
+      font-size: 28px;
+    }
+
+    .account-details h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+
+    .account-details span {
+      font-size: 12px;
+      color: #718096;
+    }
+
+    .account-balance {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a472a;
+    }
+
+    /* Full Width Card */
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="logo">
+      <span class="logo-icon">🌾</span>
+      <span>AgriBank Texas</span>
+    </div>
+    
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/transactions">Transactions</a>
+      <a href="/transfer">Transfer</a>
+      <a href="/billpay">Bill Pay</a>
+      <a href="/profile" class="active">Profile</a>
+    </div>
+    
+    <div class="user-info">
+      <div class="user-avatar">
+        <%= user.firstName ? user.firstName.charAt(0) : 'U' %><%= user.lastName ? user.lastName.charAt(0) : '' %>
+      </div>
+      <span class="user-name"><%= user.firstName || user.username %></span>
+      <a href="/logout" class="logout-btn">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+    <div class="page-header">
+      <h1>👤 My Profile</h1>
+      <p>Manage your account information and preferences</p>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <% if (success) { %>
+      <div class="alert alert-success">
+        ✅ <%= success %>
+      </div>
+    <% } %>
+    
+    <% if (error) { %>
+      <div class="alert alert-error">
+        ❌ <%= error %>
+      </div>
+    <% } %>
+
+    <div class="profile-grid">
+      
+      <!-- Personal Information Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">📋</span>
+          <h2 class="card-title">Personal Information</h2>
+        </div>
+        
+        <div class="profile-info">
+          <div class="info-row">
+            <span class="info-label">Username</span>
+            <span class="info-value"><%= user.username %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Full Name</span>
+            <span class="info-value"><%= user.firstName || '' %> <%= user.lastName || '' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Member Since</span>
+            <span class="info-value"><%= user.memberSince || 'N/A' %></span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Account Type</span>
+            <span class="info-value">
+              <% if (user.isAdmin === 1) { %>
+                <span class="badge badge-admin">Administrator</span>
+              <% } else { %>
+                <span class="badge">Standard User</span>
+              <% } %>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Your Accounts Card -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-icon">🏦</span>
+          <h2 class="card-title">Your Accounts</h2>
+        </div>
+        
+        <div class="accounts-list">
+          <% if (accounts && accounts.length > 0) { %>
+            <% accounts.forEach(function(account) { %>
+              <div class="account-item">
+                <div class="account-left">
+                  <span class="account-icon"><%= account.icon || '💳' %></span>
+                  <div class="account-details">
+                    <h4><%= account.name %></h4>
+                    <span><%= account.number %></span>
+                  </div>
+                </div>
+                <span class="account-balance">$<%= account.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <p style="color: #718096; text-align: center; padding: 20px;">No accounts found.</p>
+          <% } %>
+        </div>
+      </div>
+
+      <!-- Edit Profile Card - Full Width -->
+      <div class="card full-width">
+        <div class="card-header">
+          <span class="card-icon">✏️</span>
+          <h2 class="card-title">Edit Profile</h2>
+        </div>
+        
+        <form method="POST" action="/profile">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" value="<%= user.email || '' %>" placeholder="Enter your email">
+          </div>
+          
+          <div class="form-group">
+            <label for="address">Street Address</label>
+            <input type="text" id="address" name="address" value="<%= user.address || '' %>" placeholder="Enter your street address">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" name="city" value="<%= user.city || '' %>" placeholder="City">
+            </div>
+            
+            <div class="form-group">
+              <label for="state">State</label>
+              <input type="text" id="state" name="state" value="<%= user.state || '' %>" placeholder="State">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="zip">ZIP Code</label>
+            <input type="text" id="zip" name="zip" value="<%= user.zip || '' %>" placeholder="ZIP Code" style="max-width: 200px;">
+          </div>
+          
+          <button type="submit" class="submit-btn">Save Changes</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2024 AgriBank Texas. All rights reserved.</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Confirmed | AgriBank Texas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+        h1,h2,h3 { font-family: 'Merriweather', serif; }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(44,36,22,0.12);
+            max-width: 520px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2D5A27 0%, #4A7C42 100%);
+            color: white;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.4s ease 0.2s both;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        
+        .checkmark svg { width: 40px; height: 40px; color: #2D5A27; }
+        .header h1 { font-size: 26px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 15px; }
+        
+        .content { padding: 32px; }
+        
+        .amount-box {
+            text-align: center;
+            padding: 24px;
+            background: #F5F8F4;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            border: 1px solid #E8EDE6;
+        }
+        
+        .amount { font-family: 'Merriweather', serif; font-size: 40px; font-weight: 900; color: #2D5A27; }
+        .transfer-type { font-size: 14px; color: #5C5C5C; margin-top: 6px; }
+        
+        .details { margin-bottom: 28px; }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #F0ECE4;
+        }
+        
+        .detail-row:last-child { border-bottom: none; }
+        .detail-label { color: #8A8A8A; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .detail-value { font-weight: 600; font-size: 14px; color: #1A1A1A; text-align: right; max-width: 60%; }
+        
+        .arrival-box {
+            background: #FFF8E6;
+            border: 1px solid #F0DFA0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        
+        .arrival-box .label { font-size: 12px; color: #8B6914; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .arrival-box .time { font-family: 'Merriweather', serif; font-size: 18px; font-weight: 700; color: #6B5A1E; }
+        .arrival-box .note { font-size: 12px; color: #8B6914; margin-top: 8px; }
+        
+        .actions { display: flex; gap: 12px; }
+        
+        .btn {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary { background: #2D5A27; color: white; }
+        .btn-primary:hover { background: #4A7C42; }
+        .btn-secondary { background: #F0ECE4; color: #2C2416; }
+        .btn-secondary:hover { background: #E5E0D8; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="checkmark">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+                </svg>
+            </div>
+            <h1>Transfer Successful!</h1>
+            <p>Your money is on its way</p>
+        </div>
+        
+        <div class="content">
+            <div class="amount-box">
+                <div class="amount"><%= amount %></div>
+                <div class="transfer-type"><%= transferType %></div>
+            </div>
+            
+            <div class="details">
+                <div class="detail-row">
+                    <span class="detail-label">From</span>
+                    <span class="detail-value"><%= fromAccount %> (<%= fromAccountNumber %>)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">To</span>
+                    <span class="detail-value"><%= toAccount %></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value"><%= date %></span>
+                </div>
+                <% if (memo) { %>
+                <div class="detail-row">
+                    <span class="detail-label">Memo</span>
+                    <span class="detail-value"><%= memo %></span>
+                </div>
+                <% } %>
+            </div>
+            
+            <div class="arrival-box">
+                <div class="label">Expected Arrival</div>
+                <div class="time"><%= arrivalDays %></div>
+                <% if (arrivalDays === 'Instant') { %>
+                    <div class="note">Funds available immediately in your account</div>
+                <% } else if (arrivalDays === 'Same Day') { %>
+                    <div class="note">Submitted before 4:00 PM CT for same-day delivery</div>
+                <% } else { %>
+                    <div class="note">Funds will arrive within <%= arrivalDays %></div>
+                <% } %>
+            </div>
+            
+            <div class="actions">
+                <a href="/dashboard" class="btn btn-primary">Dashboard</a>
+                <a href="/transactions" class="btn btn-secondary">Transactions</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Console</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:20px; }
+    h1 { color:#2c3e50; }
+    table { width:100%; border-collapse:collapse; margin-top:12px; }
+    th, td { padding:8px 12px; border-bottom:1px solid #ddd; }
+    a { color:#0a5; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <h1>Admin Console</h1>
+  <p>Welcome, admin <strong><%= user.username %></strong></p>
+
+  <h2>Users</h2>
+  <p><a href="/admin/export/users">Export All Users (CSV)</a></p>
+  <p>View all users, manage roles, lock/unlock accounts.</p>
+
+  <table>
+    <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Admin?</th><th>Locked?</th><th>Created</th><th>Actions</th></tr></thead>
+    <tbody>
+      <% users.forEach(u => { %>
+        <tr>
+          <td><%= u.id %></td>
+          <td><%= u.username %></td>
+          <td><%= u.email %></td>
+          <td><%= u.isAdmin === 1 ? 'Yes' : 'No' %></td>
+          <td><%= u.isLocked === 1 ? 'Yes' : 'No' %></td>
+          <td><%= new Date(u.created_at).toLocaleString() %></td>
+          <td>
+            <a href="/admin/users/<%= u.id %>">View</a> |
+            <a href="/admin/users/<%= u.id %>/export/billpay">Export BillPay</a> |
+            <a href="/admin/users/<%= u.id %>/export/transactions">Export Transactions</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <p><a href="/logout">Logout</a></p>
+</body>
+</html>
