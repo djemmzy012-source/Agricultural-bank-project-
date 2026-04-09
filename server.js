@@ -1,16 +1,16 @@
 /********************************************************************
  *  AgriBank Texas – Full DB‑backed server with admin controls
  ********************************************************************/
-require('dotenv').config(); // ← ADD THIS FIRST
+require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const bcrypt = require('bcryptjs');
-const db = require('./db'); // SQLite persistence
+const db = require('./db');
 
 const app = express();
-const PORT = process.env.PORT || 3000; // ← FIXED
+const PORT = process.env.PORT || 3000;
 
 // ---------------------------------------------------------------
 // Express / session config
@@ -20,37 +20,49 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-    secret: process.env.SESSION_SECRET || 'fallback-dev-secret-only', // ← FIXED
+    secret: process.env.SESSION_SECRET || 'fallback-dev-secret-only',
     resave: false,
     saveUninitialized: false,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production', // ← FIXED
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000
     }
 }));
+
+// ---------------------------------------------------------------
+// Database helpers (updated for better-sqlite3)
+// ---------------------------------------------------------------
 function sqlRun(sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) return reject(err);
-      resolve(this);
-    });
+    try {
+      const result = db.run(sql, params);
+      resolve({ lastID: result.lastInsertRowid, changes: result.changes });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
+
 function sqlGet(sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.get(sql, params, (err, row) => {
-      if (err) return reject(err);
+    try {
+      const row = db.get(sql, params);
       resolve(row);
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
+
 function sqlAll(sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) return reject(err);
+    try {
+      const rows = db.all(sql, params);
       resolve(rows);
-    });
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
@@ -58,7 +70,6 @@ function sqlAll(sql, params = []) {
 // DB initialization & migrations
 // ---------------------------------------------------------------
 async function initDB() {
-  // ---- create tables (if they don't exist) ----
   await sqlRun(`CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE,
@@ -113,7 +124,6 @@ async function initDB() {
     status TEXT
   )`);
 
-  // ---- migration: add admin columns if missing ----
   const userInfo = await sqlAll(`PRAGMA table_info(users)`);
   const colNames = userInfo.map(c => c.name);
 
@@ -128,7 +138,6 @@ async function initDB() {
   await addColumnIfMissing('isLocked INTEGER DEFAULT 0');
   await addColumnIfMissing('lockUntil TEXT');
 
-  // ---- seed data if tables empty ----
   const userCnt = await sqlGet(`SELECT COUNT(*) AS c FROM users`);
   if (!userCnt || userCnt.c === 0) {
     const regularHash = bcrypt.hashSync('Andre44225', 10);
@@ -152,7 +161,6 @@ async function initDB() {
                  VALUES (1,'Business Operating','checking','****2156',595697.25,'🏢')`);
   }
 
-  // admin user (if missing)
   const adminExists = await sqlGet(`SELECT * FROM users WHERE isAdmin = 1 LIMIT 1`);
   if (!adminExists) {
     const adminHash = bcrypt.hashSync('Admin!Secure1', 10);
@@ -170,43 +178,30 @@ async function initDB() {
   }
 }
 
-// ---------------------------------------------------------------
-// Startup
-// ---------------------------------------------------------------
 initDB()
   .then(() => {
-    app.listen(PORT, () => console.log(`AgriBank Texas running on http://localhost:${PORT}`));
+    app.listen(PORT, () => console.log(`AgriBank Texas running on port ${PORT}`));
   })
   .catch(err => {
     console.error('DB init failed', err);
     process.exit(1);
   });
 
-// ---------------------------------------------------------------
-// Middleware helpers
-// ---------------------------------------------------------------
 function requireLogin(req, res, next) {
   if (req.session.user) return next();
   res.redirect('/login');
 }
+
 function requireAdmin(req, res, next) {
   if (req.session.user && req.session.user.isAdmin === 1) return next();
   res.redirect('/login');
 }
 
-// ---------------------------------------------------------------
-// ROUTES
-// ---------------------------------------------------------------
-
-// Home - Landing Page
 app.get('/', (req, res) => {
   if (req.session.user) return res.redirect('/dashboard');
   res.render('landing');
 });
 
-// ---------------------------------------------------------------
-// AUTH – LOGIN / LOGOUT
-// ---------------------------------------------------------------
 app.get('/login', (req, res) => {
   const { error, registered } = req.query;
   let success = null;
@@ -251,9 +246,6 @@ app.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-// ---------------------------------------------------------------
-// REGISTER (Open Account)
-// ---------------------------------------------------------------
 app.get('/register', (req, res) => {
   res.render('register', { error: null });
 });
@@ -297,9 +289,6 @@ app.post('/register', async (req, res) => {
   res.redirect('/login?registered=true');
 });
 
-// ---------------------------------------------------------------
-// FORGOT PASSWORD
-// ---------------------------------------------------------------
 app.get('/forgot-password', (req, res) => {
   res.render('forgot-password', { error: null, success: null, info: null });
 });
@@ -323,9 +312,6 @@ app.post('/forgot-password', async (req, res) => {
   });
 });
 
-// ---------------------------------------------------------------
-// USER DASHBOARD (non‑admin)
-// ---------------------------------------------------------------
 app.get('/dashboard', requireLogin, async (req, res) => {
   const uid = req.session.user.id;
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
@@ -340,9 +326,6 @@ app.get('/dashboard', requireLogin, async (req, res) => {
   res.render('dashboard', { user: req.session.user, accounts, transactions, totalBalance });
 });
 
-// ---------------------------------------------------------------
-// ACCOUNTS
-// ---------------------------------------------------------------
 app.get('/accounts', requireLogin, async (req, res) => {
   const uid = req.session.user.id;
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
@@ -355,9 +338,6 @@ app.get('/accounts', requireLogin, async (req, res) => {
   res.render('accounts', { user: req.session.user, accounts, transactions });
 });
 
-// ---------------------------------------------------------------
-// TRANSACTIONS
-// ---------------------------------------------------------------
 app.get('/transactions', requireLogin, async (req, res) => {
   try {
     const uid = req.session.user.id;
@@ -427,9 +407,6 @@ app.get('/transactions', requireLogin, async (req, res) => {
   }
 });
 
-// ---------------------------------------------------------------
-// TRANSFER (between own accounts)
-// ---------------------------------------------------------------
 app.get('/transfer', requireLogin, async (req, res) => {
   const uid = req.session.user.id;
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
@@ -531,9 +508,6 @@ app.post('/transfer', requireLogin, async (req, res) => {
   });
 });
 
-// ---------------------------------------------------------------
-// BILL PAY
-// ---------------------------------------------------------------
 app.get('/billpay', requireLogin, async (req, res) => {
   const uid = req.session.user.id;
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
@@ -593,9 +567,6 @@ app.get('/billpay/history/export', requireLogin, async (req, res) => {
   res.send(csv);
 });
 
-// ---------------------------------------------------------------
-// PROFILE
-// ---------------------------------------------------------------
 app.get('/profile', requireLogin, async (req, res) => {
   const uid = req.session.user.id;
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
@@ -613,9 +584,6 @@ app.post('/profile', requireLogin, async (req, res) => {
   res.render('profile', { user, accounts, success: 'Profile updated!', error: null });
 });
 
-// ---------------------------------------------------------------
-// ADMIN SECTION
-// ---------------------------------------------------------------
 app.get('/admin', requireAdmin, async (req, res) => {
   const users = await sqlAll(`SELECT id, username, email, isAdmin, isLocked, created_at FROM users ORDER BY id`);
   res.render('admin', { user: req.session.user, users });
@@ -700,9 +668,6 @@ app.get('/admin/users/:id/export/transactions', requireAdmin, async (req, res) =
   res.send(csv);
 });
 
-// ---------------------------------------------------------------
-// SEED 42 TRANSACTIONS
-// ---------------------------------------------------------------
 app.get('/seed', requireAdmin, async (req, res) => {
   const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = 1`);
 
@@ -720,7 +685,6 @@ app.get('/seed', requireAdmin, async (req, res) => {
   const s = accounts[1].id;
   const b = accounts[2].id;
 
-  // PRIMARY CHECKING (14 txns)
   await tx(c, 'Deposit', 5200.00, 'Payroll - Direct Deposit', '2024-10-15');
   await tx(c, 'Deposit', 5200.00, 'Payroll - Direct Deposit', '2024-10-31');
   await tx(c, 'Withdrawal', -1850.00, 'Mortgage Payment', '2024-10-20');
@@ -736,7 +700,6 @@ app.get('/seed', requireAdmin, async (req, res) => {
   await tx(c, 'Deposit', 5200.00, 'Payroll - Direct Deposit', '2025-02-15');
   await tx(c, 'Withdrawal', -2141.90, 'Transfer to Savings', '2025-02-20');
 
-  // SAVINGS (14 txns)
   await tx(s, 'Deposit', 48500.00, 'Fall Harvest - Corn', '2024-10-20');
   await tx(s, 'Deposit', 32000.00, 'Grain Elevator Sale - Wheat', '2024-11-05');
   await tx(s, 'Deposit', 28750.00, 'Livestock Sale - Cattle', '2024-11-18');
@@ -752,7 +715,6 @@ app.get('/seed', requireAdmin, async (req, res) => {
   await tx(s, 'Deposit', 12340.00, 'Equipment Rental Income', '2025-02-15');
   await tx(s, 'Deposit', 37680.00, 'Annual Dividend - Farm Co-op', '2025-02-20');
 
-  // BUSINESS (14 txns)
   await tx(b, 'Deposit', 87500.00, 'Client Payment - Johnson Farms', '2024-10-10');
   await tx(b, 'Deposit', 65200.00, 'Client Payment - Miller Ranch', '2024-10-25');
   await tx(b, 'Withdrawal', -42000.00, 'Equipment Lease - John Deere 8R', '2024-10-30');
@@ -801,7 +763,3 @@ app.get('/seed', requireAdmin, async (req, res) => {
   </div>
 </body></html>`);
 });
-
-// ---------------------------------------------------------------
-// END
-// ---------------------------------------------------------------
