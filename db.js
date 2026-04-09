@@ -1,10 +1,16 @@
-// db.js – libsql SQLite connection (pure JavaScript, no native modules)
+// db.js – libsql SQLite connection
 const { Database } = require('@libsql/sqlite3');
 const path = require('path');
 
-const dbPath = process.env.NODE_ENV === 'production' 
+// Build the database path
+const rawPath = process.env.NODE_ENV === 'production' 
   ? '/tmp/bank.db' 
   : path.join(__dirname, 'bank.db');
+
+// Add 'file:' prefix for libSQL compatibility
+const dbPath = rawPath.startsWith('file:') || rawPath.startsWith('libsql:') || rawPath.startsWith('http')
+  ? rawPath
+  : `file:${rawPath}`;
 
 let db;
 try {
@@ -15,7 +21,6 @@ try {
   process.exit(1);
 }
 
-// Export wrapper with same API as before
 module.exports = {
   run: function(sql, params = []) {
     const stmt = db.prepare(sql);
