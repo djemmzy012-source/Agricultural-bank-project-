@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Admin – User Detail</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:20px; }
+    h2 { margin-top:24px; }
+    table { width:100%; border-collapse:collapse; margin-top:8px; }
+    th, td { padding:8px 12px; border-bottom:1px solid #ddd; }
+    .actions button { margin-right:8px; }
+    form.inline { display:inline; }
+  </style>
+</head>
+<body>
+  <h1>Admin – User Detail</h1>
+  <p>Viewing <strong><%= viewedUser.username %></strong> (ID: <%= viewedUser.id %>)</p>
+
+  <!-- ==== USER STATUS & ACTIONS ==== -->
+  <div class="actions">
+    <!-- Toggle Admin -->
+    <form class="inline" method="POST" action="/admin/users/<%= viewedUser.id %>/toggleAdmin">
+      <button type="submit"><%= viewedUser.isAdmin === 1 ? 'Demote from Admin' : 'Promote to Admin' %></button>
+    </form>
+
+    <% if (viewedUser.isLocked === 1) { %>
+      <!-- Unlock -->
+      <form class="inline" method="POST" action="/admin/users/<%= viewedUser.id %>/unlock">
+        <button type="submit">Unlock Account</button>
+      </form>
+    <% } else { %>
+      <!-- Lock (default 60 min) -->
+      <form class="inline" method="POST" action="/admin/users/<%= viewedUser.id %>/lock">
+        <input type="number" name="minutes" placeholder="Lock minutes (default 60)" min="1" style="width:140px;"/>
+        <button type="submit">Lock Account</button>
+      </form>
+    <% } %>
+  </div>
+
+  <h2>Profile</h2>
+  <p>Email: <%= viewedUser.email %> |
+     Admin: <%= viewedUser.isAdmin === 1 ? 'Yes' : 'No' %> |
+     Locked: <%= viewedUser.isLocked === 1 ? 'Yes' : 'No' %>
+  </p>
+
+  <h2>Accounts</h2>
+  <table>
+    <thead><tr><th>ID</th><th>Name</th><th>Type</th><th>Balance</th><th>Icon</th></tr></thead>
+    <tbody>
+      <% accounts.forEach(a => { %>
+        <tr>
+          <td><%= a.id %></td>
+          <td><%= a.name %></td>
+          <td><%= a.type %></td>
+          <td>$<%= Number(a.balance).toLocaleString(undefined,{minimumFractionDigits:2}) %></td>
+          <td><%= a.icon %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <h2>Bill Pay History</h2>
+  <table>
+    <thead><tr><th>Date</th><th>From Account</th><th>Amount</th><th>Payee</th></tr></thead>
+    <tbody>
+      <% bills.forEach(b => { %>
+        <tr>
+          <td><%= new Date(b.date).toLocaleString() %></td>
+          <td><%= b.fromAccount %></td>
+          <td>$<%= Number(b.amount).toFixed(2) %></td>
+          <td><%= b.payeeName %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <p><a href="/admin/users/<%= viewedUser.id %>/export/billpay">Export Bill Pay CSV</a></p>
+
+  <h2>Transactions</h2>
+  <table>
+    <thead><tr><th>Date</th><th>Account</th><th>Type</th><th>Amount</th><th>Description</th></tr></thead>
+    <tbody>
+      <% trans.forEach(t => { %>
+        <tr>
+          <td><%= new Date(t.date).toLocaleString() %></td>
+          <td><%= t.accountName || t.accountId %></td>
+          <td><%= t.type %></td>
+          <td>$<%= Number(t.amount).toFixed(2) %></td>
+          <td><%= t.description %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <p><a href="/admin/users/<%= viewedUser.id %>/export/transactions">Export Transactions CSV</a></p>
+
+  <h2>Transfers</h2>
+  <table>
+    <thead><tr><th>Date</th><th>From</th><th>To</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      <% transfers.forEach(t => { %>
+        <tr>
+          <td><%= new Date(t.date).toLocaleString() %></td>
+          <td><%= t.fromAccount %></td>
+          <td><%= t.toAccount %></td>
+          <td>$<%= Number(t.amount).toFixed(2) %></td>
+          <td><%= t.status %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <p>
+    <a href="/admin/users">Back to User List</a> |
+    <a href="/admin">Back to Admin Dashboard</a> |
+    <a href="/logout">Logout</a>
+  </p>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bill Pay | AgriBank Texas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; color: #1A1A1A; line-height: 1.6; min-height: 100vh; }
+    h1,h2,h3,h4 { font-family: 'Merriweather', serif; font-weight: 700; }
+    a { color: #2D5A27; text-decoration: none; }
+    a:hover { color: #4A7C42; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Top Bar */
+    .top-bar { background: #2C2416; color: #C4B49A; font-size: 12px; padding: 8px 0; }
+    .top-bar-content { display: flex; justify-content: space-between; }
+    .top-bar-left, .top-bar-right { display: flex; gap: 24px; }
+    .top-bar-right a { color: #C4B49A; }
+    
+    /* Navbar */
+    .navbar { background: #2D5A27; position: sticky; top: 0; z-index: 100; }
+    .navbar-content { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-icon { width: 44px; height: 44px; background: #C4A35A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .logo-name { font-family: 'Merriweather', serif; font-weight: 900; font-size: 20px; color: white; }
+    .logo-tagline { font-size: 10px; color: #D4BC7E; letter-spacing: 1px; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 4px; }
+    .nav-links a { color: rgba(255,255,255,0.85); padding: 10px 18px; border-radius: 6px; font-size: 14px; font-weight: 500; }
+    .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.15); color: white; }
+    .nav-user { display: flex; align-items: center; gap: 16px; }
+    .user-greeting { color: rgba(255,255,255,0.9); font-size: 14px; }
+    .user-greeting strong { display: block; color: white; }
+    .btn-logout { color: white; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; font-size: 13px; }
+    .btn-logout:hover { background: rgba(255,255,255,0.1); color: white; }
+    
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: 8px; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: none; text-decoration: none; transition: all 0.25s ease; }
+    .btn-primary { background: #2D5A27; color: white; }
+    .btn-primary:hover { background: #4A7C42; }
+    .btn-outline { background: transparent; border: 1px solid #2D5A27; color: #2D5A27; }
+    .btn-outline:hover { background: #2D5A27; color: white; }
+    
+    /* Page Header */
+    .page-header { margin: 32px 0 24px; }
+    .page-header h1 { font-size: 28px; color: #2C2416; margin-bottom: 8px; }
+    .page-header p { color: #5C5C5C; font-size: 16px; }
+    
+    /* Form Card */
+    .form-card { background: white; border-radius: 12px; padding: 32px; border: 1px solid #E5E0D8; box-shadow: 0 2px 4px rgba(44,36,22,0.08); max-width: 600px; margin-bottom: 60px; }
+    .form-section-title { font-family: 'Open Sans', sans-serif; font-size: 16px; font-weight: 600; color: #2C2416; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #F0ECE4; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: #5C5C5C; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .form-input, .form-select { width: 100%; padding: 14px 16px; border: 1px solid #E5E0D8; border-radius: 8px; font-size: 15px; font-family: 'Open Sans', sans-serif; transition: all 0.15s ease; background: white; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: #2D5A27; box-shadow: 0 0 0 3px rgba(45,90,39,0.1); }
+    .input-with-icon { position: relative; }
+    .input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #8A8A8A; font-size: 14px; }
+    .input-with-icon .form-input { padding-left: 44px; }
+    .form-hint { font-size: 12px; color: #8A8A8A; margin-top: 6px; }
+    .btn-submit { width: 100%; padding: 16px 32px; font-size: 16px; margin-top: 8px; }
+    
+    /* Quick Actions */
+    .quick-actions { display: flex; gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid #F0ECE4; }
+    .quick-actions .btn { flex: 1; }
+    
+    /* Alert */
+    .alert { padding: 16px 20px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; }
+    .alert-success { background: #E8F0E6; color: #2D5A27; border: 1px solid rgba(45,90,39,0.2); }
+    .alert-error { background: #FDF2F2; color: #A63D40; border: 1px solid rgba(166,61,64,0.2); }
+    
+    /* Footer */
+    .footer { background: #2C2416; color: #C4B49A; padding: 48px 0 24px; margin-top: 60px; }
+    .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .footer-logo-icon { width: 40px; height: 40px; background: #C4A35A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+    .footer-logo-text { font-family: 'Merriweather', serif; font-weight: 700; font-size: 18px; color: white; }
+    .footer-brand p { font-size: 14px; line-height: 1.6; opacity: 0.8; }
+    .footer-column h4 { font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: white; }
+    .footer-column ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-column a { color: #C4B49A; font-size: 14px; }
+    .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
+    .footer-bottom p { font-size: 12px; opacity: 0.7; }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a { font-size: 12px; color: #C4B49A; }
+    
+    @media (max-width: 768px) { .footer-content { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 16px; text-align: center; } }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <div class="container">
+      <div class="top-bar-content">
+        <div class="top-bar-left"><span>📍 Austin, TX</span><span>📞 1-800-AGRIBTX</span></div>
+        <div class="top-bar-right"><a href="#">Locations</a><a href="#">Help</a></div>
+      </div>
+    </div>
+  </div>
+  
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-content">
+        <a href="/dashboard" class="logo">
+          <div class="logo-icon">🌾</div>
+          <div><div class="logo-name">AgriBank</div><div class="logo-tagline">Texas</div></div>
+        </a>
+        <div class="nav-links">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/accounts">Accounts</a>
+          <a href="/transfer">Transfer</a>
+          <a href="/billpay" class="active">Bill Pay</a>
+          <a href="/profile">Profile</a>
+        </div>
+        <div class="nav-user">
+          <span class="user-greeting">Howdy,<strong><%= user.firstName %></strong></span>
+          <a href="/logout" class="btn-logout">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="page-header">
+      <h1>Bill Pay</h1>
+      <p>Pay your bills quickly and securely</p>
+    </div>
+
+    <% if (error) { %>
+    <div class="alert alert-error"><%= error %></div>
+    <% } %>
+    
+    <% if (success) { %>
+    <div class="alert alert-success">✓ Bill payment of $<%= successAmount %> completed successfully!</div>
+    <% } %>
+
+    <div class="form-card">
+      <h3 class="form-section-title">Make a Payment</h3>
+      
+      <form method="POST" action="/billpay">
+        <div class="form-group">
+          <label class="form-label">From Account</label>
+          <select name="fromAccount" class="form-select" required>
+            <option value="">Select account</option>
+            <% accounts.filter(a => a.type === 'checking' || a.type === 'savings').forEach(function(acc) { %>
+            <option value="<%= acc.id %>"><%= acc.name %> (<%= acc.number %>) - $<%= acc.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></option>
+            <% }); %>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Payee Name</label>
+          <input type="text" name="payeeName" class="form-input" placeholder="Company or person name" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Account Number / Bill Reference</label>
+          <input type="text" name="accountNumber" class="form-input" placeholder="Your account number with payee" required>
+          <p class="form-hint">The account number on your bill</p>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Payment Amount</label>
+          <div class="input-with-icon">
+            <span class="input-icon">$</span>
+            <input type="number" name="amount" class="form-input" placeholder="0.00" min="0.01" step="0.01" required>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-submit">Submit Payment</button>
+      </form>
+      
+      <div class="quick-actions">
+        <a href="/billpay/history" class="btn btn-outline">View Payment History</a>
+        <a href="/billpay/history/export" class="btn btn-outline">Export CSV</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo"><div class="footer-logo-icon">🌾</div><span class="footer-logo-text">AgriBank Texas</span></div>
+          <p>Serving Texas farmers,

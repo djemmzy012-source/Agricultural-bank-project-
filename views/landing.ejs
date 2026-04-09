@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agricultural Bank | Growing Your Future</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .landing-hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 50%, var(--brown-dark) 100%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .landing-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    
+    .landing-nav {
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .landing-nav .logo-icon {
+      background: rgba(255,255,255,0.15);
+      box-shadow: none;
+    }
+    
+    .landing-nav .logo-name {
+      color: white;
+    }
+    
+    .landing-nav .logo-tagline {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .landing-nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    
+    .landing-nav-links a {
+      color: rgba(255,255,255,0.85);
+      font-weight: 500;
+      font-size: 15px;
+    }
+    
+    .landing-nav-links a:hover {
+      color: white;
+    }
+    
+    .landing-nav-links .btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      padding: 10px 24px;
+    }
+    
+    .landing-nav-links .btn:hover {
+      background: white;
+      color: var(--green-dark);
+    }
+    
+    .landing-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0 48px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .landing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      align-items: center;
+    }
+    
+    .landing-text h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 56px;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    
+    .landing-text p {
+      font-size: 18px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    
+    .landing-buttons {
+      display: flex;
+      gap: 16px;
+    }
+    
+    .btn-landing-primary {
+      background: var(--gold);
+      color: var(--text-dark);
+      padding: 16px 32px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 16px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(249, 168, 37, 0.3);
+    }
+    
+    .btn-landing-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(249, 168, 37, 0.4);
+      color: var(--text-dark);
+    }
+    
+    .btn-landing-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      padding: 16px 32px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      transition: all 0.3s;
+    }
+    
+    .btn-landing-secondary:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: white;
+      color: white;
+    }
+    
+    .landing-visual {
+      position: relative;
+    }
+    
+    .landing-card-stack {
+      position: relative;
+      height: 400px;
+    }
+    
+    .landing-float-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 16px;
+      padding: 28px;
+      color: white;
+      position: absolute;
+      transition: transform 0.3s;
+    }
+    
+    .landing-float-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .float-card-1 {
+      top: 0;
+      left: 0;
+      width: 320px;
+    }
+    
+    .float-card-2 {
+      top: 120px;
+      right: 0;
+      width: 280px;
+    }
+    
+    .float-card-3 {
+      bottom: 20px;
+      left: 40px;
+      width: 300px;
+    }
+    
+    .float-card-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      opacity: 0.7;
+      margin-bottom: 8px;
+    }
+    
+    .float-card-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 32px;
+      margin-bottom: 4px;
+    }
+    
+    .float-card-sub {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    .landing-features {
+      background: white;
+      padding: 80px 48px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .feature-card {
+      text-align: center;
+      padding: 40px 24px;
+    }
+    
+    .feature-icon {
+      width: 72px;
+      height: 72px;
+      background: var(--green-pale);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+    
+    .feature-card h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 12px;
+      color: var(--text-dark);
+    }
+    
+    .feature-card p {
+      font-size: 15px;
+      color: var(--text-mid);
+      line-height: 1.7;
+    }
+    
+    .landing-footer {
+      background: var(--brown-dark);
+      padding: 32px 48px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .landing-footer a {
+      color: rgba(255,255,255,0.8);
+    }
+    
+    @media (max-width: 900px) {
+      .landing-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .landing-text h1 {
+        font-size: 40px;
+      }
+      
+      .landing-visual {
+        display: none;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .landing-nav {
+        padding: 16px 24px;
+      }
+      
+      .landing-content {
+        padding: 0 24px 48px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="landing-hero">
+    <nav class="landing-nav">
+      <a href="/" class="logo">
+        <div class="logo-icon">AB</div>
+        <div class="logo-text">
+          <span class="logo-name">Agricultural Bank</span>
+          <span class="logo-tagline">AgricBank</span>
+        </div>
+      </a>
+      <div class="landing-nav-links">
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Locations</a>
+        <a href="/login" class="btn">Sign In</a>
+      </div>
+    </nav>
+    
+    <div class="landing-content">
+      <div class="landing-grid">
+        <div class="landing-text">
+          <h1>Growing Your Future, Together</h1>
+          <p>Trusted by farmers and rural communities since 1923. Agricultural Bank provides the financial roots you need to grow your dreams.</p>
+          <div class="landing-buttons">
+            <a href="/register" class="btn-landing-primary">Open an Account</a>
+            <a href="/login" class="btn-landing-secondary">Sign In</a>
+          </div>
+        </div>
+        
+        <div class="landing-visual">
+          <div class="landing-card-stack">
+            <div class="landing-float-card float-card-1">
+              <div class="float-card-label">Total Savings</div>
+              <div class="float-card-value">$45,280.00</div>
+              <div class="float-card-sub">🌱 Growing steadily</div>
+            </div>
+            <div class="landing-float-card float-card-2">
+              <div class="float-card-label">Monthly Growth</div>
+              <div class="float-card-value">+4.2%</div>
+              <div class="float-card-sub">▲ $1,840 this month</div>
+            </div>
+            <div class="landing-float-card float-card-3">
+              <div class="float-card-label">Farm Loan APR</div>
+              <div class="float-card-value">3.75%</div>
+              <div class="float-card-sub">🌾 Best rate for farmers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <section class="landing-features">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🌾</div>
+        <h3>Agricultural Loans</h3>
+        <p>Special rates for farming equipment, land purchases, and seasonal operating needs.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>Mobile Banking</h3>
+        <p>Bank from your field. Deposit checks, transfer funds, and pay bills from anywhere.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h3>Community First</h3>
+        <p>Local decisions, local people. We invest back into the communities we serve.</p>
+      </div>
+    </div>
+  </section>
+  
+  <footer class="landing-footer">
+    <span>© 2025 Agricultural Bank. Member FDIC. Equal Housing Lender.</span>
+    <div>
+      <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Accessibility</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,118 @@
+// add-transactions.js - Run this to add sample transactions to your database
+const db = require('./db');
+
+// Helper to run SQL
+function sqlRun(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) return reject(err);
+      resolve(this);
+    });
+  });
+}
+
+// Helper to query data
+function sqlAll(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+}
+
+// Sample transaction data
+const sampleTransactions = [
+  // Primary Checking Account (account 1)
+  { accountId: 1, type: 'Deposit', amount: 5200.00, description: 'Direct Deposit - Payroll', date: '2024-01-15' },
+  { accountId: 1, type: 'Withdrawal', amount: -125.50, description: 'ATM Withdrawal', date: '2024-01-18' },
+  { accountId: 1, type: 'Deposit', amount: 425.75, description: 'Refund - Equipment Purchase', date: '2024-01-20' },
+  { accountId: 1, type: 'Withdrawal', amount: -89.99, description: 'POS - Tractor Supply Co', date: '2024-01-22' },
+  { accountId: 1, type: 'Deposit', amount: 1500.00, description: 'Transfer from Savings', date: '2024-01-25' },
+  { accountId: 1, type: 'Withdrawal', amount: -320.00, description: 'Online Payment - Utility Bill', date: '2024-02-01' },
+  { accountId: 1, type: 'Deposit', amount: 5200.00, description: 'Direct Deposit - Payroll', date: '2024-02-15' },
+  { accountId: 1, type: 'Withdrawal', amount: -156.25, description: 'POS - Farm Equipment Rental', date: '2024-02-18' },
+  { accountId: 1, type: 'Withdrawal', amount: -450.00, description: 'Check #1054 - Feed Purchase', date: '2024-02-22' },
+  { accountId: 1, type: 'Deposit', amount: 850.00, description: 'Check Deposit - Crop Sale', date: '2024-02-28' },
+  
+  // Savings Account (account 2)
+  { accountId: 2, type: 'Deposit', amount: 2000.00, description: 'Transfer from Checking', date: '2024-01-10' },
+  { accountId: 2, type: 'Deposit', amount: 5000.00, description: 'Harvest Proceeds', date: '2024-01-30' },
+  { accountId: 2, type: 'Withdrawal', amount: -1500.00, description: 'Transfer to Checking', date: '2024-02-05' },
+  { accountId: 2, type: 'Deposit', amount: 3750.00, description: 'Livestock Sale', date: '2024-02-12' },
+  { accountId: 2, type: 'Interest', amount: 412.50, description: 'Interest Payment', date: '2024-02-28' },
+  { accountId: 2, type: 'Deposit', amount: 8200.00, description: 'Land Lease Payment', date: '2024-03-05' },
+  
+  // Business Operating Account (account 3)
+  { accountId: 3, type: 'Deposit', amount: 12500.00, description: 'Client Payment - Johnson Farm', date: '2024-01-08' },
+  { accountId: 3, type: 'Withdrawal', amount: -3200.00, description: 'Payroll - Employee Wages', date: '2024-01-15' },
+  { accountId: 3, type: 'Withdrawal', amount: -890.50, description: 'Vendor Payment - Seed Company', date: '2024-01-22' },
+  { accountId: 3, type: 'Deposit', amount: 8750.00, description: 'Equipment Rental Income', date: '2024-02-01' },
+  { accountId: 3, type: 'Withdrawal', amount: -5420.75, description: 'Equipment Purchase - John Deere', date: '2024-02-10' },
+  { accountId: 3, type: 'Withdrawal', amount: -1560.00, description: 'Insurance Premium', date: '2024-02-20' },
+  { accountId: 3, type: 'Deposit', amount: 15800.00, description: 'Harvest Contract Payment', date: '2024-03-01' },
+  { accountId: 3, type: 'Withdrawal', amount: -2890.00, description: 'Fertilizer Purchase', date: '2024-03-08' },
+];
+
+async function addTransactions() {
+  try {
+    console.log('🌱 Adding sample transactions to database...');
+    
+    // Get current user and accounts
+    const user = await sqlAll(`SELECT id FROM users WHERE username = 'Alejandro$12'`);
+    if (user.length === 0) {
+      console.log('❌ User not found. Please make sure you have run the initial setup.');
+      return;
+    }
+    
+    const userId = user[0].id;
+    const accounts = await sqlAll(`SELECT id, number FROM accounts WHERE userId = ?`, [userId]);
+    
+    if (accounts.length === 0) {
+      console.log('❌ No accounts found for user.');
+      return;
+    }
+    
+    console.log(`✅ Found user (ID: ${userId}) with ${accounts.length} accounts`);
+    
+    // Add each transaction
+    for (const tx of sampleTransactions) {
+      // Map account IDs correctly (sample data uses 1,2,3 but real IDs might be different)
+      const realAccountId = accounts[tx.accountId - 1]?.id || tx.accountId;
+      
+      await sqlRun(
+        `INSERT INTO transactions (userId, accountId, type, amount, description, date) 
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [userId, realAccountId, tx.type, tx.amount, tx.description, tx.date]
+      );
+    }
+    
+    console.log(`✅ Added ${sampleTransactions.length} sample transactions!`);
+    
+    // Show summary
+    const allTransactions = await sqlAll(
+      `SELECT a.name as accountName, COUNT(t.id) as count, SUM(t.amount) as totalAmount
+       FROM transactions t
+       JOIN accounts a ON t.accountId = a.id
+       WHERE t.userId = ?
+       GROUP BY a.id`,
+      [userId]
+    );
+    
+    console.log('\n📊 Transaction Summary:');
+    console.log('----------------------');
+    allTransactions.forEach(acc => {
+      console.log(`${acc.accountName}: ${acc.count} transactions, Total: $${acc.totalAmount?.toFixed(2) || '0.00'}`);
+    });
+    
+    console.log('\n🎉 You can now view transactions at: http://localhost:3000/transactions');
+    
+  } catch (error) {
+    console.error('❌ Error adding transactions:', error);
+  } finally {
+    process.exit(0);
+  }
+}
+
+// Run the script
+addTransactions();

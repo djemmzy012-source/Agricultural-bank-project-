@@ -1,0 +1,165 @@
+cat > views/register.ejs << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open an Account | AgriBank Texas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; min-height: 100vh; }
+        .register-page { min-height: 100vh; display: flex; }
+        .register-wrapper { display: flex; width: 100%; min-height: 100vh; }
+        .register-brand { flex: 1; background: linear-gradient(145deg, #2D5A27 0%, #1E3D1A 50%, #2C2416 100%); display: flex; align-items: center; justify-content: center; padding: 60px; position: relative; overflow: hidden; }
+        .brand-content { max-width: 440px; color: white; position: relative; z-index: 1; }
+        .brand-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; }
+        .brand-logo-icon { width: 64px; height: 64px; background: #C4A35A; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+        .brand-logo-name { font-family: 'Merriweather', serif; font-size: 28px; font-weight: 900; }
+        .brand-logo-tagline { font-size: 11px; color: #D4BC7E; letter-spacing: 2px; text-transform: uppercase; }
+        .brand-content h1 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
+        .brand-content > p { font-size: 16px; opacity: 0.85; margin-bottom: 40px; line-height: 1.7; }
+        .register-form-section { flex: 1.5; display: flex; align-items: center; justify-content: center; padding: 40px 60px; background: white; overflow-y: auto; }
+        .register-form-container { width: 100%; max-width: 520px; }
+        .register-form-container h2 { font-family: 'Merriweather', serif; font-size: 28px; margin-bottom: 8px; color: #2C2416; }
+        .register-subtitle { color: #5C5C5C; font-size: 15px; margin-bottom: 28px; }
+        .alert { padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; background: #FDF2F2; color: #A63D40; border: 1px solid rgba(166,61,64,0.2); font-size: 14px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; font-size: 12px; font-weight: 600; color: #5C5C5C; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input { width: 100%; padding: 12px 14px; border: 1px solid #E5E0D8; border-radius: 8px; font-size: 14px; font-family: 'Open Sans', sans-serif; transition: border-color 0.2s, box-shadow 0.2s; }
+        .form-input:focus { outline: none; border-color: #2D5A27; box-shadow: 0 0 0 3px rgba(45,90,39,0.1); }
+        .form-section-title { font-family: 'Merriweather', serif; font-size: 16px; color: #2C2416; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #E5E0D8; }
+        .account-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+        .account-type-option { position: relative; }
+        .account-type-option input { position: absolute; opacity: 0; }
+        .account-type-label { display: block; padding: 16px 12px; border: 2px solid #E5E0D8; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
+        .account-type-option input:checked + .account-type-label { border-color: #2D5A27; background: #F0F7EE; }
+        .account-type-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+        .account-type-name { font-size: 13px; font-weight: 600; color: #2C2416; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 8px; font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s, transform 0.1s; }
+        .btn-primary { background: #2D5A27; color: white; width: 100%; margin-top: 8px; }
+        .btn-primary:hover { background: #4A7C42; transform: translateY(-1px); }
+        .register-footer { text-align: center; font-size: 14px; color: #5C5C5C; margin-top: 24px; }
+        .register-footer a { color: #2D5A27; font-weight: 600; text-decoration: none; }
+        .ssn-note { font-size: 11px; color: #8a8a8a; margin-top: 4px; }
+    </style>
+</head>
+<body>
+    <div class="register-page">
+        <div class="register-wrapper">
+            <div class="register-brand">
+                <div class="brand-content">
+                    <div class="brand-logo">
+                        <div class="brand-logo-icon">🌾</div>
+                        <div>
+                            <div class="brand-logo-name">AgriBank</div>
+                            <div class="brand-logo-tagline">Texas</div>
+                        </div>
+                    </div>
+                    <h1>Join Our Community</h1>
+                    <p>Open your account today and become part of a banking tradition that's been serving Texas farmers and families for over 100 years.</p>
+                </div>
+            </div>
+            <div class="register-form-section">
+                <div class="register-form-container">
+                    <h2>Open an Account</h2>
+                    <p class="register-subtitle">Fill out the form below to create your new account</p>
+                    <% if (error) { %>
+                    <div class="alert"><%= error %></div>
+                    <% } %>
+                    <form action="/register" method="POST">
+                        <h3 class="form-section-title">Choose Account Type</h3>
+                        <div class="account-type-grid">
+                            <label class="account-type-option">
+                                <input type="radio" name="accountType" value="checking" checked>
+                                <span class="account-type-label">
+                                    <span class="account-type-icon">🏦</span>
+                                    <span class="account-type-name">Primary Checking</span>
+                                </span>
+                            </label>
+                            <label class="account-type-option">
+                                <input type="radio" name="accountType" value="savings">
+                                <span class="account-type-label">
+                                    <span class="account-type-icon">💰</span>
+                                    <span class="account-type-name">Savings Account</span>
+                                </span>
+                            </label>
+                            <label class="account-type-option">
+                                <input type="radio" name="accountType" value="business">
+                                <span class="account-type-label">
+                                    <span class="account-type-icon">🏢</span>
+                                    <span class="account-type-name">Business Checking</span>
+                                </span>
+                            </label>
+                        </div>
+                        <h3 class="form-section-title">Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" name="firstName" class="form-input" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" name="lastName" class="form-input" placeholder="Smith" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" name="dateOfBirth" class="form-input" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">SSN</label>
+                                <input type="text" name="ssn" class="form-input" placeholder="XXX-XX-XXXX" required>
+                                <p class="ssn-note">Required for account verification</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+                        </div>
+                        <h3 class="form-section-title">Address</h3>
+                        <div class="form-group">
+                            <label class="form-label">Street Address</label>
+                            <input type="text" name="address" class="form-input" placeholder="123 Main Street" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <input type="text" name="city" class="form-input" placeholder="Dallas" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">State</label>
+                                <input type="text" name="state" class="form-input" placeholder="TX" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">ZIP Code</label>
+                            <input type="text" name="zip" class="form-input" placeholder="75201" required>
+                        </div>
+                        <h3 class="form-section-title">Create Login</h3>
+                        <div class="form-group">
+                            <label class="form-label">Username</label>
+                            <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" name="password" class="form-input" placeholder="Create password" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </form>
+                    <p class="register-footer">Already have an account? <a href="/login">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+EOF

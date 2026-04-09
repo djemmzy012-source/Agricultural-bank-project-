@@ -1,0 +1,527 @@
+/********************************************************************
+ *  AgriBank Texas – Full DB‑backed server with admin controls
+ ********************************************************************/
+const express = require('express');
+const session = require('express-session');
+const path = require('path');
+const bcrypt = require('bcryptjs');
+const db = require('./db'); // SQLite persistence
+
+const app = express();
+const PORT = 3000;
+
+// -------------------------------------------------------------------
+// Express / session config
+// -------------------------------------------------------------------
+app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({
+    secret: 'agribank-texas-secure-2024',
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }
+}));
+
+// -------------------------------------------------------------------
+// Tiny promise‑wrappers around the sqlite3 API
+// -------------------------------------------------------------------
+function sqlRun(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) return reject(err);
+      resolve(this);
+    });
+  });
+}
+function sqlGet(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) return reject(err);
+      resolve(row);
+    });
+  });
+}
+function sqlAll(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+}
+
+// -------------------------------------------------------------------
+// DB initialization & seeding
+// -------------------------------------------------------------------
+async function initDB() {
+  // ─── USERS ────────────────────────────────────────────────────────
+  await sqlRun(`CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT,
+    firstName TEXT,
+    lastName TEXT,
+    email TEXT,
+    memberSince TEXT,
+    address TEXT,
+    city TEXT,
+    state TEXT,
+    zip TEXT,
+    isAdmin INTEGER DEFAULT 0,
+    isLocked INTEGER DEFAULT 0,
+    lockUntil TEXT,
+    created_at TEXT
+  )`);
+
+  // ─── ACCOUNTS ────────────────────────────────────────────────────
+  await sqlRun(`CREATE TABLE IF NOT EXISTS accounts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER,
+    name TEXT,
+    type TEXT,
+    number TEXT,
+    balance REAL,
+    icon TEXT
+  )`);
+
+  // ─── TRANSACTIONS ─────────────────────────────────────────────────
+  await sqlRun(`CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER,
+    accountId INTEGER,
+    type TEXT,
+    amount REAL,
+    description TEXT,
+    date TEXT
+  )`);
+
+  // ─── BILL PAY ────────────────────────────────────────────────────
+  await sqlRun(`CREATE TABLE IF NOT EXISTS billpay_transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER,
+    fromAccount INTEGER,
+    amount REAL,
+    date TEXT,
+    payeeName TEXT
+  )`);
+
+  // ─── TRANSFERS ──────────────────────────────────────────────────
+  await sqlRun(`CREATE TABLE IF NOT EXISTS transfers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    userId INTEGER,
+    fromAccount INTEGER,
+    toAccount INTEGER,
+    amount REAL,
+    date TEXT,
+    status TEXT
+  )`);
+
+  // -----------------------------------------------------------------
+  // Seed a regular user (if no users exist) and an admin user.
+  // -----------------------------------------------------------------
+  const userCnt = await sqlGet(`SELECT COUNT(*) AS c FROM users`);
+  if (!userCnt || userCnt.c === 0) {
+    // Regular user
+    const userHash = bcrypt.hashSync('Andre44225', 10);
+    await sqlRun(
+      `INSERT INTO users (username, password, firstName, lastName, email, memberSince, address, city, state, zip, isAdmin, created_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+      [
+        'Alejandro$12', userHash, 'Andrew', 'Alejandro',
+        'andrew.alejandro@email.com', '2018',
+        '742 Sycamore Lane', 'Indianapolis', 'IN', '46204',
+        0, new Date().toISOString()
+      ]
+    );
+
+    // Accounts for that user (id will be 1)
+    await sqlRun(`INSERT INTO accounts (userId, name, type, number, balance, icon) VALUES (1,'Primary Checking','checking','****4521',42420.50,'🏦')`);
+    await sqlRun(`INSERT INTO accounts (userId, name, type, number, balance, icon) VALUES (1,'Savings Account','savings','****8934',325890.25,'💰')`);
+    await sqlRun(`INSERT INTO accounts (userId, name, type, number, balance, icon) VALUES (1,'Business Operating','checking','****2156',595697.25,'🏢')`);
+  }
+
+  // Admin user (if none exists)
+  const adminExists = await sqlGet(`SELECT * FROM users WHERE isAdmin = 1 LIMIT 1`);
+  if (!adminExists) {
+    const adminHash = bcrypt.hashSync('Admin!Secure1', 10);
+    await sqlRun(
+      `INSERT INTO users (username, password, firstName, lastName, email, memberSince, address, city, state, zip, isAdmin, created_at)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+      [
+        'admin', adminHash, 'Admin', 'User',
+        'admin@bank.com', '2020',
+        'HQ', 'Metropolis', 'TX', '00000',
+        1, new Date().toISOString()
+      ]
+    );
+  }
+}
+
+// -------------------------------------------------------------------
+// Startup
+// -------------------------------------------------------------------
+initDB()
+  .then(() => {
+    app.listen(PORT, () => console.log(`AgriBank Texas running on http://localhost:${PORT}`));
+  })
+  .catch(err => {
+    console.error('DB init failed', err);
+    process.exit(1);
+  });
+
+// -------------------------------------------------------------------
+// Middleware helpers
+// -------------------------------------------------------------------
+function requireLogin(req, res, next) {
+  if (req.session.user) return next();
+  res.redirect('/login');
+}
+function requireAdmin(req, res, next) {
+  if (req.session.user && req.session.user.isAdmin === 1) return next();
+  res.redirect('/login');
+}
+
+// -------------------------------------------------------------------
+// ROUTES
+// -------------------------------------------------------------------
+
+// Home
+app.get('/', (req, res) => {
+  if (req.session.user) return res.redirect('/dashboard');
+  res.redirect('/login');
+});
+
+// ---------------------------------------------------------------
+// AUTH – LOGIN / LOGOUT
+// ---------------------------------------------------------------
+app.get('/login', (req, res) => {
+  const { error } = req.query;
+  res.render('login', { error });
+});
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await sqlGet(`SELECT * FROM users WHERE username = ?`, [username]);
+
+  // -----------------------------------------------------------------
+  // Account‑status checks
+  // -----------------------------------------------------------------
+  if (!user) {
+    return res.render('login', { error: 'Invalid credentials.' });
+  }
+
+  // Locked?
+  if (user.isLocked === 1) {
+    const now = new Date();
+    const lockUntil = user.lockUntil ? new Date(user.lockUntil) : null;
+    if (lockUntil && now < lockUntil) {
+      const mins = Math.round((lockUntil - now) / 60000);
+      return res.render('login', { error: `Account locked. Try again in ${mins} minute(s).` });
+    } else {
+      // Past lock period – unlock automatically
+      await sqlRun(`UPDATE users SET isLocked = 0, lockUntil = NULL WHERE id = ?`, [user.id]);
+    }
+  }
+
+  // Password verification
+  if (!bcrypt.compareSync(password, user.password)) {
+    return res.render('login', { error: 'Invalid credentials.' });
+  }
+
+  // Store user in session (trim password field)
+  const cleanUser = { ...user };
+  delete cleanUser.password;
+  req.session.user = cleanUser;
+
+  // Redirect based on role
+  if (cleanUser.isAdmin === 1) return res.redirect('/admin');
+  res.redirect('/dashboard');
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
+});
+
+// ---------------------------------------------------------------
+// USER DASHBOARD (non‑admin)
+// ---------------------------------------------------------------
+app.get('/dashboard', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  const transactions = await sqlAll(
+    `SELECT t.id, t.accountId, t.type, t.amount, t.description, t.date,
+            a.name AS accountName
+     FROM transactions t LEFT JOIN accounts a ON t.accountId = a.id
+     WHERE t.userId = ? ORDER BY t.date DESC LIMIT 10`,
+    [uid]
+  );
+  const totalBalance = accounts.reduce((sum, a) => sum + a.balance, 0);
+  res.render('dashboard', {
+    user: req.session.user,
+    accounts,
+    transactions,
+    totalBalance
+  });
+});
+
+// ---------------------------------------------------------------
+// ACCOUNTS, TRANSACTIONS, TRANSFER, PROFILE – same as before
+// (unchanged, but kept for completeness)
+// ---------------------------------------------------------------
+app.get('/accounts', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  const transactions = await sqlAll(
+    `SELECT t.id, t.accountId, t.type, t.amount, t.description, t.date,
+            a.name AS accountName
+     FROM transactions t LEFT JOIN accounts a ON t.accountId = a.id
+     WHERE t.userId = ? ORDER BY t.date DESC`,
+    [uid]
+  );
+  res.render('accounts', { user: req.session.user, accounts, transactions });
+});
+
+app.get('/transactions', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  const transactions = await sqlAll(
+    `SELECT t.id, t.accountId, t.type, t.amount, t.description, t.date,
+            a.name AS accountName
+     FROM transactions t LEFT JOIN accounts a ON t.accountId = a.id
+     WHERE t.userId = ? ORDER BY t.date DESC`,
+    [uid]
+  );
+  res.render('transactions', { user: req.session.user, accounts, transactions });
+});
+
+app.get('/transfer', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  res.render('transfer', { user: req.session.user, accounts, success: null, error: null, successAmount: null });
+});
+
+app.post('/transfer', requireLogin, async (req, res) => {
+  const { transferType, fromAccount, toAccount, amount, memo } = req.body;
+  const uid = req.session.user.id;
+  const fromAcc = await sqlGet(`SELECT * FROM accounts WHERE id = ? AND userId = ?`, [fromAccount, uid]);
+  const toAcc = await sqlGet(`SELECT * FROM accounts WHERE id = ? AND userId = ?`, [toAccount, uid]);
+  const amt = parseFloat(amount);
+
+  if (!fromAcc || amt <= 0 || (transferType === 'internal' && !toAcc)) {
+    return res.render('transfer', { user: req.session.user, accounts: await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]), success: null, error: 'Invalid transfer.', successAmount: null });
+  }
+  if (amt > fromAcc.balance) {
+    return res.render('transfer', { user: req.session.user, accounts: await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]), success: null, error: 'Insufficient funds.', successAmount: null });
+  }
+
+  // Update balances
+  await sqlRun(`UPDATE accounts SET balance = balance - ? WHERE id = ?`, [amt, fromAcc.id]);
+  if (transferType === 'internal' && toAcc) {
+    await sqlRun(`UPDATE accounts SET balance = balance + ? WHERE id = ?`, [amt, toAcc.id]);
+  }
+
+  // Log transfer
+  await sqlRun(`INSERT INTO transfers (userId, fromAccount, toAccount, amount, date, status) VALUES (?, ?, ?, ?, ?, ?)`,
+    [uid, fromAcc.id, toAcc ? toAcc.id : null, amt, new Date().toISOString(), 'completed']
+  );
+
+  res.render('transfer', {
+    user: req.session.user,
+    accounts: await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]),
+    success: true,
+    error: null,
+    successAmount: amt.toLocaleString('en-US', { minimumFractionDigits: 2 })
+  });
+});
+
+// ---------------------------------------------------------------
+// BILL PAY
+// ---------------------------------------------------------------
+app.get('/billpay', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  res.render('billpay', {
+    user: req.session.user,
+    accounts,
+    error: req.query.error ? decodeURIComponent(req.query.error) : null,
+    success: req.query.status === 'success',
+    successAmount: req.query.amount || null
+  });
+});
+
+app.post('/billpay', requireLogin, async (req, res) => {
+  const { payeeName, accountNumber, amount, fromAccount } = req.body;
+  const uid = req.session.user.id;
+  const fromAcc = await sqlGet(`SELECT * FROM accounts WHERE id = ? AND userId = ?`, [fromAccount, uid]);
+  const amt = parseFloat(amount);
+
+  // Basic validation
+  if (!fromAcc || isNaN(amt) || amt <= 0) {
+    return res.redirect('/billpay?error=' + encodeURIComponent('Invalid payment amount or account.'));
+  }
+  if (amt > fromAcc.balance) {
+    return res.redirect('/billpay?error=' + encodeURIComponent('Insufficient funds.'));
+  }
+
+  // Deduct balance
+  await sqlRun(`UPDATE accounts SET balance = balance - ? WHERE id = ?`, [amt, fromAcc.id]);
+
+  // Persist bill‑pay transaction
+  await sqlRun(
+    `INSERT INTO billpay_transactions (userId, fromAccount, amount, date, payeeName) VALUES (?, ?, ?, ?, ?)`,
+    [uid, fromAcc.id, amt, new Date().toISOString(), payeeName]
+  );
+
+  // Redirect (PRG)
+  res.redirect('/billpay?status=success&amount=' + encodeURIComponent(amt.toFixed(2)));
+});
+
+app.get('/billpay/history', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const rows = await sqlAll(`SELECT * FROM billpay_transactions WHERE userId = ? ORDER BY date DESC`, [uid]);
+  res.render('history', { user: req.session.user, transactions: rows });
+});
+
+app.get('/billpay/history/export', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const rows = await sqlAll(`SELECT * FROM billpay_transactions WHERE userId = ? ORDER BY date DESC`, [uid]);
+  const header = 'id,userId,fromAccount,amount,date,payeeName';
+  const lines = rows.map(r => [r.id, r.userId, r.fromAccount, r.amount, r.date, r.payeeName].join(','));
+  const csv = [header, ...lines].join('\n');
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', 'attachment; filename="billpay-history.csv"');
+  res.send(csv);
+});
+
+// ---------------------------------------------------------------
+// PROFILE
+// ---------------------------------------------------------------
+app.get('/profile', requireLogin, async (req, res) => {
+  const uid = req.session.user.id;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  res.render('profile', { user: req.session.user, accounts, success: null, error: null });
+});
+
+app.post('/profile', requireLogin, async (req, res) => {
+  const { email, address, city, state, zip } = req.body;
+  const uid = req.session.user.id;
+  await sqlRun(`UPDATE users SET email = ?, address = ?, city = ?, state = ?, zip = ? WHERE id = ?`,
+    [email, address, city, state, zip, uid]
+  );
+  const user = await sqlGet(`SELECT * FROM users WHERE id = ?`, [uid]);
+  req.session.user = user;
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  res.render('profile', { user, accounts, success: 'Profile updated!', error: null });
+});
+
+// ---------------------------------------------------------------
+// ADMIN SECTION
+// ---------------------------------------------------------------
+
+// Admin dashboard – overview
+app.get('/admin', requireAdmin, async (req, res) => {
+  const users = await sqlAll(`SELECT id, username, email, isAdmin, isLocked, created_at FROM users ORDER BY id`);
+  res.render('admin', { user: req.session.user, users });
+});
+
+// Admin: list/search users
+app.get('/admin/users', requireAdmin, async (req, res) => {
+  const q = req.query.q || '';
+  const rows = await sqlAll(
+    `SELECT id, username, email, isAdmin, isLocked, created_at FROM users
+     WHERE username LIKE ? OR email LIKE ?
+     ORDER BY id`,
+    [`%${q}%`, `%${q}%`]
+  );
+  res.render('admin_users', { user: req.session.user, users: rows, query: q });
+});
+
+// Admin: view a single user (detail)
+app.get('/admin/users/:id', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  const viewedUser = await sqlGet(`SELECT * FROM users WHERE id = ?`, [uid]);
+  const accounts = await sqlAll(`SELECT * FROM accounts WHERE userId = ?`, [uid]);
+  const bills = await sqlAll(`SELECT * FROM billpay_transactions WHERE userId = ? ORDER BY date DESC`, [uid]);
+  const trans = await sqlAll(
+    `SELECT t.id, t.accountId, t.type, t.amount, t.description, t.date, a.name AS accountName
+     FROM transactions t LEFT JOIN accounts a ON t.accountId = a.id
+     WHERE t.userId = ? ORDER BY t.date DESC`, [uid]
+  );
+  const transfers = await sqlAll(`SELECT * FROM transfers WHERE userId = ? ORDER BY date DESC`, [uid]);
+
+  res.render('admin_user', {
+    user: req.session.user,
+    viewedUser,
+    accounts,
+    bills,
+    trans,
+    transfers
+  });
+});
+
+// Admin: toggle admin flag
+app.post('/admin/users/:id/toggleAdmin', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  const target = await sqlGet(`SELECT isAdmin FROM users WHERE id = ?`, [uid]);
+  if (!target) return res.redirect('/admin/users');
+  const newVal = target.isAdmin === 1 ? 0 : 1;
+  await sqlRun(`UPDATE users SET isAdmin = ? WHERE id = ?`, [newVal, uid]);
+  res.redirect(`/admin/users/${uid}`);
+});
+
+// Admin: lock a user (optional lock duration in minutes, default 60)
+app.post('/admin/users/:id/lock', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  const minutes = parseInt(req.body.minutes, 10) || 60;
+  const lockUntil = new Date(Date.now() + minutes * 60 * 1000).toISOString();
+  await sqlRun(`UPDATE users SET isLocked = 1, lockUntil = ? WHERE id = ?`, [lockUntil, uid]);
+  res.redirect(`/admin/users/${uid}`);
+});
+
+// Admin: unlock a user
+app.post('/admin/users/:id/unlock', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  await sqlRun(`UPDATE users SET isLocked = 0, lockUntil = NULL WHERE id = ?`, [uid]);
+  res.redirect(`/admin/users/${uid}`);
+});
+
+// Admin CSV exports -------------------------------------------------
+app.get('/admin/export/users', requireAdmin, async (req, res) => {
+  const rows = await sqlAll(`SELECT id, username, email, isAdmin, isLocked, created_at FROM users ORDER BY id`);
+  const header = 'id,username,email,isAdmin,isLocked,created_at';
+  const csv = [header, ...rows.map(r => [r.id, r.username, r.email, r.isAdmin, r.isLocked, r.created_at].join(','))].join('\n');
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', 'attachment; filename="users.csv"');
+  res.send(csv);
+});
+
+app.get('/admin/users/:id/export/billpay', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  const rows = await sqlAll(`SELECT id, userId, fromAccount, amount, date, payeeName FROM billpay_transactions WHERE userId = ? ORDER BY date DESC`, [uid]);
+  const header = 'id,userId,fromAccount,amount,date,payeeName';
+  const csv = [header, ...rows.map(r => [r.id, r.userId, r.fromAccount, r.amount, r.date, r.payeeName].join(','))].join('\n');
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="user-${uid}-billpay.csv"`);
+  res.send(csv);
+});
+
+app.get('/admin/users/:id/export/transactions', requireAdmin, async (req, res) => {
+  const uid = parseInt(req.params.id, 10);
+  const rows = await sqlAll(
+    `SELECT t.id, t.accountId, t.type, t.amount, t.description, t.date, a.name AS accountName
+     FROM transactions t LEFT JOIN accounts a ON t.accountId = a.id
+     WHERE t.userId = ? ORDER BY t.date DESC`, [uid]
+  );
+  const header = 'id,accountId,type,amount,description,date,accountName';
+  const csv = [header, ...rows.map(r => [r.id, r.accountId, r.type, r.amount, r.description, r.date, r.accountName].join(','))].join('\n');
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="user-${uid}-transactions.csv"`);
+  res.send(csv);
+});
+
+/* ================================================================
+   END OF FILE
+   ================================================================ */
