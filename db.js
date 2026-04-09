@@ -1,5 +1,5 @@
-// db.js – better-sqlite3 connection wrapper
-const Database = require('better-sqlite3');
+// db.js – libsql SQLite connection (pure JavaScript, no native modules)
+const { Database } = require('@libsql/sqlite3');
 const path = require('path');
 
 const dbPath = process.env.NODE_ENV === 'production' 
@@ -15,15 +15,19 @@ try {
   process.exit(1);
 }
 
-// Export wrapper with similar API to sqlite3
+// Export wrapper with same API as before
 module.exports = {
   run: function(sql, params = []) {
-    return db.prepare(sql).run(params);
+    const stmt = db.prepare(sql);
+    const result = stmt.run(params);
+    return { lastID: result.lastInsertRowid, changes: result.changes };
   },
   get: function(sql, params = []) {
-    return db.prepare(sql).get(params);
+    const stmt = db.prepare(sql);
+    return stmt.get(params);
   },
   all: function(sql, params = []) {
-    return db.prepare(sql).all(params);
+    const stmt = db.prepare(sql);
+    return stmt.all(params);
   }
 };

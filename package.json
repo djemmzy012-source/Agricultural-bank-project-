@@ -8,10 +8,9 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "@libsql/sqlite3": "^0.3.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^2.2.2",
-    "better-sqlite3": "^9.4.3",
-    "connect-mongo": "^5.1.0",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.10",
     "express": "^4.22.1",
@@ -21,10 +20,6 @@
   "devDependencies": {
     "nodemon": "^3.1.14"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "engines": {
     "node": ">=18.0.0"
   }
