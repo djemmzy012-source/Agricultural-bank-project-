@@ -41,6 +41,30 @@
         .auth-footer { text-align: center; font-size: 14px; color: #5C5C5C; margin-top: 24px; }
         .auth-footer a { color: #2D5A27; font-weight: 600; text-decoration: none; }
         .auth-footer a:hover { text-decoration: underline; }
+
+        /* 📱 MOBILE RESPONSIVE FIXES */
+        @media (max-width: 900px) {
+            .auth-wrapper { flex-direction: column; }
+            .auth-brand { padding: 40px 24px; min-height: auto; }
+            .brand-content { text-align: center; }
+            .brand-logo { justify-content: center; }
+            .brand-content h1 { font-size: 32px; }
+            .brand-features { align-items: center; }
+            .auth-form-section { padding: 40px 24px; }
+            .auth-form-container { max-width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .auth-brand { padding: 32px 16px; }
+            .brand-logo-icon { width: 48px; height: 48px; font-size: 28px; }
+            .brand-logo-name { font-size: 22px; }
+            .brand-content h1 { font-size: 26px; }
+            .brand-content > p { font-size: 15px; }
+            .auth-form-section { padding: 32px 16px; }
+            .auth-form-container h2 { font-size: 26px; }
+            .form-input { padding: 12px 14px; font-size: 14px; }
+            .btn { padding: 14px 24px; font-size: 15px; }
+            .form-remember { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
     </style>
 </head>
 <body>

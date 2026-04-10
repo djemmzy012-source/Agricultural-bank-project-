@@ -1087,3 +1087,135 @@ a:hover {
     grid-template-columns: 1fr 100px 100px;
   }
 }
+/* =====================================================
+   📱 GLOBAL MOBILE RESPONSIVE FIXES
+   ===================================================== */
+
+/* Base reset for mobile */
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; font-family: 'Open Sans', system-ui, sans-serif; }
+
+/* Tablet & Mobile Breakpoints */
+@media (max-width: 1024px) {
+  .dashboard-grid, .accounts-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+  .sidebar.active { left: 0; }
+  .main-content { margin-left: 0 !important; padding: 16px !important; }
+  .menu-toggle { display: flex !important; }
+}
+
+@media (max-width: 768px) {
+  /* Landing Page */
+  .landing-hero { padding: 0 16px !important; }
+  .landing-nav { 
+    padding: 16px !important; 
+    flex-wrap: wrap !important; 
+    gap: 12px !important; 
+  }
+  .landing-nav-links { 
+    width: 100%; 
+    justify-content: center !important; 
+    gap: 16px !important; 
+  }
+  .landing-content { padding: 0 16px 40px !important; }
+  .landing-text h1 { font-size: 32px !important; line-height: 1.2 !important; }
+  .landing-text p { font-size: 15px !important; }
+  .landing-buttons { 
+    flex-direction: column !important; 
+    width: 100%; 
+    max-width: 300px; 
+    margin: 0 auto;
+  }
+  .landing-buttons .btn { width: 100%; text-align: center; }
+  .landing-visual { display: none !important; }
+  .features-grid { 
+    grid-template-columns: 1fr !important; 
+    gap: 24px !important; 
+    padding: 0 16px !important;
+  }
+  .feature-card { padding: 24px 16px !important; }
+  
+  /* Dashboard & Accounts */
+  .account-card, .transaction-card {
+    padding: 16px !important;
+    font-size: 14px !important;
+  }
+  .balance-amount { font-size: 24px !important; }
+  
+  /* Tables */
+  table { font-size: 13px !important; overflow-x: auto; display: block; }
+  thead { display: none; }
+  tbody tr { 
+    display: block; 
+    margin-bottom: 16px; 
+    border: 1px solid var(--border, #ddd);
+    border-radius: 8px;
+    padding: 12px;
+  }
+  td { 
+    display: flex; 
+    justify-content: space-between; 
+    padding: 8px 0 !important;
+    border: none !important;
+  }
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--text-mid, #555);
+  }
+  
+  /* Forms */
+  .form-grid { grid-template-columns: 1fr !important; }
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents iOS zoom */
+    padding: 12px !important;
+  }
+  
+  /* Buttons */
+  .btn { 
+    padding: 12px 20px !important; 
+    font-size: 15px !important;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  /* Admin Tables */
+  .admin-table-container { overflow-x: auto; }
+  .user-actions { 
+    flex-direction: column !important; 
+    gap: 8px !important; 
+  }
+  .user-actions .btn { width: auto; padding: 8px 16px !important; font-size: 13px !important; }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .landing-text h1 { font-size: 26px !important; }
+  .auth-form-container h2 { font-size: 24px !important; }
+  .card-header h3 { font-size: 18px !important; }
+  
+  /* Prevent horizontal scroll */
+  html, body { max-width: 100%; overflow-x: hidden; }
+  
+  /* Touch-friendly targets */
+  a, button, .btn { min-height: 44px; }
+}
+
+/* iOS Safe Area Support */
+@supports (padding: max(0px)) {
+  .landing-nav, .auth-form-section {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
