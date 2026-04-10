@@ -1,6 +1,6 @@
 /********************************************************************
  *  AgriBank Texas – Full DB‑backed server with admin controls
- *  ✅ Railway-compatible: listens on 0.0.0.0 and uses process.env.PORT
+ *  ✅ Railway-compatible: listens on 0.0.0.0, health endpoint, error handling
  ********************************************************************/
 require('dotenv').config();
 
@@ -763,12 +763,49 @@ app.get('/seed', requireAdmin, async (req, res) => {
 });
 
 // ---------------------------------------------------------------
+// ✅ Health check endpoint (Railway needs this)
+// ---------------------------------------------------------------
+app.get('/health', (req, res) => {
+  res.status(200).json({ 
+    status: 'ok', 
+    port: PORT, 
+    env: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
+});
+
+// ---------------------------------------------------------------
+// ✅ Global error handler (catches EJS/render errors)
+// ---------------------------------------------------------------
+app.use((err, req, res, next) => {
+  console.error('❌ Express error:', err.message);
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal server error', message: err.message });
+});
+
+// ---------------------------------------------------------------
+// ✅ Catch unhandled promise rejections
+// ---------------------------------------------------------------
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+// ---------------------------------------------------------------
 // Start Server ✅ Railway-compatible: binds to 0.0.0.0
 // ---------------------------------------------------------------
 initDB()
   .then(() => {
-    app.listen(PORT, '0.0.0.0', () => {
+    const server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 AgriBank Texas running on port ${PORT}`);
+    });
+    
+    // Graceful shutdown for Railway
+    process.on('SIGTERM', () => {
+      console.log('🔄 SIGTERM received, shutting down gracefully');
+      server.close(() => {
+        console.log('✅ Server closed');
+        process.exit(0);
+      });
     });
   })
   .catch(err => {
