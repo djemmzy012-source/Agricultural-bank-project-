@@ -2,153 +2,189 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Dashboard | AgriBank Texas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>My Accounts | AgriBank Texas</title>
   
   <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <!-- Tailwind CSS (CDN) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['DM Sans', 'sans-serif'] },
-          colors: {
-            primary: {
-              DEFAULT: '#1a5c2e',
-              50: '#f0f9f3', 100: '#dcf0e3', 200: '#bbe2ca', 300: '#8dcca9',
-              400: '#58af81', 500: '#359262', 600: '#257550', 700: '#1a5c2e',
-              800: '#174d28', 900: '#133f22', 950: '#0a2313',
-            },
-            amber: {
-              DEFAULT: '#c8912a',
-              50: '#fdf8ee', 100: '#faefd0', 200: '#f5dc9d', 300: '#efc263',
-              400: '#e8a836', 500: '#c8912a', 600: '#b07320', 700: '#8f561c',
-              800: '#74451d', 900: '#60391a',
-            }
-          },
-          borderRadius: { DEFAULT: '0.75rem' },
-          boxShadow: {
-            card: '0 2px 12px rgba(0,0,0,0.08)',
-            'card-hover': '0 8px 24px rgba(0,0,0,0.14)',
-          }
-        }
-      }
-    }
-  </script>
   
   <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
-    body { font-family: 'DM Sans', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
-    .tabular-nums { font-variant-numeric: tabular-nums; }
-    
-    /* Mobile Menu Logic */
-    .mobile-nav-panel { display: none; }
-    .mobile-nav-panel.active { display: block; position: absolute; top: 100%; left: 0; right: 0; background: white; border-bottom: 1px solid #e5e7eb; padding: 1rem; z-index: 50; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-    
-    /* Prevent horizontal scroll on small screens */
-    @media (max-width: 480px) {
-      .container-padding { padding-left: 1rem; padding-right: 1rem; }
-      .text-huge { font-size: 2rem !important; }
+    /* RESET & BASE */
+    :root {
+      --primary: #1a5c2e;
+      --primary-dark: #174d28;
+      --amber: #c8912a;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-500: #64748b;
+      --gray-900: #0f172a;
+      --white: #ffffff;
+      --radius: 0.75rem;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.14);
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    
+    /* LAYOUT UTILS */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 1rem; }
+    @media (min-width: 768px) { .container { padding: 0 2rem; } }
+    @media (min-width: 1024px) { .container { padding: 0 2.5rem; } }
+    
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; }
+    .gap-4 { gap: 1rem; }
+    .gap-8 { gap: 2rem; }
+    .hidden { display: none; }
+    @media (min-width: 768px) { .md\:flex { display: flex; } .md\:hidden { display: none; } }
+    
+    /* TYPOGRAPHY */
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .text-base { font-size: 1rem; }
+    .text-xl { font-size: 1.25rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .text-3xl { font-size: 1.875rem; }
+    .text-4xl { font-size: 2.25rem; }
+    .font-medium { font-weight: 500; }
+    .font-semibold { font-weight: 600; }
+    .font-bold { font-weight: 700; }
+    .text-gray-500 { color: var(--gray-500); }
+    .text-gray-900 { color: var(--gray-900); }
+    .text-white { color: var(--white); }
+    .text-primary { color: var(--primary); }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
+
+    /* COMPONENTS */
+    .bg-white { background: var(--white); }
+    .bg-primary { background: var(--primary); }
+    .bg-amber { background: var(--amber); }
+    .rounded-xl { border-radius: var(--radius); }
+    .rounded-2xl { border-radius: 1rem; }
+    .p-4 { padding: 1rem; }
+    .p-5 { padding: 1.25rem; }
+    .p-6 { padding: 1.5rem; }
+    .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .px-4 { padding-left: 1rem; padding-right: 1rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mt-4 { margin-top: 1rem; }
+    .space-y-6 > * + * { margin-top: 1.5rem; }
+    
+    .shadow-card { box-shadow: var(--shadow); }
+    .hover\:shadow:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); transition: 0.2s; }
+    
+    .border-b { border-bottom: 1px solid var(--gray-100); }
+    .divide-y > * + * { border-top: 1px solid var(--gray-100); }
+    
+    /* GRADIENTS */
+    .grad-primary { background: linear-gradient(to right, var(--primary), #247a3e); }
+    .grad-amber { background: linear-gradient(to right, var(--amber), #e8a836); }
+    
+    /* MOBILE NAV */
+    #mobile-nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border-bottom: 1px solid var(--gray-200); padding: 1rem; z-index: 50; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+    #mobile-nav.active { display: block; }
+    
+    /* NOTIFICATIONS */
+    #notif-panel { display: none; position: absolute; top: 3.5rem; right: 1rem; width: 20rem; background: white; border: 1px solid var(--gray-200); border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 60; padding: 1rem; }
+    #notif-panel.active { display: block; }
   </style>
 </head>
-<body class="text-gray-900 antialiased flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen">
 
-  <!-- Navbar -->
-  <nav class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 h-16 flex items-center justify-between container-padding">
+  <!-- NAVBAR -->
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
+    <div class="container h-16 flex items-center justify-between">
       <!-- Logo -->
       <a href="/" class="flex items-center gap-2 shrink-0">
         <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold text-lg">🌾</div>
-        <span class="font-bold text-xl tracking-tight text-gray-900 hidden sm:block">AgriBank<span class="text-primary">Texas</span></span>
-        <span class="font-bold text-xl tracking-tight text-gray-900 sm:hidden">AgriBank</span>
+        <span class="font-bold text-xl tracking-tight text-gray-900 hidden md:block">AgriBank<span class="text-primary">Texas</span></span>
+        <span class="font-bold text-xl tracking-tight text-gray-900 md:hidden">AgriBank</span>
       </a>
 
-      <!-- Desktop Nav -->
-      <div class="hidden md:flex items-center gap-8">
+      <!-- Desktop Links -->
+      <div class="md:flex items-center gap-8 hidden">
         <a href="/dashboard" class="text-sm font-semibold text-primary">Accounts</a>
-        <a href="/transactions" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Transactions</a>
-        <a href="/transfer" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Transfer</a>
-        <a href="/billpay" class="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">Bill Pay</a>
+        <a href="/transactions" class="text-sm font-medium text-gray-500 hover:text-gray-900">Transactions</a>
+        <a href="/transfer" class="text-sm font-medium text-gray-500 hover:text-gray-900">Transfer</a>
+        <a href="/billpay" class="text-sm font-medium text-gray-500 hover:text-gray-900">Bill Pay</a>
       </div>
 
-      <!-- Right Side: Notifications & Profile -->
-      <div class="flex items-center gap-3 sm:gap-4">
-        <!-- Notification Bell -->
-        <button class="relative p-2 text-gray-500 hover:text-primary hover:bg-primary-50 rounded-full transition-all" onclick="toggleNotifications()">
+      <!-- Right Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Bell -->
+        <button onclick="toggleNotif()" class="relative p-2 text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
           <i data-lucide="bell" class="w-5 h-5"></i>
           <span class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
         </button>
 
-        <!-- User Profile -->
-        <div class="hidden sm:flex items-center gap-3 pl-3 border-l border-gray-200">
+        <!-- Profile (Desktop) -->
+        <div class="md:flex items-center gap-3 pl-3 border-l border-gray-200 hidden">
           <div class="text-right">
             <p class="text-xs text-gray-500 font-medium">Welcome,</p>
             <p class="text-sm font-bold text-gray-900"><%= user.firstName %></p>
           </div>
-          <div class="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-primary font-bold">
+          <div class="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
             <%= user.firstName.charAt(0) %>
           </div>
-          <a href="/logout" class="p-2 text-gray-400 hover:text-red-600 transition-colors ml-1">
-            <i data-lucide="log-out" class="w-5 h-5"></i>
-          </a>
+          <a href="/logout" class="text-gray-400 hover:text-red-600"><i data-lucide="log-out" class="w-5 h-5"></i></a>
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button onclick="document.getElementById('mobileNav').classList.toggle('active')" class="md:hidden p-2 text-gray-600">
+        <!-- Mobile Menu Btn -->
+        <button onclick="toggleMenu()" class="md:hidden p-2 text-gray-600">
           <i data-lucide="menu" class="w-6 h-6"></i>
         </button>
       </div>
     </div>
-    
+
     <!-- Mobile Nav Panel -->
-    <div id="mobileNav" class="mobile-nav-panel">
-      <a href="/dashboard" class="block py-3 px-2 text-primary font-semibold bg-primary-50 rounded-lg mb-1">Accounts</a>
-      <a href="/transactions" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg mb-1">Transactions</a>
-      <a href="/transfer" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg mb-1">Transfer</a>
-      <a href="/billpay" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg mb-1">Bill Pay</a>
+    <div id="mobile-nav">
+      <a href="/dashboard" class="block py-3 px-2 text-primary font-semibold bg-primary/5 rounded-lg mb-1">Accounts</a>
+      <a href="/transactions" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg">Transactions</a>
+      <a href="/transfer" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg">Transfer</a>
+      <a href="/billpay" class="block py-3 px-2 text-gray-700 hover:bg-gray-50 rounded-lg">Bill Pay</a>
       <div class="border-t my-2 pt-2">
-        <a href="/profile" class="block py-2 px-2 text-gray-600 text-sm">Profile Settings</a>
-        <a href="/logout" class="block py-2 px-2 text-red-600 font-semibold text-sm mt-1">Sign Out</a>
+        <a href="/profile" class="block py-2 text-sm text-gray-600">Profile</a>
+        <a href="/logout" class="block py-2 text-sm text-red-600 font-bold">Sign Out</a>
       </div>
     </div>
 
-    <!-- Notification Dropdown (Hidden by default) -->
-    <div id="notifPanel" class="hidden absolute top-16 right-4 sm:right-10 w-80 bg-white rounded-xl shadow-xl border border-gray-100 z-50 p-4">
+    <!-- Notification Panel -->
+    <div id="notif-panel">
       <h3 class="font-bold text-gray-900 mb-3 text-sm">Notifications</h3>
       <div class="space-y-3">
-        <!-- Loan Alert -->
-        <div class="flex gap-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
-          <i data-lucide="alert-circle" class="w-5 h-5 text-amber-600 shrink-0 mt-0.5"></i>
+        <div class="flex gap-3 p-3 bg-amber/10 rounded-lg border border-amber/20">
+          <i data-lucide="alert-circle" class="w-5 h-5 text-amber shrink-0 mt-0.5"></i>
           <div>
-            <p class="text-sm font-semibold text-amber-900">Loan Application Status</p>
-            <p class="text-xs text-amber-700 mt-1">Your operating loan for $15,000 has been pre-approved. Review terms now.</p>
-            <a href="/loans" class="text-xs font-bold text-amber-700 underline mt-1 inline-block">View Details</a>
-          </div>
-        </div>
-        <!-- Generic Alert -->
-        <div class="flex gap-3 p-3 bg-blue-50 rounded-lg border border-blue-100">
-          <i data-lucide="info" class="w-5 h-5 text-blue-600 shrink-0 mt-0.5"></i>
-          <div>
-            <p class="text-sm font-semibold text-blue-900">Statement Available</p>
-            <p class="text-xs text-blue-700 mt-1">Your March statement is ready to download.</p>
+            <p class="text-sm font-semibold text-amber-900">Loan Pre-Approved</p>
+            <p class="text-xs text-amber-800 mt-1">You qualify for $25k operating capital.</p>
+            <a href="/loans" class="text-xs font-bold text-amber-700 underline mt-1 inline-block">View Offer</a>
           </div>
         </div>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <main class="flex-1 max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 py-6 space-y-6 container-padding">
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 container py-6 space-y-6">
 
-    <!-- Loan Alert Banner (High Priority) -->
-    <div class="bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl p-5 text-white relative overflow-hidden shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <!-- LOAN ALERT BANNER -->
+    <div class="grad-amber rounded-2xl p-5 text-white relative overflow-hidden shadow-card flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
       <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
       <div class="relative z-10 flex items-start gap-4">
         <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm shrink-0">
@@ -156,65 +192,54 @@
         </div>
         <div>
           <h3 class="font-bold text-lg">Pre-Approved Operating Loan</h3>
-          <p class="text-amber-100 text-sm mt-1 max-w-md">Good news, <%= user.firstName %>. Based on your account history, you qualify for up to <strong>$25,000</strong> in operating capital at 4.5% APR.</p>
+          <p class="text-white/90 text-sm mt-1 max-w-md">Good news, <%= user.firstName %>. You qualify for up to <strong>$25,000</strong> at 4.5% APR.</p>
         </div>
       </div>
-      <a href="/loans" class="shrink-0 bg-white text-amber-700 hover:bg-amber-50 font-bold py-2.5 px-6 rounded-xl text-sm transition-colors shadow-sm whitespace-nowrap">
-        Apply Now
-      </a>
+      <a href="/loans" class="shrink-0 bg-white text-amber font-bold py-2.5 px-6 rounded-xl text-sm hover:bg-gray-50 transition-colors shadow-sm whitespace-nowrap">Apply Now</a>
     </div>
 
-    <!-- Page Header -->
+    <!-- HEADER -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 class="text-2xl font-bold text-gray-900">My Accounts</h1>
-        <p class="text-sm text-gray-500 mt-0.5">Overview of your financial health</p>
+        <p class="text-sm text-gray-500 mt-0.5">Manage your AgriBank Texas accounts</p>
       </div>
-      <a href="/register" class="inline-flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-primary-800 transition-colors shadow-sm whitespace-nowrap">
-        <i data-lucide="plus" class="w-4 h-4"></i> Open Account
+      <a href="/register" class="inline-flex items-center justify-center gap-2 bg-primary text-white text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-primary-dark transition-colors shadow-card">
+        <i data-lucide="plus" class="w-4 h-4"></i> Open New Account
       </a>
     </div>
 
-    <!-- Total Balance Banner -->
+    <!-- TOTAL BALANCE -->
     <% 
       const totalBalance = accounts.reduce((sum, a) => sum + (parseFloat(a.balance) || 0), 0);
       const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
     %>
-    <div class="bg-gradient-to-br from-primary via-primary-700 to-primary-900 rounded-2xl p-6 text-white relative overflow-hidden shadow-card">
+    <div class="grad-primary rounded-2xl p-6 text-white relative overflow-hidden shadow-card">
       <div class="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-white/10 pointer-events-none blur-3xl"></div>
       <div class="relative z-10">
-        <p class="text-primary-200 text-sm font-medium mb-1 uppercase tracking-wide">Total Combined Balance</p>
-        <p class="text-4xl sm:text-5xl font-bold tabular-nums tracking-tight text-huge"><%= fmt(totalBalance) %></p>
+        <p class="text-white/70 text-sm font-medium mb-1 uppercase tracking-wide">Total Combined Balance</p>
+        <p class="text-4xl font-bold tabular-nums tracking-tight"><%= fmt(totalBalance) %></p>
         <div class="flex flex-wrap items-center gap-4 mt-4 pt-4 border-t border-white/10">
-          <span class="flex items-center gap-1 text-primary-100 text-sm bg-white/10 px-3 py-1 rounded-full">
+          <span class="flex items-center gap-1 text-white/80 text-sm bg-white/10 px-3 py-1 rounded-full">
             <i data-lucide="check-circle" class="w-4 h-4"></i> <%= accounts.length %> Active Accounts
           </span>
-          <span class="flex items-center gap-1 text-emerald-300 text-sm font-semibold">
+          <span class="flex items-center gap-1 text-emerald-200 text-sm font-semibold">
             <i data-lucide="trending-up" class="w-4 h-4"></i> +$1,240.00 this month
           </span>
         </div>
       </div>
     </div>
 
-    <!-- Account Cards Grid (Responsive: 1 col mobile, 2 tablet, 3 desktop) -->
+    <!-- ACCOUNT CARDS GRID -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <% accounts.forEach(function(acct) { 
-        let gradient = 'from-primary to-primary-600';
-        let accent = 'text-primary';
+        let gradientClass = 'grad-primary';
         let icon = 'credit-card';
-        
-        if(acct.type && acct.type.toLowerCase().includes('savings')) {
-          gradient = 'from-amber-500 to-amber-600';
-          accent = 'text-amber-700';
-          icon = 'piggy-bank';
-        } else if (acct.type && acct.type.toLowerCase().includes('business')) {
-          gradient = 'from-slate-600 to-slate-800';
-          accent = 'text-slate-700';
-          icon = 'briefcase';
-        }
+        if(acct.type && acct.type.toLowerCase().includes('savings')) { gradientClass = 'grad-amber'; icon = 'piggy-bank'; }
+        else if(acct.type && acct.type.toLowerCase().includes('business')) { gradientClass = 'bg-slate-700'; icon = 'briefcase'; } // Fallback for non-gradient
       %>
-      <div class="bg-white rounded-2xl border border-gray-100 transition-all duration-200 overflow-hidden shadow-card hover:shadow-card-hover group flex flex-col h-full">
-        <div class={`bg-gradient-to-r ${gradient} p-5 text-white`}>
+      <div class="bg-white rounded-2xl border border-gray-100 transition-all duration-200 overflow-hidden shadow-card hover:shadow-hover flex flex-col h-full">
+        <div class="<%= gradientClass.includes('gradient') ? gradientClass : '' %> <%= !gradientClass.includes('gradient') ? 'bg-slate-700' : '' %> p-5 text-white">
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
@@ -225,7 +250,7 @@
                 <p class="text-white text-sm font-mono font-semibold opacity-90"><%= acct.number %></p>
               </div>
             </div>
-            <i data-lucide="more-horizontal" class="w-5 h-5 text-white/60 cursor-pointer hover:text-white"></i>
+            <i data-lucide="more-horizontal" class="w-5 h-5 text-white/60"></i>
           </div>
           <div>
             <p class="text-white/70 text-xs mb-1">Available Balance</p>
@@ -235,144 +260,99 @@
         <div class="p-5 flex-1 flex flex-col justify-between">
           <div>
             <% if(acct.type && acct.type.toLowerCase().includes('savings')) { %>
-              <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full mb-3">
+              <span class="inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber/10 px-2.5 py-1 rounded-full mb-3">
                 <i data-lucide="trending-up" class="w-3 h-3"></i> 4.25% APY
               </span>
             <% } %>
             <p class="text-xs text-gray-400">Last activity: Today</p>
           </div>
-          
           <div class="grid grid-cols-2 gap-2 mt-4">
-            <a href="/transactions?accountId=<%= acct.id %>" class="col-span-2 sm:col-span-1 text-center text-xs font-bold text-white bg-primary hover:bg-primary-800 py-2.5 rounded-lg transition-colors shadow-sm">
-              View History
-            </a>
-            <a href="/transfer?from=<%= acct.id %>" class="col-span-2 sm:col-span-1 text-center text-xs font-bold text-primary bg-primary-50 hover:bg-primary-100 py-2.5 rounded-lg transition-colors">
-              Transfer
-            </a>
+            <a href="/transactions?accountId=<%= acct.id %>" class="col-span-2 sm:col-span-1 text-center text-xs font-bold text-white bg-primary hover:bg-primary-dark py-2.5 rounded-lg transition-colors shadow-sm">View History</a>
+            <a href="/transfer?from=<%= acct.id %>" class="col-span-2 sm:col-span-1 text-center text-xs font-bold text-primary bg-primary/10 hover:bg-primary/20 py-2.5 rounded-lg transition-colors">Transfer</a>
           </div>
         </div>
       </div>
       <% }); %>
     </div>
 
-    <!-- Recent Activity (Full Width on Mobile) -->
+    <!-- RECENT ACTIVITY -->
     <div class="bg-white rounded-2xl shadow-card border border-gray-100 overflow-hidden">
       <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
         <div>
           <h2 class="text-base font-bold text-gray-900">Recent Transactions</h2>
           <p class="text-xs text-gray-500 mt-0.5">Latest movements across all accounts</p>
         </div>
-        <a href="/transactions" class="flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-800 transition-colors">
+        <a href="/transactions" class="flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary-dark">
           See All <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
       </div>
       
-      <div class="divide-y divide-gray-50">
+      <div class="divide-y">
         <% if(transactions && transactions.length > 0) { 
              transactions.slice(0, 5).forEach(function(txn) { 
-               const isPositive = txn.amount >= 0;
-               const amountClass = isPositive ? 'text-primary font-bold' : 'text-gray-900 font-bold';
-               const iconBg = isPositive ? 'bg-primary/10' : 'bg-gray-100';
-               const iconColor = isPositive ? 'text-primary' : 'text-gray-500';
-               const iconName = isPositive ? 'arrow-down-left' : 'arrow-up-right';
+               const isPos = txn.amount >= 0;
         %>
         <div class="flex items-center gap-4 px-5 py-4 hover:bg-gray-50 transition-colors">
-          <div class={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${iconBg}`}>
-            <i data-lucide="<%= iconName %>" class={`w-5 h-5 ${iconColor}`}></i>
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 <%= isPos ? 'bg-primary/10' : 'bg-gray-100' %>">
+            <i data-lucide="<%= isPos ? 'arrow-down-left' : 'arrow-up-right' %>" class="w-5 h-5 <%= isPos ? 'text-primary' : 'text-gray-500' %>"></i>
           </div>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-bold text-gray-900 truncate"><%= txn.description || txn.type %></p>
             <p class="text-xs text-gray-500 mt-0.5"><%= txn.date ? new Date(txn.date).toLocaleDateString() : 'Today' %> · <span class="text-gray-400"><%= txn.accountName || 'Account' %></span></p>
           </div>
-          <span class={`text-sm tabular-nums whitespace-nowrap ${amountClass}`}>
-            <%= isPositive ? '+' : '' %><%= fmt(txn.amount) %>
+          <span class="text-sm tabular-nums whitespace-nowrap <%= isPos ? 'text-primary font-bold' : 'text-gray-900 font-bold' %>">
+            <%= isPos ? '+' : '' %><%= fmt(txn.amount) %>
           </span>
         </div>
-        <% }); 
-           } else { %>
-           <div class="p-8 text-center">
-             <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400">
-               <i data-lucide="inbox" class="w-6 h-6"></i>
-             </div>
-             <p class="text-gray-500 text-sm">No recent transactions found.</p>
-           </div>
+        <% }); } else { %>
+          <div class="p-8 text-center text-gray-500 text-sm">No recent transactions found.</div>
         <% } %>
       </div>
     </div>
 
-    <!-- Security Notice -->
-    <div class="flex items-start gap-3 bg-blue-50/50 border border-blue-100 rounded-xl p-4">
+    <!-- SECURITY NOTICE -->
+    <div class="flex items-start gap-3 bg-blue-50 border border-blue-100 rounded-xl p-4">
       <i data-lucide="shield-check" class="w-5 h-5 text-blue-600 mt-0.5 shrink-0"></i>
       <div class="flex-1">
         <p class="text-sm font-bold text-blue-900">Your Money is Safe</p>
-        <p class="text-xs text-blue-700 mt-1 leading-relaxed">All deposits are FDIC insured up to $250,000 per depositor. AgriBank Texas is an Equal Housing Lender (NMLS #123456).</p>
+        <p class="text-xs text-blue-700 mt-1">All deposits are FDIC insured up to $250,000. AgriBank Texas is an Equal Housing Lender.</p>
       </div>
     </div>
 
   </main>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer class="bg-slate-900 text-slate-400 py-10 mt-auto border-t border-slate-800">
-    <div class="max-w-screen-2xl mx-auto px-4 lg:px-8 xl:px-10 container-padding">
+    <div class="container">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
         <div class="col-span-2 md:col-span-1">
           <h4 class="text-white font-bold mb-4 text-lg">AgriBank Texas</h4>
-          <p class="text-sm leading-relaxed mb-4">Serving Texas farmers, ranchers, and rural families since 1923. Built for the land that feeds us.</p>
-          <div class="flex gap-3">
-            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors"><i data-lucide="facebook" class="w-4 h-4"></i></a>
-            <a href="#" class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors"><i data-lucide="twitter" class="w-4 h-4"></i></a>
-          </div>
+          <p class="text-sm leading-relaxed mb-4">Serving Texas farmers since 1923.</p>
         </div>
         <div>
-          <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Products</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/checking" class="hover:text-white transition-colors">Checking</a></li>
-            <li><a href="/savings" class="hover:text-white transition-colors">Savings</a></li>
-            <li><a href="/loans" class="hover:text-white transition-colors">Farm Loans</a></li>
-            <li><a href="/mortgages" class="hover:text-white transition-colors">Mortgages</a></li>
-          </ul>
+          <h4 class="text-white font-semibold mb-4 text-sm uppercase">Products</h4>
+          <ul class="space-y-2 text-sm"><li><a href="/checking" class="hover:text-white">Checking</a></li><li><a href="/savings" class="hover:text-white">Savings</a></li><li><a href="/loans" class="hover:text-white">Loans</a></li></ul>
         </div>
         <div>
-          <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Support</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/help-center" class="hover:text-white transition-colors">Help Center</a></li>
-            <li><a href="/contact-us" class="hover:text-white transition-colors">Contact Us</a></li>
-            <li><a href="/locations" class="hover:text-white transition-colors">Find a Branch</a></li>
-            <li><a href="/security" class="hover:text-white transition-colors">Security Center</a></li>
-          </ul>
+          <h4 class="text-white font-semibold mb-4 text-sm uppercase">Support</h4>
+          <ul class="space-y-2 text-sm"><li><a href="/help" class="hover:text-white">Help Center</a></li><li><a href="/contact" class="hover:text-white">Contact Us</a></li></ul>
         </div>
         <div>
-          <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Legal</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="/privacy" class="hover:text-white transition-colors">Privacy Policy</a></li>
-            <li><a href="/terms" class="hover:text-white transition-colors">Terms of Service</a></li>
-            <li><a href="/fdic" class="hover:text-white transition-colors">FDIC Insurance</a></li>
-          </ul>
+          <h4 class="text-white font-semibold mb-4 text-sm uppercase">Legal</h4>
+          <ul class="space-y-2 text-sm"><li><a href="/privacy" class="hover:text-white">Privacy</a></li><li><a href="/terms" class="hover:text-white">Terms</a></li></ul>
         </div>
       </div>
-      <div class="border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
-        <p>&copy; 2025 AgriBank Texas. Member FDIC. Equal Housing Lender.</p>
-        <p>NMLS #123456</p>
-      </div>
+      <div class="border-t border-slate-800 pt-6 text-center text-xs">&copy; 2025 AgriBank Texas. Member FDIC.</div>
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script>
     lucide.createIcons();
-    
-    function toggleNotifications() {
-      const panel = document.getElementById('notifPanel');
-      panel.classList.toggle('hidden');
-    }
-
-    // Close notifications when clicking outside
-    document.addEventListener('click', function(event) {
-      const panel = document.getElementById('notifPanel');
-      const btn = event.target.closest('button[onclick="toggleNotifications()"]');
-      if (!panel.contains(event.target) && !btn) {
-        panel.classList.add('hidden');
-      }
+    function toggleMenu() { document.getElementById('mobile-nav').classList.toggle('active'); }
+    function toggleNotif() { document.getElementById('notif-panel').classList.toggle('active'); }
+    document.addEventListener('click', (e) => {
+      if(!e.target.closest('#mobile-nav') && !e.target.closest('button[onclick="toggleMenu()"]')) document.getElementById('mobile-nav').classList.remove('active');
+      if(!e.target.closest('#notif-panel') && !e.target.closest('button[onclick="toggleNotif()"]')) document.getElementById('notif-panel').classList.remove('active');
     });
   </script>
 </body>
