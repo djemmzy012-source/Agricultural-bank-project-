@@ -1,6 +1,6 @@
 /********************************************************************
  *  AgriBank Texas – Full DB‑backed server with admin controls
- *  ✅ Railway-compatible: listens on 0.0.0.0, health endpoint, error handling
+ *  ✅ Railway-compatible: @libsql/client, health endpoint, error handling
  ********************************************************************/
 require('dotenv').config();
 
@@ -32,41 +32,19 @@ app.use(session({
 }));
 
 // ---------------------------------------------------------------
-// Database helpers (SYNC - for @libsql/sqlite3)
+// Database helpers (ASYNC - for @libsql/client)
 // ---------------------------------------------------------------
-function sqlRun(sql, params = []) {
-  const result = db.run(sql, params);
-  return { lastID: result.lastInsertRowid, changes: result.changes };
+async function sqlRun(sql, params = []) {
+  const result = await db.run(sql, params);
+  return { lastID: result.lastID, changes: result.changes };
 }
 
-function sqlGet(sql, params = []) {
-  return db.get(sql, params);
+async function sqlGet(sql, params = []) {
+  return await db.get(sql, params);
 }
 
-function sqlAll(sql, params = []) {
-  return db.all(sql, params);
-}
-
-function sqlGet(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    try {
-      const row = db.get(sql, params);
-      resolve(row);
-    } catch (err) {
-      reject(err);
-    }
-  });
-}
-
-function sqlAll(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    try {
-      const rows = db.all(sql, params);
-      resolve(rows);
-    } catch (err) {
-      reject(err);
-    }
-  });
+async function sqlAll(sql, params = []) {
+  return await db.all(sql, params);
 }
 
 // ---------------------------------------------------------------

@@ -1,28 +1,33 @@
-// db.js – libsql SQLite (pure JS, Railway-compatible)
-const { Database } = require('@libsql/sqlite3');
+// db.js – libSQL client (pure JS, Railway-compatible)
+const { createClient } = require('@libsql/client');
 const path = require('path');
 
-// Determine path
+// Determine connection URL
 const isProd = process.env.NODE_ENV === 'production';
 const rawPath = isProd ? '/tmp/bank.db' : path.resolve(__dirname, 'bank.db');
 
-// ✅ CRITICAL: libsql requires 'file:' prefix for local paths
-const dbPath = rawPath.startsWith('file:') || rawPath.startsWith('libsql:') || rawPath.startsWith('http')
+// ✅ libSQL requires 'file:' prefix for local paths
+const dbUrl = rawPath.startsWith('file:') || rawPath.startsWith('libsql:') || rawPath.startsWith('http')
   ? rawPath
   : `file:${rawPath}`;
 
-let db;
-try {
-  db = new Database(dbPath);
-  console.log('✅ Connected to SQLite DB at', dbPath);
-} catch (err) {
-  console.error('❌ SQLite connection error:', err.message);
-  process.exit(1);
-}
+// Create client
+const client = createClient({ url: dbUrl });
 
-// Export simple SYNC API (libsql is synchronous)
+console.log('✅ Connected to SQLite DB at', dbUrl);
+
+// Export async API (libSQL client is async)
 module.exports = {
-  run: (sql, params = []) => db.prepare(sql).run(params),
-  get: (sql, params = []) => db.prepare(sql).get(params),
-  all: (sql, params = []) => db.prepare(sql).all(params)
+  run: async (sql, params = []) => {
+    const rs = await client.execute({ sql, args: params });
+    return { lastID: rs.lastInsertRowid, changes: rs.rowsAffected };
+  },
+  get: async (sql, params = []) => {
+    const rs = await client.execute({ sql, args: params });
+    return rs.rows[0] || null;
+  },
+  all: async (sql, params = []) => {
+    const rs = await client.execute({ sql, args: params });
+    return rs.rows;
+  }
 };
