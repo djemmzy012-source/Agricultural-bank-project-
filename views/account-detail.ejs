@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title><%= title %> | AgriBank Texas</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/navbar', { user: user }) %>
+  
+  <div class="container page-content">
+    <div class="card">
+      <h2><%= title %></h2>
+      <p class="auth-subtitle">Features & Benefits</p>
+      
+      <ul style="list-style: none; padding: 0; margin: 24px 0;">
+        <% features.forEach(feature => { %>
+          <li style="padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px;">
+            <span style="color: var(--green-main); font-weight: bold;">✓</span>
+            <%= feature %>
+          </li>
+        <% }) %>
+      </ul>
+      
+      <a href="/dashboard" class="btn btn-primary btn-block">Back to Dashboard</a>
+    </div>
+  </div>
+  
+  <%- include('partials/footer') %>
+</body>
+</html>

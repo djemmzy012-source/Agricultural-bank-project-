@@ -1,125 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgriBank Texas - Accounts</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --bg: #0d1a0f;
-            --surface: #142017;
-            --card: #1a2b1e;
-            --border: #2a3d2e;
-            --accent: #4ade80;
-            --text: #e8efe9;
-            --muted: #7a8f7e;
-        }
-        body {
-            font-family: 'DM Mono', monospace;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-        .nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .nav-brand {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.3rem;
-            color: var(--accent);
-        }
-        .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--text); }
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
-            margin-bottom: 0.3rem;
-        }
-        .subtitle { color: var(--muted); font-size: 0.8rem; margin-bottom: 2rem; }
-        .account-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: border-color 0.2s;
-        }
-        .account-card:hover { border-color: var(--accent); }
-        .account-info h3 { font-size: 1rem; margin-bottom: 0.3rem; }
-        .account-info .meta { color: var(--muted); font-size: 0.75rem; }
-        .account-balance {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.4rem;
-            color: var(--accent);
-        }
-        .view-link {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-size: 0.75rem;
-            font-family: 'DM Mono', monospace;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-left: 1rem;
-        }
-        .view-link:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-        .actions { display: flex; gap: 0.5rem; align-items: center; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Accounts | AgriBank Texas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* Page-specific styles */
+    .accounts-header {
+      margin-bottom: var(--spacing-lg);
+    }
+    .accounts-grid {
+      display: grid;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-xl);
+    }
+    .account-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--green-main);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    .account-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .account-card.savings { border-left-color: var(--green-light); }
+    .account-card.business { border-left-color: var(--gold); }
+    
+    .account-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+    .account-icon {
+      font-size: 1.5rem;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--green-pale);
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+    .account-details {
+      flex: 1;
+      min-width: 0;
+    }
+    .account-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 2px;
+    }
+    .account-number {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+    .account-balance {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--green-dark);
+      margin: var(--spacing-sm) 0;
+    }
+    .account-actions {
+      display: flex;
+      gap: var(--spacing-sm);
+      flex-wrap: wrap;
+      margin-top: var(--spacing-sm);
+    }
+    .btn-view {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+      min-height: 40px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: var(--spacing-xl);
+      color: var(--text-mid);
+    }
+    .empty-state p { margin-bottom: var(--spacing-md); }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .account-card {
+        padding: var(--spacing-md);
+      }
+      .account-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+      }
+      .account-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .btn-view {
+        width: 100%;
+        max-width: 200px;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container { padding: 0 var(--spacing-md); }
+      .account-card { padding: var(--spacing-sm); }
+      .account-balance { font-size: 1.5rem; }
+      .account-name { font-size: 0.95rem; }
+      .account-number { font-size: 0.8rem; }
+    }
+  </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-brand">AgriBank Texas</div>
-        <div class="nav-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/accounts" class="active">Accounts</a>
-            <a href="/transactions">Transactions</a>
-            <a href="/transfer">Transfer</a>
-            <a href="/billpay">Bill Pay</a>
-            <a href="/profile">Profile</a>
-            <a href="/logout">Logout</a>
-        </div>
-    </nav>
-    <div class="container">
-        <h1>Your Accounts</h1>
-        <p class="subtitle">Welcome back, <%= user.firstName %></p>
+  <!-- Navbar Partial -->
+  <%- include('partials/navbar', { user: user }) %>
 
-        <% accounts.forEach(function(account) { %>
-        <div class="account-card">
-            <div class="account-info">
-                <h3><%= account.icon %> <%= account.name %></h3>
-                <span class="meta"><%= account.number %> · <%= account.type %></span>
-            </div>
-            <div class="actions">
-                <span class="account-balance">$<%= account.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
-                <!-- THIS IS THE KEY LINE — uses ?accountId= to match the route -->
-                <a href="/transactions?accountId=<%= account.id %>" class="view-link">View Details</a>
-            </div>
-        </div>
-        <% }); %>
+  <!-- Main Content -->
+  <main class="container page-content">
+    <div class="accounts-header">
+      <h1>Your Accounts</h1>
+      <p class="auth-subtitle">Welcome back, <%= user.firstName %></p>
     </div>
+
+    <% if (accounts && accounts.length > 0) { %>
+      <div class="accounts-grid">
+        <% accounts.forEach(function(account) { %>
+          <article class="account-card <%= account.type %>">
+            <div class="account-header">
+              <div class="account-icon"><%= account.icon || '🏦' %></div>
+              <div class="account-details">
+                <h3 class="account-name"><%= account.name %></h3>
+                <p class="account-number"><%= account.number %> · <%= account.type %></p>
+              </div>
+            </div>
+            
+            <div class="account-balance">
+              $<%= account.balance.toLocaleString('en-US', { minimumFractionDigits: 2 }) %>
+            </div>
+            
+            <div class="account-actions">
+              <a href="/transactions?accountId=<%= account.id %>" class="btn btn-primary btn-view">
+                View Transactions
+              </a>
+              <a href="/transfer?from=<%= account.id %>" class="btn btn-outline btn-view">
+                Transfer
+              </a>
+            </div>
+          </article>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="card empty-state">
+        <h3>No accounts yet</h3>
+        <p>Open your first account to get started.</p>
+        <a href="/register" class="btn btn-primary">Open an Account</a>
+      </div>
+    <% } %>
+  </main>
+
+  <!-- Footer Partial -->
+  <%- include('partials/footer') %>
+
+  <!-- Mobile nav toggle script -->
+  <script>
+    // Simple mobile nav toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      if (toggle && navLinks) {
+        toggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+      }
+    });
+  </script>
 </body>
 </html>

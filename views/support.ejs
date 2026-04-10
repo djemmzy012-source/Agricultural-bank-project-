@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title><%= title %> | AgriBank Texas</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/navbar', { user: user }) %>
+  
+  <div class="container page-content">
+    <div class="card">
+      <h2><%= title %></h2>
+      
+      <% if (articles) { %>
+        <% articles.forEach(article => { %>
+          <div style="margin: 20px 0; padding: 16px; background: var(--green-pale); border-radius: 8px;">
+            <strong style="color: var(--green-dark);"><%= article.q %></strong>
+            <p style="margin: 8px 0 0; color: var(--text-mid);"><%= article.a %></p>
+          </div>
+        <% }) %>
+      <% } %>
+      
+      <% if (contact) { %>
+        <div style="margin: 20px 0;">
+          <p><strong>📞 Phone:</strong> <%= contact.phone %></p>
+          <p><strong>✉️ Email:</strong> <%= contact.email %></p>
+          <p><strong>🕒 Hours:</strong> <%= contact.hours %></p>
+          <p><strong>📍 Address:</strong> <%= contact.address %></p>
+        </div>
+      <% } %>
+      
+      <% if (content) { %>
+        <p style="margin: 20px 0; line-height: 1.7;"><%= content %></p>
+      <% } %>
+      
+      <a href="/" class="btn btn-primary btn-block">Back to Home</a>
+    </div>
+  </div>
+  
+  <%- include('partials/footer') %>
+</body>
+</html>

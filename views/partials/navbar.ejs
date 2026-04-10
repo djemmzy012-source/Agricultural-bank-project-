@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <div class="container navbar-content">
+    <a href="/" class="logo">
+      <div class="logo-icon">🌾</div>
+      <div class="logo-text">
+        <span class="logo-name">AgriBank</span>
+        <span class="logo-tagline">Texas</span>
+      </div>
+    </a>
+    
+    <div class="nav-links">
+      <% if (user) { %>
+        <a href="/dashboard" class="<%= req.path === '/dashboard' ? 'active' : '' %>">Dashboard</a>
+        <a href="/accounts" class="<%= req.path === '/accounts' ? 'active' : '' %>">Accounts</a>
+        <a href="/transfer" class="<%= req.path === '/transfer' ? 'active' : '' %>">Transfer</a>
+        <a href="/billpay" class="<%= req.path === '/billpay' ? 'active' : '' %>">Bill Pay</a>
+        <a href="/profile" class="<%= req.path === '/profile' ? 'active' : '' %>">Profile</a>
+      <% } else { %>
+        <a href="/login">Sign In</a>
+        <a href="/register">Open Account</a>
+      <% } %>
+    </div>
+    
+    <div class="nav-right">
+      <% if (user) { %>
+        <span class="welcome-text">Welcome, <%= user.firstName %></span>
+        <a href="/logout" class="btn-logout">Logout</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
