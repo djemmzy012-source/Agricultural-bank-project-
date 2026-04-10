@@ -1,5 +1,6 @@
 /********************************************************************
  *  AgriBank Texas – Full DB‑backed server with admin controls
+ *  ✅ Railway-compatible: listens on 0.0.0.0 and uses process.env.PORT
  ********************************************************************/
 require('dotenv').config();
 
@@ -178,15 +179,9 @@ async function initDB() {
   }
 }
 
-initDB()
-  .then(() => {
-    app.listen(PORT, () => console.log(`AgriBank Texas running on port ${PORT}`));
-  })
-  .catch(err => {
-    console.error('DB init failed', err);
-    process.exit(1);
-  });
-
+// ---------------------------------------------------------------
+// Middleware
+// ---------------------------------------------------------------
 function requireLogin(req, res, next) {
   if (req.session.user) return next();
   res.redirect('/login');
@@ -197,6 +192,9 @@ function requireAdmin(req, res, next) {
   res.redirect('/login');
 }
 
+// ---------------------------------------------------------------
+// Routes
+// ---------------------------------------------------------------
 app.get('/', (req, res) => {
   if (req.session.user) return res.redirect('/dashboard');
   res.render('landing');
@@ -763,3 +761,17 @@ app.get('/seed', requireAdmin, async (req, res) => {
   </div>
 </body></html>`);
 });
+
+// ---------------------------------------------------------------
+// Start Server ✅ Railway-compatible: binds to 0.0.0.0
+// ---------------------------------------------------------------
+initDB()
+  .then(() => {
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 AgriBank Texas running on port ${PORT}`);
+    });
+  })
+  .catch(err => {
+    console.error('❌ DB init failed:', err.message);
+    process.exit(1);
+  });
