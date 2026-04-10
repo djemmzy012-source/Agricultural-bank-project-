@@ -1,273 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | AgriBank Texas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; color: #1A1A1A; line-height: 1.6; }
-        h1,h2,h3,h4 { font-family: 'Merriweather', serif; font-weight: 700; }
-        a { color: #2D5A27; text-decoration: none; }
-        a:hover { color: #4A7C42; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        .top-bar { background: #2C2416; color: #C4B49A; font-size: 12px; padding: 8px 0; }
-        .top-bar-content { display: flex; justify-content: space-between; }
-        .top-bar-left, .top-bar-right { display: flex; gap: 24px; }
-        .top-bar-right a { color: #C4B49A; }
-        .navbar { background: #2D5A27; position: sticky; top: 0; z-index: 100; }
-        .navbar-content { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .logo-icon { width: 44px; height: 44px; background: #C4A35A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .logo-name { font-family: 'Merriweather', serif; font-weight: 900; font-size: 20px; color: white; }
-        .logo-tagline { font-size: 10px; color: #D4BC7E; letter-spacing: 1px; text-transform: uppercase; }
-        .nav-links { display: flex; gap: 4px; }
-        .nav-links a { color: rgba(255,255,255,0.85); padding: 10px 18px; border-radius: 6px; font-size: 14px; font-weight: 500; }
-        .nav-links a:hover, .nav-links a.active { background: rgba(255,255,255,0.15); color: white; }
-        .nav-user { display: flex; align-items: center; gap: 16px; }
-        .user-greeting { color: rgba(255,255,255,0.9); font-size: 14px; }
-        .user-greeting strong { display: block; color: white; }
-        .btn-logout { color: white; padding: 8px 16px; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; font-size: 13px; }
-        .btn-logout:hover { background: rgba(255,255,255,0.1); color: white; }
-        .hero-banner { background: linear-gradient(135deg, #2D5A27 0%, #1E3D1A 100%); border-radius: 16px; padding: 40px 48px; margin: 32px 0; display: flex; justify-content: space-between; align-items: center; color: white; position: relative; overflow: hidden; }
-        .hero-banner::after { content: '🌾'; position: absolute; right: 48px; bottom: 24px; font-size: 80px; opacity: 0.15; }
-        .hero-content { position: relative; z-index: 1; }
-        .hero-content h1 { font-size: 32px; margin-bottom: 8px; font-weight: 900; }
-        .hero-balance { text-align: right; position: relative; z-index: 1; }
-        .hero-balance-label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 4px; }
-        .hero-balance-amount { font-family: 'Merriweather', serif; font-size: 42px; font-weight: 900; }
-        .section-title { font-size: 20px; color: #2C2416; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .section-title::after { content: ''; flex: 1; height: 1px; background: #E5E0D8; }
-        .accounts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .account-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 4px rgba(44,36,22,0.08); border: 1px solid #E5E0D8; transition: all 0.25s ease; position: relative; overflow: hidden; }
-        .account-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; }
-        .account-card.checking::before { background: #2D5A27; }
-        .account-card.savings::before { background: #C4A35A; }
-        .account-card.loan::before { background: #2E5A7C; }
-        .account-card.credit::before { background: #A63D40; }
-        .account-card.business::before { background: #5C3D7A; }
-        .account-card:hover { box-shadow: 0 4px 12px rgba(44,36,22,0.1); transform: translateY(-2px); }
-        .account-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-        .account-icon { width: 48px; height: 48px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px; background: #F5F1E8; }
-        .account-info h3 { font-family: 'Open Sans', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 2px; }
-        .account-info span { font-size: 13px; color: #8A8A8A; }
-        .account-balance { margin: 16px 0; padding: 16px 0; border-bottom: 1px solid #F0ECE4; }
-        .balance-label { font-size: 12px; color: #8A8A8A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-        .balance-amount { font-family: 'Merriweather', serif; font-size: 28px; font-weight: 700; color: #2C2416; }
-        .balance-amount.negative { color: #A63D40; }
-        .account-actions { display: flex; gap: 10px; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 10px 20px; border-radius: 8px; font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; border: none; text-decoration: none; }
-        .btn-primary { background: #2D5A27; color: white; flex: 1; }
-        .btn-primary:hover { background: #4A7C42; color: white; }
-        .btn-outline { background: transparent; border: 1px solid #2D5A27; color: #2D5A27; flex: 1; }
-        .btn-outline:hover { background: #E8F0E6; color: #2D5A27; }
-        .btn-sm { padding: 8px 16px; font-size: 13px; }
-        .quick-actions { margin-bottom: 40px; }
-        .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-        .quick-btn { background: white; border: 1px solid #E5E0D8; border-radius: 12px; padding: 28px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; cursor: pointer; transition: all 0.25s ease; text-decoration: none; color: #1A1A1A; }
-        .quick-btn:hover { border-color: #2D5A27; background: #E8F0E6; transform: translateY(-3px); box-shadow: 0 4px 12px rgba(44,36,22,0.1); color: #2D5A27; }
-        .quick-btn-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-        .quick-btn-icon.deposit { background: #E8F0E6; }
-        .quick-btn-icon.withdraw { background: #FFF8E7; }
-        .quick-btn-icon.transfer { background: #EAF2F8; }
-        .quick-btn-icon.pay { background: #FDF2F2; }
-        .quick-btn span { font-weight: 600; font-size: 14px; }
-        .transactions-section { margin-bottom: 40px; }
-        .transactions-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-        .transactions-header h2 { font-size: 20px; display: flex; align-items: center; gap: 12px; }
-        .view-all-link { color: #2D5A27; font-size: 14px; font-weight: 600; }
-        .view-all-link:hover { color: #4A7C42; }
-        .transactions-table { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(44,36,22,0.08); border: 1px solid #E5E0D8; overflow: hidden; }
-        .table-header { display: grid; grid-template-columns: 2fr 1fr 1fr 100px; padding: 16px 24px; background: #F5F1E8; border-bottom: 1px solid #E5E0D8; font-size: 11px; font-weight: 700; color: #8A8A8A; text-transform: uppercase; letter-spacing: 0.8px; }
-        .table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 100px; padding: 18px 24px; align-items: center; border-bottom: 1px solid #F0ECE4; }
-        .table-row:last-child { border-bottom: none; }
-        .table-row:hover { background: #FDFCF9; }
-        .tx-info { display: flex; align-items: center; gap: 14px; }
-        .tx-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
-        .tx-icon.debit { background: #FFF8E7; color: #B8860B; }
-        .tx-icon.credit { background: #E8F0E6; color: #2D5A27; }
-        .tx-icon.transfer { background: #EAF2F8; color: #2E5A7C; }
-        .tx-icon.wire { background: #FDF2F2; color: #A63D40; }
-        .tx-details h4 { font-family: 'Open Sans', sans-serif; font-size: 14px; font-weight: 600; margin-bottom: 2px; }
-        .tx-category { font-size: 12px; color: #5C5C5C; padding: 4px 10px; background: #F5F1E8; border-radius: 20px; text-transform: capitalize; }
-        .tx-date { font-size: 14px; color: #5C5C5C; }
-        .tx-amount { font-family: 'Merriweather', serif; font-weight: 700; font-size: 15px; text-align: right; }
-        .tx-amount.positive { color: #2D5A27; }
-        .tx-amount.negative { color: #1A1A1A; }
-        .footer { background: #2C2416; color: #C4B49A; padding: 48px 0 24px; margin-top: 60px; }
-        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-        .footer-logo { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-        .footer-logo-icon { width: 40px; height: 40px; background: #C4A35A; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .footer-logo-text { font-family: 'Merriweather', serif; font-weight: 700; font-size: 18px; color: white; }
-        .footer-brand p { font-size: 14px; line-height: 1.6; opacity: 0.8; }
-        .footer-column h4 { font-family: 'Open Sans', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: white; }
-        .footer-column ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .footer-column a { color: #C4B49A; font-size: 14px; }
-        .footer-bottom { padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; }
-        .footer-bottom p { font-size: 12px; opacity: 0.7; }
-        .footer-legal { display: flex; gap: 24px; }
-        .footer-legal a { font-size: 12px; color: #C4B49A; }
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-banner { flex-direction: column; text-align: center; gap: 24px; }
-            .hero-balance { text-align: center; }
-            .accounts-grid { grid-template-columns: 1fr; }
-            .quick-grid { grid-template-columns: repeat(2, 1fr); }
-            .table-header, .table-row { grid-template-columns: 1.5fr 1fr 80px; }
-            .table-header span:nth-child(2), .table-row span:nth-child(2) { display: none; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dashboard | AgriBank Texas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>.amount-positive { color: var(--primary); }
+         .amount-negative { color: var(--text); }
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 48px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dashboard-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 300px;
+      height: 300px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .dashboard-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    
+    .dashboard-header .subtitle {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    .balance-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+      border: 1px solid var(--border);
+    }
+    
+    .balance-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    
+    .balance-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+    
+    .accounts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .account-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    
+    .account-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .account-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .account-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .account-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    
+    .account-number {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    
+    .account-balance {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin: 16px 0;
+    }
+    
+    .account-actions {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .dashboard-header {
+        padding: 32px 20px;
+      }
+      
+      .balance-card {
+        padding: 24px 20px;
+      }
+      
+      .accounts-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      
+      .account-card {
+        padding: 20px;
+      }
+      
+      .account-actions {
+        flex-direction: column;
+        gap: 8px;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 16px;
+      }
+      
+      .balance-amount {
+        font-size: 2rem;
+      }
+      
+      .account-balance {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="top-bar">
-        <div class="container">
-            <div class="top-bar-content">
-                <div class="top-bar-left"><span>📍 Austin, TX</span><span>📞 1-800-AGRIBTX</span></div>
-                <div class="top-bar-right"><a href="#">Locations</a><a href="#">Help</a></div>
-            </div>
-        </div>
+  <!-- Navbar -->
+  <%- include('partials/navbar', { user: user }) %>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="container">
+      <h1>Welcome back, <%= user.firstName %></h1>
+      <p class="subtitle">Here's your financial overview</p>
     </div>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-content">
-                <a href="/dashboard" class="logo">
-                    <div class="logo-icon">🌾</div>
-                    <div>
-                        <div class="logo-name">AgriBank</div>
-                        <div class="logo-tagline">Texas</div>
-                    </div>
-                </a>
-                <div class="nav-links">
-                    <a href="/dashboard" class="active">Dashboard</a>
-                    <a href="/accounts">Accounts</a>
-                    <a href="/transfer">Transfer</a>
-                    <a href="/billpay">Bill Pay</a>
-                    <a href="/profile">Profile</a>
-                </div>
-                <div class="nav-user">
-                    <span class="user-greeting">Howdy,<strong><%= user.firstName %></strong></span>
-                    <a href="/logout" class="btn-logout">Sign Out</a>
-                </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container" style="padding: 0 24px 48px;">
+    <!-- Total Balance -->
+    <div class="balance-card">
+      <div class="balance-label">Total Balance</div>
+      <div class="balance-amount">$<%= totalBalance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></div>
+      <p style="color: var(--text-muted); font-size: 0.875rem;">Across all accounts</p>
+    </div>
+
+    <!-- Accounts Section -->
+    <h2 class="section-title">Your Accounts</h2>
+    <div class="accounts-grid">
+      <% accounts.forEach(function(account) { %>
+        <div class="account-card">
+          <div class="account-header">
+            <div class="account-icon"><%= account.icon || '🏦' %></div>
+            <div>
+              <div class="account-name"><%= account.name %></div>
+              <div class="account-number"><%= account.number %></div>
             </div>
+          </div>
+          
+          <div class="account-balance">
+            $<%= account.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) %>
+          </div>
+          
+          <div class="account-actions">
+            <a href="/transactions?accountId=<%= account.id %>" class="btn btn-primary">View Details</a>
+            <a href="/transfer?from=<%= account.id %>" class="btn btn-outline">Transfer</a>
+          </div>
         </div>
-    </nav>
-    <main class="container">
-        <div class="hero-banner">
-            <div class="hero-content">
-                <h1>Howdy, <%= user.firstName %>!</h1>
-                <p>Welcome back to your AgriBank dashboard</p>
+      <% }); %>
+    </div>
+
+    <!-- Recent Transactions -->
+    <h2 class="section-title">Recent Transactions</h2>
+    <div class="card" style="background: var(--surface); border-radius: 12px; padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border);">
+      <% if (transactions && transactions.length > 0) { %>
+        <% transactions.slice(0, 5).forEach(function(tx) { %>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border);">
+            <div>
+              <div style="font-weight: 600; color: var(--text);"><%= tx.description || tx.type %></div>
+              <div style="font-size: 0.875rem; color: var(--text-muted);"><%= tx.date ? new Date(tx.date).toLocaleDateString() : 'N/A' %></div>
             </div>
-            <div class="hero-balance">
-                <div class="hero-balance-label">Total Balance</div>
-                <div class="hero-balance-amount">$<%= totalBalance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></div>
+            <div <div class="amount-<%= tx.amount >= 0 ? 'positive' : 'negative' %>" style="font-family: 'Playfair Display', serif; font-weight: 700;">
+             <%= tx.amount >= 0 ? '+' : '' %>$<%= Math.abs(tx.amount).toLocaleString('en-US', {minimumFractionDigits: 2}) %>
+           </div>
             </div>
-        </div>
-        <section>
-            <h2 class="section-title">Your Accounts</h2>
-            <div class="accounts-grid">
-                <% accounts.forEach(function(acc) { %>
-                <div class="account-card <%= acc.type %>">
-                    <div class="account-header">
-                        <div class="account-icon"><%= acc.icon %></div>
-                    </div>
-                    <div class="account-info">
-                        <h3><%= acc.name %></h3>
-                        <span><%= acc.number %></span>
-                    </div>
-                    <div class="account-balance">
-                        <div class="balance-label"><%= acc.type === 'credit' ? 'Current Balance' : 'Available Balance' %></div>
-                        <div class="balance-amount <%= acc.balance < 0 ? 'negative' : '' %>">$<%= Math.abs(acc.balance).toLocaleString('en-US', {minimumFractionDigits: 2}) %></div>
-                        <% if (acc.creditLimit) { %>
-                        <div class="account-limit">of $<%= acc.creditLimit.toLocaleString('en-US', {minimumFractionDigits: 2}) %> limit</div>
-                        <% } %>
-                    </div>
-                    <div class="account-actions">
-                        <a href="/accounts" class="btn btn-primary btn-sm">View Details</a>
-                        <a href="/transfer" class="btn btn-outline btn-sm">Transfer</a>
-                    </div>
-                </div>
-                <% }); %>
-            </div>
-        </section>
-        <section class="quick-actions">
-            <h2 class="section-title">Quick Actions</h2>
-            <div class="quick-grid">
-                <a href="/accounts" class="quick-btn"><div class="quick-btn-icon deposit">💵</div><span>Deposit</span></a>
-                <a href="/accounts" class="quick-btn"><div class="quick-btn-icon withdraw">🏧</div><span>Withdraw</span></a>
-                <a href="/transfer" class="quick-btn"><div class="quick-btn-icon transfer">⇄</div><span>Transfer</span></a>
-                <a href="/billpay" class="quick-btn"><div class="quick-btn-icon pay">📄</div><span>Pay Bills</span></a>
-            </div>
-        </section>
-        <section class="transactions-section">
-            <div class="transactions-header">
-                <h2>Recent Transactions</h2>
-                <a href="/transactions" class="view-all-link">View All →</a>
-            </div>
-            <div class="transactions-table">
-                <div class="table-header">
-                    <span>Description</span>
-                    <span>Type</span>
-                    <span>Date</span>
-                    <span style="text-align: right;">Amount</span>
-                </div>
-                <% transactions.forEach(function(tx) { 
-                    let iconClass = '';
-                    let iconSymbol = '';
-                    if (tx.type === 'Deposit' || tx.type === 'Transfer In' || tx.type === 'deposit' || tx.type === 'transfer_in') {
-                        iconClass = 'credit';
-                        iconSymbol = '↓';
-                    } else if (tx.type === 'Withdrawal' || tx.type === 'Transfer Out' || tx.type === 'withdrawal' || tx.type === 'transfer_out') {
-                        iconClass = 'debit';
-                        iconSymbol = '↑';
-                    } else if (tx.type === 'Wire' || tx.type === 'wire') {
-                        iconClass = 'wire';
-                        iconSymbol = '⚡';
-                    } else {
-                        iconClass = 'transfer';
-                        iconSymbol = '⇄';
-                    }
-                    let formattedDate = '';
-                    try {
-                        let d = new Date(tx.date);
-                        if (!isNaN(d.getTime())) {
-                            formattedDate = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        } else {
-                            formattedDate = tx.date;
-                        }
-                    } catch(e) {
-                        formattedDate = tx.date;
-                    }
-                %>
-                <div class="table-row">
-                    <div class="tx-info">
-                        <div class="tx-icon <%= iconClass %>"><%= iconSymbol %></div>
-                        <div class="tx-details"><h4><%= tx.description %></h4></div>
-                    </div>
-                    <span class="tx-category"><%= tx.type %></span>
-                    <span class="tx-date"><%= formattedDate %></span>
-                    <span class="tx-amount <%= tx.amount >= 0 ? 'positive' : 'negative' %>"><%= tx.amount >= 0 ? '+' : '-' %>$<%= Math.abs(tx.amount).toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
-                </div>
-                <% }); %>
-            </div>
-        </section>
-    </main>
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo"><div class="footer-logo-icon">🌾</div><span class="footer-logo-text">AgriBank Texas</span></div>
-                    <p>Serving Texas farmers, ranchers, and families since 1923. Member FDIC.</p>
-                </div>
-                <div class="footer-column"><h4>Banking</h4><ul><li><a href="#">Checking</a></li><li><a href="#">Savings</a></li><li><a href="#">Loans</a></li></ul></div>
-                <div class="footer-column"><h4>Support</h4><ul><li><a href="#">Help Center</a></li><li><a href="#">Contact Us</a></li></ul></div>
-                <div class="footer-column"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li></ul></div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2024 AgriBank Texas. All rights reserved.</p>
-                <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
-            </div>
-        </div>
-    </footer>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p style="color: var(--text-muted); text-align: center; padding: 32px;">No recent transactions</p>
+      <% } %>
+      <div style="text-align: center; margin-top: 24px;">
+        <a href="/transactions" class="btn btn-outline">View All Transactions</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <%- include('partials/footer') %>
+
+  <script>
+    // Mobile nav toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      if (toggle && navLinks) {
+        toggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+      }
+    });
+  </script>
 </body>
 </html>
