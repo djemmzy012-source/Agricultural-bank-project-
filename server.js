@@ -32,17 +32,19 @@ app.use(session({
 }));
 
 // ---------------------------------------------------------------
-// Database helpers (updated for better-sqlite3)
+// Database helpers (SYNC - for @libsql/sqlite3)
 // ---------------------------------------------------------------
 function sqlRun(sql, params = []) {
-  return new Promise((resolve, reject) => {
-    try {
-      const result = db.run(sql, params);
-      resolve({ lastID: result.lastInsertRowid, changes: result.changes });
-    } catch (err) {
-      reject(err);
-    }
-  });
+  const result = db.run(sql, params);
+  return { lastID: result.lastInsertRowid, changes: result.changes };
+}
+
+function sqlGet(sql, params = []) {
+  return db.get(sql, params);
+}
+
+function sqlAll(sql, params = []) {
+  return db.all(sql, params);
 }
 
 function sqlGet(sql, params = []) {
