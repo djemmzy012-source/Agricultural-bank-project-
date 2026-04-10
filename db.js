@@ -1,4 +1,4 @@
-// db.js – better-sqlite3 connection (fast, reliable, no native fallback issues)
+// db.js – better-sqlite3 connection
 const Database = require('better-sqlite3');
 const path = require('path');
 
@@ -9,14 +9,13 @@ const dbPath = isProd ? '/tmp/bank.db' : path.resolve(__dirname, 'bank.db');
 let db;
 try {
   db = new Database(dbPath);
-  db.pragma('journal_mode = WAL'); // Optimizes for concurrent reads/writes
+  db.pragma('journal_mode = WAL');
   console.log('✅ Connected to SQLite DB at', dbPath);
 } catch (err) {
   console.error('❌ SQLite connection error:', err.message);
   process.exit(1);
 }
 
-// Export wrapper (identical API to your previous code)
 module.exports = {
   run: (sql, params = []) => {
     const stmt = db.prepare(sql);
