@@ -1,33 +1,21 @@
-// db.js – libSQL client (pure JS, Railway-compatible)
-const { createClient } = require('@libsql/client');
+// db.js – better-sqlite3 (synchronous, Railway-compatible)
+const Database = require('better-sqlite3');
 const path = require('path');
 
-// Determine connection URL
 const isProd = process.env.NODE_ENV === 'production';
-const rawPath = isProd ? '/tmp/bank.db' : path.resolve(__dirname, 'bank.db');
+const dbPath = isProd ? '/tmp/bank.db' : path.resolve(__dirname, 'bank.db');
 
-// ✅ libSQL requires 'file:' prefix for local paths
-const dbUrl = rawPath.startsWith('file:') || rawPath.startsWith('libsql:') || rawPath.startsWith('http')
-  ? rawPath
-  : `file:${rawPath}`;
+const db = new Database(dbPath);
+db.pragma('journal_mode = WAL'); // Optimizes concurrent reads/writes
+console.log('✅ Connected to SQLite DB at', dbPath);
 
-// Create client
-const client = createClient({ url: dbUrl });
-
-console.log('✅ Connected to SQLite DB at', dbUrl);
-
-// Export async API (libSQL client is async)
+// Export simple SYNC API
 module.exports = {
-  run: async (sql, params = []) => {
-    const rs = await client.execute({ sql, args: params });
-    return { lastID: rs.lastInsertRowid, changes: rs.rowsAffected };
+  run: (sql, params = []) => {
+    const stmt = db.prepare(sql);
+    const result = stmt.run(params);
+    return { lastID: result.lastInsertRowid, changes: result.changes };
   },
-  get: async (sql, params = []) => {
-    const rs = await client.execute({ sql, args: params });
-    return rs.rows[0] || null;
-  },
-  all: async (sql, params = []) => {
-    const rs = await client.execute({ sql, args: params });
-    return rs.rows;
-  }
+  get: (sql, params = []) => db.prepare(sql).get(params),
+  all: (sql, params = []) => db.prepare(sql).all(params)
 };
