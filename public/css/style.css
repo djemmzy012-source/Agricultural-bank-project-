@@ -203,4 +203,55 @@ h3 { font-size: clamp(1.25rem, 3vw, 1.5rem); }
   .quick-grid { grid-template-columns: 1fr; }
   .account-actions { flex-direction: column; }
   .btn { width: 100%; font-size: 14px; padding: 12px; }
+}/* =====================================================
+   📱 MOBILE NAVBAR FIX (Clean Stack on Phones)
+   ===================================================== */
+@media (max-width: 768px) {
+  .navbar {
+    position: relative;
+    padding: 12px 16px;
+  }
+  .navbar-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  /* Move nav links below the logo/welcome row */
+  .nav-links {
+    order: 3;
+    width: 100%;
+    flex-direction: column;
+    background: var(--cream);
+    border-top: 1px solid var(--border);
+    padding: 12px 0 4px;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .nav-links a {
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    font-weight: 500;
+    background: var(--white);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  .nav-links a.active {
+    background: var(--green-main);
+    color: white;
+  }
+  .nav-right {
+    align-items: center;
+    gap: 12px;
+  }
+  .welcome-text {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .btn-logout {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 20px;
+  }
 }
