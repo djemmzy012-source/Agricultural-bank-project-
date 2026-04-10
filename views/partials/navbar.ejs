@@ -8,6 +8,13 @@
       </div>
     </a>
     
+    <!-- Mobile Menu Toggle -->
+    <div class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
     <div class="nav-links">
       <% if (user) { %>
         <a href="/dashboard" class="<%= req.path === '/dashboard' ? 'active' : '' %>">Dashboard</a>
@@ -15,6 +22,7 @@
         <a href="/transfer" class="<%= req.path === '/transfer' ? 'active' : '' %>">Transfer</a>
         <a href="/billpay" class="<%= req.path === '/billpay' ? 'active' : '' %>">Bill Pay</a>
         <a href="/profile" class="<%= req.path === '/profile' ? 'active' : '' %>">Profile</a>
+        <a href="/logout">Logout</a>
       <% } else { %>
         <a href="/login">Sign In</a>
         <a href="/register">Open Account</a>

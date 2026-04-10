@@ -1,165 +1,390 @@
-cat > views/register.ejs << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open an Account | AgriBank Texas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; min-height: 100vh; }
-        .register-page { min-height: 100vh; display: flex; }
-        .register-wrapper { display: flex; width: 100%; min-height: 100vh; }
-        .register-brand { flex: 1; background: linear-gradient(145deg, #2D5A27 0%, #1E3D1A 50%, #2C2416 100%); display: flex; align-items: center; justify-content: center; padding: 60px; position: relative; overflow: hidden; }
-        .brand-content { max-width: 440px; color: white; position: relative; z-index: 1; }
-        .brand-logo { display: flex; align-items: center; gap: 16px; margin-bottom: 48px; }
-        .brand-logo-icon { width: 64px; height: 64px; background: #C4A35A; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 36px; }
-        .brand-logo-name { font-family: 'Merriweather', serif; font-size: 28px; font-weight: 900; }
-        .brand-logo-tagline { font-size: 11px; color: #D4BC7E; letter-spacing: 2px; text-transform: uppercase; }
-        .brand-content h1 { font-size: 36px; font-weight: 900; margin-bottom: 16px; }
-        .brand-content > p { font-size: 16px; opacity: 0.85; margin-bottom: 40px; line-height: 1.7; }
-        .register-form-section { flex: 1.5; display: flex; align-items: center; justify-content: center; padding: 40px 60px; background: white; overflow-y: auto; }
-        .register-form-container { width: 100%; max-width: 520px; }
-        .register-form-container h2 { font-family: 'Merriweather', serif; font-size: 28px; margin-bottom: 8px; color: #2C2416; }
-        .register-subtitle { color: #5C5C5C; font-size: 15px; margin-bottom: 28px; }
-        .alert { padding: 14px 18px; border-radius: 8px; margin-bottom: 20px; background: #FDF2F2; color: #A63D40; border: 1px solid rgba(166,61,64,0.2); font-size: 14px; }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; font-size: 12px; font-weight: 600; color: #5C5C5C; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input { width: 100%; padding: 12px 14px; border: 1px solid #E5E0D8; border-radius: 8px; font-size: 14px; font-family: 'Open Sans', sans-serif; transition: border-color 0.2s, box-shadow 0.2s; }
-        .form-input:focus { outline: none; border-color: #2D5A27; box-shadow: 0 0 0 3px rgba(45,90,39,0.1); }
-        .form-section-title { font-family: 'Merriweather', serif; font-size: 16px; color: #2C2416; margin: 28px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #E5E0D8; }
-        .account-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
-        .account-type-option { position: relative; }
-        .account-type-option input { position: absolute; opacity: 0; }
-        .account-type-label { display: block; padding: 16px 12px; border: 2px solid #E5E0D8; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.2s; }
-        .account-type-option input:checked + .account-type-label { border-color: #2D5A27; background: #F0F7EE; }
-        .account-type-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-        .account-type-name { font-size: 13px; font-weight: 600; color: #2C2416; }
-        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 28px; border-radius: 8px; font-family: 'Open Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: background 0.2s, transform 0.1s; }
-        .btn-primary { background: #2D5A27; color: white; width: 100%; margin-top: 8px; }
-        .btn-primary:hover { background: #4A7C42; transform: translateY(-1px); }
-        .register-footer { text-align: center; font-size: 14px; color: #5C5C5C; margin-top: 24px; }
-        .register-footer a { color: #2D5A27; font-weight: 600; text-decoration: none; }
-        .ssn-note { font-size: 11px; color: #8a8a8a; margin-top: 4px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Open an Account | AgriBank Texas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .auth-wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+    .auth-sidebar {
+      flex: 1;
+      background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+      color: white;
+      padding: 60px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .auth-sidebar h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      margin: 24px 0 16px;
+    }
+    .auth-sidebar p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      line-height: 1.6;
+    }
+    .auth-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px;
+      background: var(--bg-light);
+    }
+    .auth-form-container {
+      width: 100%;
+      max-width: 600px;
+    }
+    .auth-form-container h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .auth-subtitle {
+      color: var(--text-mid);
+      margin-bottom: 32px;
+    }
+    .form-section {
+      margin-bottom: 32px;
+    }
+    .form-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      color: var(--text-dark);
+    }
+    .account-type-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .account-type-option {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .account-type-option:hover {
+      border-color: var(--green-main);
+      background: var(--green-pale);
+    }
+    .account-type-option.selected {
+      border-color: var(--green-main);
+      background: var(--green-pale);
+    }
+    .account-type-option input[type="radio"] {
+      display: none;
+    }
+    .account-type-icon {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+    }
+    .account-type-label {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--green-main);
+      box-shadow: 0 0 0 3px rgba(46, 125, 90, 0.1);
+    }
+    .form-note {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+    .alert {
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .auth-wrapper {
+        flex-direction: column;
+      }
+      .auth-sidebar {
+        padding: 40px 24px;
+        text-align: center;
+        min-height: auto;
+      }
+      .auth-sidebar h1 {
+        font-size: 2rem;
+      }
+      .auth-sidebar p {
+        font-size: 1rem;
+      }
+      .auth-main {
+        padding: 32px 24px;
+      }
+      .account-type-selector {
+        grid-template-columns: 1fr;
+      }
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .auth-sidebar {
+        padding: 32px 16px;
+      }
+      .auth-sidebar h1 {
+        font-size: 1.75rem;
+      }
+      .auth-main {
+        padding: 24px 16px;
+      }
+      .auth-form-container h2 {
+        font-size: 1.5rem;
+      }
+      .form-input {
+        font-size: 16px; /* Prevents iOS zoom */
+        padding: 14px 16px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="register-page">
-        <div class="register-wrapper">
-            <div class="register-brand">
-                <div class="brand-content">
-                    <div class="brand-logo">
-                        <div class="brand-logo-icon">🌾</div>
-                        <div>
-                            <div class="brand-logo-name">AgriBank</div>
-                            <div class="brand-logo-tagline">Texas</div>
-                        </div>
-                    </div>
-                    <h1>Join Our Community</h1>
-                    <p>Open your account today and become part of a banking tradition that's been serving Texas farmers and families for over 100 years.</p>
-                </div>
-            </div>
-            <div class="register-form-section">
-                <div class="register-form-container">
-                    <h2>Open an Account</h2>
-                    <p class="register-subtitle">Fill out the form below to create your new account</p>
-                    <% if (error) { %>
-                    <div class="alert"><%= error %></div>
-                    <% } %>
-                    <form action="/register" method="POST">
-                        <h3 class="form-section-title">Choose Account Type</h3>
-                        <div class="account-type-grid">
-                            <label class="account-type-option">
-                                <input type="radio" name="accountType" value="checking" checked>
-                                <span class="account-type-label">
-                                    <span class="account-type-icon">🏦</span>
-                                    <span class="account-type-name">Primary Checking</span>
-                                </span>
-                            </label>
-                            <label class="account-type-option">
-                                <input type="radio" name="accountType" value="savings">
-                                <span class="account-type-label">
-                                    <span class="account-type-icon">💰</span>
-                                    <span class="account-type-name">Savings Account</span>
-                                </span>
-                            </label>
-                            <label class="account-type-option">
-                                <input type="radio" name="accountType" value="business">
-                                <span class="account-type-label">
-                                    <span class="account-type-icon">🏢</span>
-                                    <span class="account-type-name">Business Checking</span>
-                                </span>
-                            </label>
-                        </div>
-                        <h3 class="form-section-title">Personal Information</h3>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">First Name</label>
-                                <input type="text" name="firstName" class="form-input" placeholder="John" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" name="lastName" class="form-input" placeholder="Smith" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Date of Birth</label>
-                                <input type="date" name="dateOfBirth" class="form-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">SSN</label>
-                                <input type="text" name="ssn" class="form-input" placeholder="XXX-XX-XXXX" required>
-                                <p class="ssn-note">Required for account verification</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Email Address</label>
-                            <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
-                        </div>
-                        <h3 class="form-section-title">Address</h3>
-                        <div class="form-group">
-                            <label class="form-label">Street Address</label>
-                            <input type="text" name="address" class="form-input" placeholder="123 Main Street" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">City</label>
-                                <input type="text" name="city" class="form-input" placeholder="Dallas" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">State</label>
-                                <input type="text" name="state" class="form-input" placeholder="TX" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">ZIP Code</label>
-                            <input type="text" name="zip" class="form-input" placeholder="75201" required>
-                        </div>
-                        <h3 class="form-section-title">Create Login</h3>
-                        <div class="form-group">
-                            <label class="form-label">Username</label>
-                            <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label class="form-label">Password</label>
-                                <input type="password" name="password" class="form-input" placeholder="Create password" required>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Confirm Password</label>
-                                <input type="password" name="confirmPassword" class="form-input" placeholder="Confirm password" required>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create Account</button>
-                    </form>
-                    <p class="register-footer">Already have an account? <a href="/login">Sign In</a></p>
-                </div>
-            </div>
+  <%- include('partials/navbar', { user: null }) %>
+  
+  <div class="auth-wrapper">
+    <div class="auth-sidebar">
+      <div class="logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🌾</div>
+        <div>
+          <div style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 700;">AgriBank</div>
+          <div style="font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Texas</div>
         </div>
+      </div>
+      <h1>Join Our Community</h1>
+      <p>Open your account today and become part of a banking tradition that's been serving Texas farmers and families for over 100 years.</p>
     </div>
+    
+    <div class="auth-main">
+      <div class="auth-form-container">
+        <h2>Open an Account</h2>
+        <p class="auth-subtitle">Fill out the form below to create your new account</p>
+        
+        <% if (error) { %>
+          <div class="alert"><%= error %></div>
+        <% } %>
+        
+        <form method="POST" action="/register">
+          <!-- Account Type Selection -->
+          <div class="form-section">
+            <h3>Choose Account Type</h3>
+            <div class="account-type-selector">
+              <label class="account-type-option selected">
+                <input type="radio" name="accountType" value="checking" checked>
+                <div class="account-type-icon">🏦</div>
+                <div class="account-type-label">Primary Checking</div>
+              </label>
+              <label class="account-type-option">
+                <input type="radio" name="accountType" value="savings">
+                <div class="account-type-icon">💰</div>
+                <div class="account-type-label">Savings Account</div>
+              </label>
+              <label class="account-type-option">
+                <input type="radio" name="accountType" value="business">
+                <div class="account-type-icon">🏢</div>
+                <div class="account-type-label">Business Checking</div>
+              </label>
+            </div>
+          </div>
+          
+          <!-- Personal Information -->
+          <div class="form-section">
+            <h3>Personal Information</h3>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" name="firstName" class="form-input" placeholder="John" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="lastName" class="form-input" placeholder="Smith" required>
+              </div>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Date of Birth</label>
+                <input type="date" name="dateOfBirth" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">SSN</label>
+                <input type="text" name="ssn" class="form-input" placeholder="XXX-XX-XXXX" required>
+                <p class="form-note">Required for account verification</p>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+            </div>
+          </div>
+          
+          <!-- Address -->
+          <div class="form-section">
+            <h3>Address</h3>
+            <div class="form-group">
+              <label class="form-label">Street Address</label>
+              <input type="text" name="address" class="form-input" placeholder="123 Main Street" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">City</label>
+                <input type="text" name="city" class="form-input" placeholder="Austin" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">State</label>
+                <input type="text" name="state" class="form-input" placeholder="TX" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ZIP Code</label>
+              <input type="text" name="zip" class="form-input" placeholder="78701" required>
+            </div>
+          </div>
+          
+          <!-- Account Credentials -->
+          <div class="form-section">
+            <h3>Account Credentials</h3>
+            <div class="form-group">
+              <label class="form-label">Username</label>
+              <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="confirmPassword" class="form-input" placeholder="••••••••" required>
+              </div>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1rem; margin-top: 24px;">
+            Create Account
+          </button>
+          
+          <p style="text-align: center; margin-top: 24px; color: var(--text-mid);">
+            Already have an account? <a href="/login" style="color: var(--green-main); font-weight: 600;">Sign In</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <%- include('partials/footer') %>
+  
+  <script>
+    // Account type selection
+    document.querySelectorAll('.account-type-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.account-type-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  </script>
 </body>
 </html>
-EOF
+/* Mobile Navigation Toggle */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 101;
+}
+
+.menu-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--text-dark);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+  
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: var(--bg-white);
+    flex-direction: column;
+    padding: 24px;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-150%);
+    transition: transform 0.3s ease;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  
+  .nav-links.active {
+    transform: translateY(0);
+  }
+  
+  .nav-links a {
+    padding: 12px !important;
+    text-align: center !important;
+    background: var(--green-pale) !important;
+    border-radius: 8px !important;
+    font-size: 1rem !important;
+  }
+  
+  .nav-right {
+    display: none;
+  }
+}

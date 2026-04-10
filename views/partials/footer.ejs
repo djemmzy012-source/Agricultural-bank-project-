@@ -16,3 +16,29 @@
     </div>
   </div>
 </footer>
+
+<style>
+@media (max-width: 768px) {
+  .footer-links {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+    text-align: center !important;
+  }
+  .footer-links a {
+    padding: 12px !important;
+    background: rgba(255,255,255,0.1) !important;
+    border-radius: 8px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .footer-copy {
+    text-align: center !important;
+    margin-top: 24px !important;
+    padding-top: 24px !important;
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+  }
+}
+</style>
