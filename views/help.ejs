@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Help & Support | AgriBank Texas Regional</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1c14;
+      --green-900: #0f2b1f;
+      --green-800: #144a25;
+      --green-700: #1a5c30;
+      --green-600: #22753d;
+      --green-500: #2ea55a;
+      --gold: #d4a047;
+      --gold-light: #e8b85e;
+      --bg: #f0f2f5;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      --sidebar-w: 260px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* ==========================================
+       NAVIGATION
+       ========================================== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green-900); }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
+    .nav-links a:hover { color: var(--green-700); }
+    .btn-nav { background: var(--green-800) !important; color: white !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
+    .btn-nav:hover { background: var(--green-700) !important; }
+
+    /* ==========================================
+       HERO
+       ========================================== */
+    .page-hero {
+      background: linear-gradient(170deg, var(--navy) 0%, var(--green-900) 40%, var(--green-700) 100%);
+      color: white;
+      padding: 7.5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-deco {
+      position: absolute; opacity: 0.06; font-size: 5rem;
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-deco:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+    .hero-deco:nth-child(2) { top: 50%; right: 8%; animation-delay: 2s; }
+    .hero-deco:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 4s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+    .page-hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1rem; position: relative;
+    }
+    .page-hero p {
+      max-width: 580px; margin: 0 auto;
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem; position: relative;
+    }
+
+    /* ==========================================
+       SEARCH BAR
+       ========================================== */
+    .search-wrapper {
+      max-width: 650px;
+      margin: -1.5rem auto 2.5rem;
+      position: relative;
+      z-index: 10;
+      padding: 0 2rem;
+    }
+    .search-bar {
+      display: flex; align-items: center;
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .search-bar:focus-within { border-color: var(--green-600); }
+    .search-icon { padding: 0 1rem; font-size: 1.3rem; opacity: 0.4; }
+    .search-input {
+      flex: 1; padding: 1rem 0.5rem;
+      border: none; outline: none;
+      font-size: 1rem; font-family: inherit;
+      background: transparent; color: var(--text);
+    }
+    .search-btn {
+      padding: 0.65rem 1.5rem; margin-right: 0.25rem;
+      background: var(--green-700); color: white;
+      border: none; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .search-suggestions { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
+    .suggestion-tag {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.9);
+      padding: 0.3rem 0.9rem;
+      border-radius: 50px; font-size: 0.75rem;
+      font-weight: 600; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .suggestion-tag:hover { background: rgba(255,255,255,0.25); }
+
+    /* ==========================================
+       CONTENT LAYOUT
+       ========================================== */
+    .content-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 2.5rem;
+      padding: 1rem 2rem 4rem;
+    }
+
+    /* SIDEBAR TOC */
+    .toc-sidebar {
+      position: sticky; top: 80px;
+      align-self: start;
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .toc-title {
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--text-secondary);
+      font-weight: 700; margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 0.15rem; }
+    .toc-list a {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 0.65rem; border-radius: 6px;
+      font-size: 0.78rem; color: var(--text-secondary);
+      font-weight: 500; transition: all 0.2s; line-height: 1.4;
+    }
+    .toc-list a:hover { background: #f0fdf4; color: var(--green-700); }
+    .toc-list a.active { background: #ecfdf5; color: var(--green-700); font-weight: 700; }
+
+    /* MAIN CONTENT */
+    .main-content { min-width: 0; }
+
+    /* QUICK ACTION CARDS — FIXED WITH REAL LINKS */
+    .quick-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .quick-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      /* 👇 MADE IT A REAL LINK */
+      display: block;
+    }
+    .quick-card:hover {
+      border-color: var(--green-600);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .quick-card a.inner-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+    .quick-card-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin: 0 auto 0.75rem;
+    }
+    .quick-card-icon.green { background: #ecfdf5; }
+    .quick-card-icon.blue { background: #eff6ff; }
+    .quick-card-icon.gold { background: #fefce8; }
+    .quick-card-icon.purple { background: #faf5ff; }
+    .quick-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .quick-card p { font-size: 0.78rem; color: var(--text-secondary); }
+
+    /* FAQ SECTION */
+    .faq-section { margin-bottom: 2.5rem; scroll-margin-top: 80px; }
+    .faq-category-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem; color: var(--green-900);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--gold);
+      display: inline-block;
+    }
+    .faq-item {
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .faq-item:hover { border-color: #cbd5e1; }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    .faq-question:hover { background: #f8fafc; }
+    .faq-arrow {
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+      color: var(--text-secondary);
+    }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--green-700); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 1.25rem;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+      padding: 0 1.25rem 1.25rem;
+    }
+    .faq-answer p {
+      color: var(--text-secondary);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 0.5rem;
+    }
+
+    /* INFO GRID */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .info-item {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .info-item-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .info-item-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 600; }
+    .info-item-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+    /* CONTACT CARDS */
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .contact-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: all 0.3s;
+    }
+    .contact-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .contact-card-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .contact-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .contact-card-icon.green { background: #ecfdf5; }
+    .contact-card-icon.blue { background: #eff6ff; }
+    .contact-card-icon.gold { background: #fefce8; }
+    .contact-card h3 { font-size: 1rem; font-weight: 700; }
+    .contact-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .contact-card .highlight { font-size: 1.1rem; font-weight: 700; color: var(--green-700); font-family: 'DM Serif Display', serif; }
+
+    /* TICKET FORM */
+    .ticket-form {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      margin-top: 1.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 0.7rem 0.9rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 0.9rem; font-family: inherit; outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--green-600); }
+    .form-textarea { resize: vertical; min-height: 120px; }
+    .btn-submit {
+      padding: 0.85rem 2rem;
+      background: var(--green-700);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-submit:hover { background: var(--green-600); transform: translateY(-1px); }
+
+    /* ARTICLE LIST */
+    .article-list { margin: 1rem 0; }
+    .article-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 1rem;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid transparent;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .article-item:hover { background: #f0fdf4; border-color: #bbf7d0; }
+    .article-icon { font-size: 1.1rem; flex-shrink: 0; }
+    .article-info { flex: 1; }
+    .article-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .article-meta { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.15rem; }
+    .article-arrow { color: var(--text-secondary); font-size: 0.8rem; }
+
+    /* ALERT BOXES */
+    .alert-box {
+      border-radius: 12px; padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .alert-box .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .alert-box.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .alert-box.success { background: #ecfdf5; border: 1px solid #a7f3d0; }
+    .alert-box.warning { background: #fffbeb; border: 1px solid #fde68a; }
+
+    /* BACK TO TOP */
+    .btn-back-top {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--green-800); color: white;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s; cursor: pointer; border: none;
+      margin-top: 1.5rem;
+    }
+    .btn-back-top:hover { background: var(--green-700); transform: translateY(-2px); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: white; margin-bottom: 0.25rem; }
+    .footer-brand span { color: var(--gold); }
+    .footer-subtitle { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-bottom: 1.5rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.6); font-weight: 600; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* MOBILE NAV */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid var(--border);
+      z-index: 100; padding: 0.5rem 0;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.2rem; padding: 0.5rem 0;
+      font-size: 0.6rem; font-weight: 600;
+      color: var(--text-secondary); cursor: pointer;
+    }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    /* LIVE CHAT WIDGET */
+    .chat-widget-container {
+      position: fixed; bottom: 30px; right: 30px;
+      z-index: 1000;
+    }
+    .chat-button {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-800), var(--green-700));
+      color: white;
+      border: none;
+      box-shadow: 0 8px 20px rgba(20,74,37,0.4);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem;
+      transition: transform 0.2s;
+      position: relative;
+    }
+    .chat-button:hover { transform: scale(1.1); }
+    .chat-tooltip {
+      position: absolute; right: 75px;
+      background: #1e293b; color: white;
+      padding: 6px 12px; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 600;
+      white-space: nowrap; opacity: 0;
+      pointer-events: none; transition: opacity 0.2s;
+    }
+    .chat-button:hover .chat-tooltip { opacity: 1; }
+    .chat-window {
+      position: absolute; bottom: 80px; right: 0;
+      width: 340px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      border: 1px solid var(--border);
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hidden { display: none !important; }
+    .chat-header {
+      background: linear-gradient(135deg, var(--green-900), var(--green-800));
+      color: white; padding: 1rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .agent-avatar { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .agent-name { font-weight: 700; font-size: 0.9rem; }
+    .agent-status { font-size: 0.7rem; opacity: 0.8; }
+    .close-chat { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.2rem; cursor: pointer; }
+    .chat-body {
+      height: 280px; background: #f8fafc;
+      padding: 1rem; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .message { display: flex; flex-direction: column; max-width: 85%; }
+    .message.bot { align-self: flex-start; }
+    .message.user { align-self: flex-end; }
+    .message-bubble {
+      padding: 0.7rem 1rem; border-radius: 12px;
+      font-size: 0.85rem; line-height: 1.4;
+    }
+    .message.bot .message-bubble { background: white; border-bottom-left-radius: 2px; border: 1px solid var(--border); }
+    .message.user .message-bubble { background: var(--green-800); color: white; border-bottom-right-radius: 2px; }
+    .chat-footer {
+      padding: 0.75rem; background: white;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 0.5rem;
+    }
+    #chat-input {
+      flex: 1; padding: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.85rem; outline: none;
+    }
+    .send-btn {
+      width: 36px; height: 36px;
+      background: var(--green-800); color: white;
+      border: none; border-radius: 8px;
+      cursor: pointer; display: flex;
+      align-items: center; justify-content: center;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate { animation: fadeInUp 0.5s ease both; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .content-layout { grid-template-columns: 1fr; }
+      .toc-sidebar {
+        position: static;
+        display: flex; gap: 0.75rem; flex-wrap: wrap;
+        padding: 1rem;
+      }
+      .toc-title { width: 100%; }
+      .toc-list { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .toc-list a { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .content-layout { padding: 1.5rem 1rem 5rem; }
+      .page-hero { padding: 5.5rem 1rem 2.5rem; }
+      .search-wrapper { padding: 0 1rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .mobile-nav { display: block; }
+      .chat-widget-container { bottom: 80px; right: 15px; }
+      .chat-window { width: calc(100vw - 30px); right: -15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/loans">Loans</a>
+      <a href="/about">About Us</a>
+      <a href="/register" class="btn-nav">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="page-hero">
+    <div class="hero-deco">🤝</div>
+    <div class="hero-deco">📞</div>
+    <div class="hero-deco">💬</div>
+    <h1>Help & Support</h1>
+    <p>We're here to help you every step of the way. Find answers, contact our team, or submit a request — we respond fast.</p>
+  </section>
+
+  <!-- ========== SEARCH ========== -->
+  <div class="search-wrapper">
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input type="text" class="search-input" id="helpSearch" placeholder="Search help articles..." oninput="filterArticles()">
+      <button class="search-btn">Search</button>
+    </div>
+    <div class="search-suggestions">
+      <span class="suggestion-tag" onclick="quickSearch('reset password')">Reset Password</span>
+      <span class="suggestion-tag" onclick="quickSearch('transfer limits')">Transfer Limits</span>
+      <span class="suggestion-tag" onclick="quickSearch('wire transfer')">Wire Transfer</span>
+      <span class="suggestion-tag" onclick="quickSearch('mobile deposit')">Mobile Deposit</span>
+      <span class="suggestion-tag" onclick="quickSearch('fraud alert')">Fraud Alert</span>
+      <span class="suggestion-tag" onclick="quickSearch('account fees')">Account Fees</span>
+    </div>
+  </div>
+
+  <!-- ========== CONTENT ========== -->
+  <div class="content-layout">
+
+    <!-- SIDEBAR TOC -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#q1" class="active">⚡ Quick Actions</a></li>
+        <li><a href="#q2">❓ Frequently Asked Questions</a></li>
+        <li><a href="#q3">📧 Getting in Touch</a></li>
+        <li><a href="#q4">🎥 Video Tutorials</a></li>
+        <li><a href="#q5">📋 Submit a Ticket</a></li>
+        <li><a href="#q6">🌾 Farming-Specific Help</a></li>
+        <li><a href="#q7">📜 Resources</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- 1. QUICK ACTION CARDS — NOW ACTUALLY LINKED ✅ -->
+      <div class="sec-section animate" id="q1">
+        <div class="quick-cards">
+          <!-- ✅ FIXED: Now wraps everything in an <a> tag -->
+          <a href="/profile" class="quick-card">
+            <div class="quick-card-icon green">🔐</div>
+            <h3>Reset Password</h3>
+            <p>Forgot your login? Change it instantly from your Profile &gt; Security Settings.</p>
+          </a>
+          <a href="#" onclick="alert('To report fraud, call 1-800-555-FRAUD immediately.'); return false;" class="quick-card">
+            <div class="quick-card-icon blue">🆘</div>
+            <h3>Report Fraud</h3>
+            <p>See suspicious activity? Call our 24/7 fraud hotline now.</p>
+          </a>
+          <a href="/profile" class="quick-card">
+            <div class="quick-card-icon gold">💳</div>
+            <h3>Update Cards</h3>
+            <p>Change your card PIN, freeze/deactivate cards, or request replacements.</p>
+          </a>
+          <a href="#q4" class="quick-card">
+            <div class="quick-card-icon purple">📱</div>
+            <h3>Mobile App Help</h3>
+            <p>Troubleshooting guides for iOS and Android apps below.</p>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. FAQ SECTION -->
+      <div class="faq-section animate" style="animation-delay:0.1s;" id="q2">
+        <h2 class="faq-category-title">Frequently Asked Questions</h2>
+
+        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.75rem;">Account Management</h3>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">How do I reset my online banking password?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p>Navigate to Dashboard → Profile → Security Settings → Change Password. You must know your current password to proceed. If you've forgotten it entirely, click "Forgot Password" on the login page. A secure link will be sent to your registered email within 2 minutes.</p>
+            <p>You cannot use any of your last 5 passwords, and must meet our minimum complexity requirements (12+ characters, mixed case, numbers, symbols).</p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">What are the daily transfer limits for my account?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p><strong>Basic Verified:</strong> $10,000/day internal, $5,000/day external wires<br>
+            <strong>Fully Verified:</strong> $50,000/day internal, $25,000/day domestic wires, $10,000/day international<br>
+            <strong>Premium (Business):</strong> Up to $500,000/day with dual-authorization setup</p>
+            <p>You can request a temporary limit increase through Dashboard → Account Settings → Limit Requests. Approval takes 2–4 business hours.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">My statement isn't showing up — where can I find it?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p>Statements are available in Dashboard → Accounts → Select Account → Statements PDF. Monthly statements are posted by the 5th of each month. We can re-send any statement from the past 7 years.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.1rem; font-weight:700; margin-top:2rem; margin-bottom:0.75rem;">Transfers & Payments</h3>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">Why is my wire transfer taking longer than expected?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p>Domestic wires typically arrive same-day if submitted before 4:00 PM CT. International wires usually arrive in 1–5 business days depending on the receiving country. Factors causing delays include incomplete beneficiary information, intermediary bank routing, holidays, or enhanced compliance reviews on large amounts ($10,000+).</p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">Can I cancel or reverse a payment I just made?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p><strong>Internal transfers:</strong> Can be reversed instantly if within 5 minutes.<br>
+            <strong>ACH transactions:</strong> Cancellation requests within 24 hours via Dashboard → Transactions → Cancel ACH.<br>
+            <strong>Wires:</strong> Once sent, recall the receiving institution through our fraud team.<br>
+            <strong>Bill Pay:</strong> Paper checks stopped via $25 stop-payment order. Electronic payments cancelled within 48 hours.</p>
+          </div>
+        </div>
+
+        <h3 style="font-size:1.1rem; font-weight:700; margin-top:2rem; margin-bottom:0.75rem;">Security & Fraud</h3>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">I received a phishing email claiming to be from AgriBank — what do I do?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p><strong>Do NOT click any links or download attachments.</strong> Forward the email to phish@agribanktx.com then delete it. We will never ask for your password, PIN, full SSN, or one-time code via email. When in doubt, call 1-800-555-FRAUD.</p>
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFAQ(this)">
+          <button class="faq-question">My card was lost/stolen — how quickly can it be blocked?<span class="faq-arrow">▼</span></button>
+          <div class="faq-answer">
+            <p>Immediate action is available through the app under Card Controls → Freeze Card (instant). You can also call 1-800-555-AGRI for instant manual blocking. Replacement debit cards ship within 2–3 business days. Virtual card numbers can be issued instantly while waiting.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. GETTING IN TOUCH -->
+      <div class="faq-section animate" style="animation-delay:0.15s;" id="q3">
+        <h2 class="faq-category-title">Getting in Touch</h2>
+        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1.25rem;">Our support teams are available through multiple channels:</p>
+
+        <div class="contact-cards">
+          <div class="contact-card">
+            <div class="contact-card-header">
+              <div class="contact-card-icon green">📞</div>
+              <h3>Phone Support</h3>
+            </div>
+            <p>Main Line</p>
+            <div class="highlight">1-800-555-AGRI</div>
+            <p style="margin-top:0.5rem;font-size:0.78rem;color:var(--text-secondary);">Mon–Fri 8AM–8PM CT<br>Sat 9AM–1PM CT<br>Emergency 24/7 Fraud Line: 1-800-555-FRAUD</p>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-header">
+              <div class="contact-card-icon blue">💬</div>
+              <h3>Live Chat</h3>
+            </div>
+            <p>Chat with a support agent in real-time. Average wait time: under 3 minutes.</p>
+            <button class="btn-submit" onclick="toggleChat()" style="margin-top:0.5rem;padding:0.6rem 1.25rem;font-size:0.85rem;">Start Chat Now</button>
+          </div>
+          <div class="contact-card">
+            <div class="contact-card-header">
+              <div class="contact-card-icon gold">🏢</div>
+              <h3>Visit a Branch</h3>
+            </div>
+            <p>42 locations across Texas for in-person service, cash deposits, notary services, and consultations.</p>
+            <a href="#" style="display:inline-block;margin-top:0.5rem;font-size:0.85rem;font-weight:600;color:var(--green-700);" onclick="alert('Branch locator coming soon!'); return false;">Find Nearest Branch →</a>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item"><span class="info-item-icon">✉️</span><div><div class="info-item-label">Email</div><div class="info-item-value">support@agribanktx.com</div></div></div>
+          <div class="info-item"><span class="info-item-icon">🐦</span><div><div class="info-item-label">Twitter / X</div><div class="info-item-value">@AgriBankTX</div></div></div>
+          <div class="info-item"><span class="info-item-icon">📍</span><div><div class="info-item-label">Headquarters</div><div class="info-item-value">100 Market St, Austin TX</div></div></div>
+          <div class="info-item"><span class="info-item-icon">💬</span><div><div class="info-item-label">WhatsApp Business</div><div class="info-item-value">+1 (512) 555-0199</div></div></div>
+        </div>
+      </div>
+
+      <!-- 4. VIDEO TUTORIALS -->
+      <div class="faq-section animate" style="animation-delay:0.2s;" id="q4">
+        <h2 class="faq-category-title">Video Tutorials</h2>
+        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1rem;">Watch our quick tutorials to master the platform:</p>
+
+        <div class="article-list" id="articleList">
+          <div class="article-item" onclick="openArticle('setting-up-your-account')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Setting Up Your Account for the First Time</div><div class="article-meta">Duration: 4 min • Updated April 2025</div></div><span class="article-arrow">→</span></div>
+          <div class="article-item" onclick="openArticle('making-internal-transfers')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">How to Make Internal Transfers Between Accounts</div><div class="article-meta">Duration: 3 min • Updated March 2025</div></div><span class="article-arrow">→</span></div>
+          <div class="article-item" onclick="openArticle('mobile-check-deposit')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Perfect Mobile Check Deposit Technique</div><div class="article-meta">Duration: 5 min • Updated April 2025</div></div><span class="article-arrow">→</span></div>
+          <div class="article-item" onclick="openArticle('security-best-practices')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Security Best Practices Every Farmer Should Know</div><div class="article-meta">Duration: 7 min • Updated January 2025</div></div><span class="article-arrow">→</span></div>
+        </div>
+      </div>
+
+      <!-- 5. SUBMIT A TICKET -->
+      <div class="faq-section animate" style="animation-delay:0.25s;" id="q5">
+        <h2 class="faq-category-title">Submit a Support Ticket</h2>
+        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1rem;">Can't find what you need? Submit a ticket and our team will respond within 4 business hours during working days.</p>
+
+        <div class="ticket-form">
+          <form onsubmit="submitTicket(event)">
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Full name" required></div>
+              <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Category</label><select class="form-select" required><option value="">Select category...</option><option>Account Issues</option><option>Transaction Problem</option><option>Mobile App Issue</option><option>Loan / Credit Question</option><option>Card Services</option><option>Fee Dispute</option><option>General Inquiry</option><option>Feature Request</option><option>Complaint</option></select></div>
+              <div class="form-group"><label class="form-label">Priority</label><select class="form-select"><option>Normal</option><option>High</option><option>Urgent</option></select></div>
+            </div>
+            <div class="form-group"><label class="form-label">Subject</label><input type="text" class="form-input" placeholder="Brief summary of your issue" required></div>
+            <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Describe your issue in detail. Include transaction IDs, account numbers, or error messages." required></textarea></div>
+            <button type="submit" class="btn-submit">Submit Ticket →</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 6. FARMING SPECIFIC HELP -->
+      <div class="faq-section animate" style="animation-delay:0.3s;" id="q6">
+        <h2 class="faq-category-title">Farming-Specific Help</h2>
+        <div class="alert-box success"><span class="icon">🌾</span><p><strong>Agricultural Banking Experts Available!</strong> Our specialized ag-lending and ag-banking advisors can help with harvest-cycle planning, seasonal cash flow management, crop insurance financing, and equipment leasing. Schedule a consultation at any branch or via phone.</p></div>
+      </div>
+
+      <!-- 7. RESOURCES -->
+      <div class="faq-section animate" style="animation-delay:0.35s;" id="q7">
+        <h2 class="faq-category-title">Additional Resources</h2>
+        <div class="article-list">
+          <div class="article-item"><span class="article-icon">📄</span><div class="article-info"><div class="article-title">Complete Fee Schedule (PDF)</div><div class="article-meta">Last updated: April 2025</div></div><span class="article-arrow">→</span></div>
+          <div class="article-item"><span class="article-icon">📖</span><div class="article-info"><div class="article-title">Phishing Awareness Guide</div><div class="article-meta">Stay safe from fraudulent emails and texts</div></div><span class="article-arrow">→</span></div>
+          <div class="article-item"><span class="article-icon">👨‍🌾</span><div class="article-info"><div class="article-title">Beginning Farmer Program</div><div class="article-meta">Resources and incentives for new farmers</div></div><span class="article-arrow">→</span></div>
+        </div>
+        <button class="btn-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer-brand">Agri<span>Bank</span></div>
+    <div class="footer-subtitle">Texas Regional • Since 1987</div>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/security">Security Center</a>
+      <a href="/help" style="color:var(--gold);">Help & Support</a>
+    </div>
+    <div>© <%= new Date().getFullYear() || 2025 %> AgriBank Texas Regional. Member FDIC. Equal Housing Lender. NMLS# 482910</div>
+  </footer>
+
+  <!-- ========== MOBILE NAV ========== -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/" class="mob-nav-item"><span class="mob-icon">🏠</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+  <!-- ========== LIVE CHAT WIDGET ========== -->
+  <div class="chat-widget-container">
+    <div id="chatWindow" class="chat-window hidden">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="agent-avatar">🌾</div>
+          <div><div class="agent-name">AgriBank Support</div><div class="agent-status">● Online</div></div>
+        </div>
+        <button class="close-chat" onclick="toggleChat()">✕</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="message bot"><div class="message-bubble">Howdy! 👋 Welcome to AgriBank Support. How can I assist you today?</div></div>
+      </div>
+      <div class="chat-footer">
+        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
+        <button class="send-btn" onclick="sendChatMessage()">➤</button>
+      </div>
+    </div>
+    <button class="chat-button" onclick="toggleChat()">
+      💬<span class="chat-tooltip">Live Support</span>
+    </button>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    // FAQ Toggle
+    function toggleFAQ(item) {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // Chat Toggle
+    function toggleChat() {
+      document.getElementById('chatWindow').classList.toggle('hidden');
+    }
+    function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+    function sendChatMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      const body = document.getElementById('chatBody');
+      body.innerHTML += '<div class="message user"><div class="message-bubble">' + text + '</div></div>';
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+      setTimeout(() => {
+        const responses = ["Thanks for reaching out! Let me look into that for you right away. 🌾", "I'd be happy to help! Could you provide a bit more detail?", "Great question! One moment while I pull up the info.", "You can also try visiting your Dashboard → Profile → Security Settings for that option!"];
+        body.innerHTML += '<div class="message bot"><div class="message-bubble">' + responses[Math.floor(Math.random() * responses.length)] + '</div></div>';
+        body.scrollTop = body.scrollHeight;
+      }, 800);
+    }
+
+    // Search / Filter Articles
+    function filterArticles() {
+      const query = document.getElementById('helpSearch').value.toLowerCase();
+      document.querySelectorAll('.article-item').forEach(item => {
+        const title = item.querySelector('.article-title').textContent.toLowerCase();
+        const meta = item.querySelector('.article-meta').textContent.toLowerCase();
+        item.style.display = (title.includes(query) || meta.includes(query) || query === '') ? 'flex' : 'none';
+      });
+    }
+    function quickSearch(term) { document.getElementById('helpSearch').value = term; filterArticles(); }
+    function openArticle(id) { alert('Opening article: ' + id); }
+
+    // Ticket Form
+    function submitTicket(e) { e.preventDefault(); alert('✅ Ticket submitted successfully!\nOur team will respond within 4 business hours.'); e.target.reset(); }
+
+    // Scroll Spy for TOC
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocLinks = document.querySelectorAll('.toc-list a');
+      const sections = document.querySelectorAll('.sec-section[id]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove('active'));
+            const activeLink = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+            if (activeLink) activeLink.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -70% 0px' });
+      sections.forEach(sec => observer.observe(sec));
+    });
+  </script>
+
+</body>
+</html>
+
+<div class="quick-card">
+  🔐
+  <h3>Reset Password</h3>
+  <p>Forgot your login? ...</p>
+</div>
+<!-- This was a DEAD DIV — no link, no navigation -->
+
+<a href="/profile" class="quick-card">
+  🔐
+  <h3>Reset Password</h3>
+  <p>Forgot your login? Change it instantly from your Profile → Security Settings.</p>
+</a>
+<!-- Now clicking it goes to /profile where users can update their credentials -->
+

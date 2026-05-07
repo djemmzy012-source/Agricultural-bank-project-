@@ -1,513 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile - AgriBank Texas</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <%- include('partials/head', { title: 'Profile & Settings | AgriBank Texas' }) %>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
+      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
+      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
+      --text-secondary: #64748b; --border: #e2e8f0;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --info: #3b82f6;
+      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
+    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
+    .sidebar-brand span { color: var(--gold); }
+    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
+    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
+    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
+    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
+    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
+    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
+    .user-info .name { font-size: 0.85rem; font-weight: 600; }
+    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
+
+    /* MAIN AREA */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
+    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 1rem; }
+    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
+    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+    /* PROFILE LAYOUT */
+    .profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; }
+    .widget { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.5rem; }
+    .widget-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+    .widget-header h3 { font-size: 1rem; font-weight: 700; }
+    .widget-body { padding: 1.5rem; }
+
+    /* PROFILE CARD */
+    .profile-card { text-align: center; }
+    .avatar-lg { width: 100px; height: 100px; background: linear-gradient(135deg, var(--green-700), var(--green-900)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; margin: 0 auto 1rem; border: 4px solid #ecfdf5; }
+    .profile-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.25rem; }
+    .profile-role { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; }
+    .profile-stats { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    .stat-item { text-align: center; }
+    .stat-val { font-size: 1.1rem; font-weight: 700; font-family: 'DM Serif Display', serif; }
+    .stat-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .action-btn { display: block; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; text-align: center; font-weight: 600; font-size: 0.85rem; background: white; transition: 0.2s; cursor: pointer; }
+    .action-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .action-btn.primary { background: var(--green-800); color: white; border-color: var(--green-800); }
+    .action-btn.primary:hover { background: var(--green-700); }
+    .action-btn.danger { color: var(--danger); border-color: #fecaca; }
+    .action-btn.danger:hover { background: #fef2f2; }
+
+    /* FORMS */
+    .form-group { margin-bottom: 1.25rem; }
+    .form-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .form-input { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: inherit; transition: 0.2s; background: white; }
+    .form-input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
+    .form-input:disabled { background: #f8fafc; opacity: 0.7; cursor: not-allowed; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-submit { width: 100%; padding: 0.85rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-submit:hover { background: var(--green-700); }
+
+    /* ACCOUNTS LIST */
+    .acct-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #f1f5f9; }
+    .acct-item:last-child { border-bottom: none; }
+    .acct-info h4 { font-size: 0.95rem; font-weight: 600; }
+    .acct-info p { font-size: 0.8rem; color: var(--text-secondary); font-family: monospace; }
+    .acct-actions { display: flex; gap: 0.5rem; }
+    .btn-mini { padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); cursor: pointer; background: white; transition: 0.2s; }
+    .btn-mini:hover { background: #f8fafc; }
+    .btn-mini.primary { background: var(--green-800); color: white; border-color: var(--green-800); }
+
+    /* CARD CONTROLS */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
+    .bank-card { color: white; border-radius: 12px; padding: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(15,43,31,0.3); }
+    .bank-card.dark { background: linear-gradient(135deg, #0f2b1f, #1a5c30); }
+    .bank-card.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+    .bank-card::before { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: rgba(255,255,255,0.08); border-radius: 50%; transform: translate(30%, -30%); }
+    .card-type { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 1rem; }
+    .card-number { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 1.25rem; }
+    .card-details { display: flex; justify-content: space-between; align-items: flex-end; }
+    .card-holder label, .card-expiry label { display: block; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 0.25rem; }
+    .card-holder span, .card-expiry span { font-weight: 600; font-size: 0.9rem; }
+    .card-actions { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
+    .btn-card { flex: 1; padding: 0.6rem; background: rgba(255,255,255,0.15); border: none; border-radius: 6px; color: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-card:hover { background: rgba(255,255,255,0.25); }
+    .btn-card.freeze { background: #ef4444; }
+    .btn-card.freeze:hover { background: #dc2626; }
+
+    /* SECURITY TABLE */
+    .login-list { display: flex; flex-direction: column; }
+    .login-row { display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+    .login-row:last-child { border-bottom: none; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 0.75rem; }
+    .status-dot.success { background: var(--success); }
+    .status-dot.fail { background: var(--danger); }
+    .login-meta { flex: 1; }
+    .login-ip { font-weight: 600; }
+    .login-time { font-size: 0.75rem; color: #64748b; } /* FIXED INLINE CSS */
+
+    /* ALERTS */
+    .alert { padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
+    .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+    /* MOBILE */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-overlay.show { display: block; opacity: 1; }
+    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    @media (max-width: 1024px) { .profile-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger { display: flex; }
+      .content { padding: 1.25rem; padding-bottom: 5rem; }
+      .topbar { padding: 0 1.25rem; }
+      .mobile-nav { display: block; }
+      .form-row { grid-template-columns: 1fr; }
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
-      min-height: 100vh;
-      color: #1a1a2e;
-    }
-
-    /* Top Navigation */
-    .top-nav {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 15px 30px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 22px;
-      font-weight: 700;
-      color: #1a472a;
-    }
-
-    .logo-icon {
-      font-size: 28px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #4a5568;
-      font-weight: 500;
-      font-size: 14px;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover, .nav-links a.active {
-      color: #1a472a;
-    }
-
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #1a472a, #2d5a3f);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .user-name {
-      font-weight: 500;
-      color: #1a1a2e;
-    }
-
-    .logout-btn {
-      background: #e53e3e;
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-
-    .logout-btn:hover {
-      background: #c53030;
-    }
-
-    /* Main Content */
-    .main-content {
-      max-width: 1000px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-
-    .page-header {
-      margin-bottom: 30px;
-    }
-
-    .page-header h1 {
-      font-size: 32px;
-      color: white;
-      margin-bottom: 8px;
-    }
-
-    .page-header p {
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 15px;
-    }
-
-    /* Messages */
-    .alert {
-      padding: 16px 20px;
-      border-radius: 10px;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 500;
-    }
-
-    .alert-success {
-      background: rgba(72, 187, 120, 0.2);
-      border: 1px solid rgba(72, 187, 120, 0.4);
-      color: #9ae6b4;
-    }
-
-    .alert-error {
-      background: rgba(245, 101, 101, 0.2);
-      border: 1px solid rgba(245, 101, 101, 0.4);
-      color: #feb2b2;
-    }
-
-    /* Profile Grid */
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-
-    @media (max-width: 768px) {
-      .profile-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* Cards */
-    .card {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      padding: 28px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .card-icon {
-      font-size: 24px;
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1a472a;
-    }
-
-    /* Profile Info Display */
-    .profile-info {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f0f0;
-    }
-
-    .info-row:last-child {
-      border-bottom: none;
-    }
-
-    .info-label {
-      font-size: 13px;
-      color: #718096;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .info-value {
-      font-size: 15px;
-      color: #2d3748;
-      font-weight: 500;
-    }
-
-    .badge {
-      background: #1a472a;
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 500;
-    }
-
-    .badge-admin {
-      background: linear-gradient(135deg, #805ad5, #6b46c1);
-    }
-
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: #4a5568;
-      margin-bottom: 8px;
-    }
-
-    .form-group input {
-      width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 8px;
-      font-size: 14px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .form-group input:focus {
-      outline: none;
-      border-color: #1a472a;
-      box-shadow: 0 0 0 3px rgba(26, 71, 42, 0.1);
-    }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-
-    .submit-btn {
-      background: linear-gradient(135deg, #1a472a, #2d5a3f);
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(26, 71, 42, 0.3);
-    }
-
-    /* Accounts List */
-    .accounts-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .account-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-      background: #f7fafc;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .account-item:hover {
-      transform: translateX(4px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    .account-left {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .account-icon {
-      font-size: 28px;
-    }
-
-    .account-details h4 {
-      font-size: 14px;
-      font-weight: 600;
-      color: #2d3748;
-      margin-bottom: 4px;
-    }
-
-    .account-details span {
-      font-size: 12px;
-      color: #718096;
-    }
-
-    .account-balance {
-      font-size: 16px;
-      font-weight: 700;
-      color: #1a472a;
-    }
-
-    /* Full Width Card */
-    .full-width {
-      grid-column: 1 / -1;
-    }
-
-    /* Footer */
-    .footer {
-      text-align: center;
-      padding: 30px;
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 13px;
-    }
+    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
+    .btn-text:hover { color: var(--green-900); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.4s ease both; }
   </style>
 </head>
 <body>
+  <%
+    // SAFE VARIABLE INITIALIZATION TO PREVENT CRASHES
+    const safeUser = user || { firstName: 'Customer', lastName: '', email: '', username: 'user', memberSince: new Date().getFullYear(), address: '', city: '', state: '', zip: '' };
+    const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
+    const isAdmin = safeUser.isAdmin === 1;
+    
+    const safeAccounts = typeof accounts !== 'undefined' ? accounts : [];
+    const safeLogins = typeof loginHistory !== 'undefined' ? loginHistory : [];
+  %>
 
-  <!-- Top Navigation -->
-  <nav class="top-nav">
-    <div class="logo">
-      <span class="logo-icon">🌾</span>
-      <span>AgriBank Texas</span>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Main</div>
+      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
+      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
+      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
+      <div class="nav-section">Services</div>
+      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
+      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
+      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
+      <div class="nav-section">Account</div>
+      <a href="/profile" class="nav-item active"><span class="icon">👤</span> Profile</a>
+      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+      <a href="/security" class="nav-item"><span class="icon">️</span> Security</a>
+      <a href="/help" class="nav-item"><span class="icon">❓</span> Help</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/logout" class="sidebar-user">
+        <div class="avatar"><%= initials %></div>
+        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
+      </a>
     </div>
-    
-    <div class="nav-links">
-      <a href="/dashboard">Dashboard</a>
-      <a href="/accounts">Accounts</a>
-      <a href="/transactions">Transactions</a>
-      <a href="/transfer">Transfer</a>
-      <a href="/billpay">Bill Pay</a>
-      <a href="/profile" class="active">Profile</a>
-    </div>
-    
-    <div class="user-info">
-      <div class="user-avatar">
-        <%= user.firstName ? user.firstName.charAt(0) : 'U' %><%= user.lastName ? user.lastName.charAt(0) : '' %>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title"><h1>Profile & Settings</h1></div>
       </div>
-      <span class="user-name"><%= user.firstName || user.username %></span>
-      <a href="/logout" class="logout-btn">Logout</a>
+      <div class="topbar-right">
+        <a href="/notifications" class="topbar-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
+
+      <% if (typeof success !== 'undefined' && success) { %>
+        <div class="alert alert-success animate">✅ <%= success %></div>
+      <% } %>
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-error animate">⚠️ <%= error %></div>
+      <% } %>
+
+      <div class="profile-grid">
+        
+        <!-- LEFT COLUMN -->
+        <div>
+          <div class="widget profile-card animate">
+            <div class="widget-body">
+              <div class="avatar-lg"><%= initials %></div>
+              <div class="profile-name"><%= safeUser.firstName %> <%= safeUser.lastName %></div>
+              <div class="profile-role"><%= isAdmin ? 'System Administrator' : 'Premium Member' %></div>
+              
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <div class="stat-val"><%= safeUser.memberSince || '2024' %></div>
+                  <div class="stat-label">Member Since</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-val"><%= safeAccounts.length %></div>
+                  <div class="stat-label">Active Accts</div>
+                </div>
+              </div>
+
+              <div class="quick-actions">
+                <a href="#edit-form" class="action-btn primary">✏️ Edit Info</a>
+                <a href="#cards-section" class="action-btn">💳 Card Control</a>
+                <a href="#security-section" class="action-btn">🛡️ Security</a>
+                <a href="#" class="action-btn danger" onclick="if(confirm('Are you sure you want to sign out?')) window.location.href='/logout'">🚪 Sign Out</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget animate">
+            <div class="widget-header"><h3>Recent Activity</h3><a href="/transactions" class="btn-text" style="margin:0;">View All</a></div>
+            <div class="widget-body">
+              <div class="login-list">
+                <div class="login-row">
+                  <div class="status-dot success"></div>
+                  <div class="login-meta">
+                    <div class="login-ip">Secure Login</div>
+                    <div class="login-time">Chrome on macOS · Today</div>
+                  </div>
+                </div>
+                <div class="login-row">
+                  <div class="status-dot success"></div>
+                  <div class="login-meta">
+                    <div class="login-ip">Mobile App Access</div>
+                    <div class="login-time">iOS 17 · Yesterday</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div>
+          <!-- PERSONAL INFO -->
+          <div class="widget animate" id="edit-form">
+            <div class="widget-header"><h3>Personal Information</h3></div>
+            <div class="widget-body">
+              <form action="/profile" method="POST">
+                <div class="form-group">
+                  <label class="form-label">Username</label>
+                  <input type="text" value="<%= safeUser.username %>" disabled class="form-input" autocomplete="off">
+                </div>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <input type="text" value="<%= safeUser.firstName %>" disabled class="form-input" autocomplete="off">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" value="<%= safeUser.lastName %>" disabled class="form-input" autocomplete="off">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" name="email" class="form-input" value="<%= safeUser.email || '' %>" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Street Address</label>
+                  <input type="text" name="address" class="form-input" value="<%= safeUser.address || '' %>" placeholder="123 Farm Road">
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">City</label>
+                    <input type="text" name="city" class="form-input" value="<%= safeUser.city || '' %>" placeholder="City">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">State</label>
+                    <input type="text" name="state" class="form-input" value="<%= safeUser.state || '' %>" maxlength="2" placeholder="TX">
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="form-label">ZIP Code</label>
+                  <input type="text" name="zip" class="form-input" value="<%= safeUser.zip || '' %>" placeholder="78701">
+                </div>
+
+                <button type="submit" class="btn-submit">Save Changes</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- ACCOUNTS -->
+          <div class="widget animate">
+            <div class="widget-header"><h3>My Accounts</h3><a href="/accounts" class="btn-text" style="margin:0;">Manage All</a></div>
+            <div class="widget-body">
+              <% if (safeAccounts.length > 0) { %>
+                <% safeAccounts.forEach(acc => { %>
+                  <div class="acct-item">
+                    <div class="acct-info">
+                      <h4><%= acc.name %></h4>
+                      <p>****<%= acc.number || '0000' %></p>
+                    </div>
+                    <div class="acct-actions">
+                      <a href="/transactions?accountId=<%= acc.id %>" class="btn-mini">History</a>
+                      <a href="/transfer" class="btn-mini primary">Transfer</a>
+                    </div>
+                  </div>
+                <% }) %>
+              <% } else { %>
+                <div style="padding:1rem; text-align:center; color:var(--text-secondary);">No accounts linked.</div>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- CARD CONTROLS -->
+          <div class="widget animate" id="cards-section">
+            <div class="widget-header"><h3>Card Management</h3><a href="/credit-cards" class="btn-text" style="margin:0;">Apply for New</a></div>
+            <div class="widget-body">
+              <div class="card-grid">
+                <div class="bank-card dark">
+                  <div class="card-type">Visa Business</div>
+                  <div class="card-number">•••• •••• •••• 7721</div>
+                  <div class="card-details">
+                    <div class="card-holder">
+                      <label>Cardholder</label>
+                      <span><%= (safeUser.firstName || 'CARD') + ' ' + (safeUser.lastName || 'HOLDER') %></span>
+                    </div>
+                    <div class="card-expiry">
+                      <label>Expires</label>
+                      <span>12/28</span>
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <button class="btn-card" onclick="window.location.href='tel:+1800555AGRI'">📞 Report Lost</button>
+                    <button class="btn-card freeze">❄️ Freeze</button>
+                  </div>
+                </div>
+                <div class="bank-card gold">
+                  <div class="card-type">Rewards Platinum</div>
+                  <div class="card-number">•••• •••• •••• 4492</div>
+                  <div class="card-details">
+                    <div class="card-holder">
+                      <label>Cardholder</label>
+                      <span><%= (safeUser.firstName || 'CARD') + ' ' + (safeUser.lastName || 'HOLDER') %></span>
+                    </div>
+                    <div class="card-expiry">
+                      <label>Expires</label>
+                      <span>03/27</span>
+                    </div>
+                  </div>
+                  <div class="card-actions">
+                    <button class="btn-card" onclick="alert('PIN change requests are submitted securely via Secure Message.')">🔒 Change PIN</button>
+                    <button class="btn-card" onclick="alert('Virtual card issued instantly. See your email for details.')">✨ Issue Virtual</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SECURITY SECTION -->
+          <div class="widget animate" id="security-section">
+            <div class="widget-header"><h3>Security & Authentication</h3></div>
+            <div class="widget-body">
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid #f1f5f9;">
+                <div><strong>Password</strong><br><span style="font-size:0.8rem; color:#64748b;">Last changed 3 months ago</span></div>
+                <a href="/forgot-password" class="btn-mini primary">Change Password</a>
+              </div>
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid #f1f5f9;">
+                <div><strong>Two-Factor Authentication</strong><br><span style="font-size:0.8rem; color:#10b981;">● Enabled (Authenticator App)</span></div>
+                <a href="/security" class="btn-mini">Manage 2FA</a>
+              </div>
+              <div style="padding:0.75rem 0;">
+                <strong style="display:block; margin-bottom:0.75rem;">Recent Login History</strong>
+                <% if (safeLogins.length > 0) { %>
+                  <% safeLogins.slice(0, 4).forEach(log => { %>
+                    <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0; font-size:0.85rem;">
+                      <div>
+                        <div style="font-weight:600;"><%= log.ipAddress || 'Unknown IP' %></div>
+                        <div style="font-size:0.75rem; color:#64748b;"><%= log.device || 'Device Unknown' %> · <%= new Date(log.timestamp || Date.now()).toLocaleDateString() %></div>
+                      </div>
+                      <span style="color:<%= log.status === 'SUCCESS' ? '#10b981' : '#ef4444' %>">● <%= log.status || 'UNKNOWN' %></span>
+                    </div>
+                  <% }) %>
+                <% } else { %>
+                  <div style="padding:0.75rem; color:#64748b; font-size:0.9rem;">No recent activity recorded.</div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Send</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Bills</a>
+      <a href="/profile" class="mob-nav-item active"><span class="mob-icon">👤</span>Profile</a>
     </div>
   </nav>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    
-    <div class="page-header">
-      <h1>👤 My Profile</h1>
-      <p>Manage your account information and preferences</p>
-    </div>
-
-    <!-- Success/Error Messages -->
-    <% if (success) { %>
-      <div class="alert alert-success">
-        ✅ <%= success %>
-      </div>
-    <% } %>
-    
-    <% if (error) { %>
-      <div class="alert alert-error">
-        ❌ <%= error %>
-      </div>
-    <% } %>
-
-    <div class="profile-grid">
-      
-      <!-- Personal Information Card -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-icon">📋</span>
-          <h2 class="card-title">Personal Information</h2>
-        </div>
-        
-        <div class="profile-info">
-          <div class="info-row">
-            <span class="info-label">Username</span>
-            <span class="info-value"><%= user.username %></span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Full Name</span>
-            <span class="info-value"><%= user.firstName || '' %> <%= user.lastName || '' %></span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Member Since</span>
-            <span class="info-value"><%= user.memberSince || 'N/A' %></span>
-          </div>
-          <div class="info-row">
-            <span class="info-label">Account Type</span>
-            <span class="info-value">
-              <% if (user.isAdmin === 1) { %>
-                <span class="badge badge-admin">Administrator</span>
-              <% } else { %>
-                <span class="badge">Standard User</span>
-              <% } %>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Your Accounts Card -->
-      <div class="card">
-        <div class="card-header">
-          <span class="card-icon">🏦</span>
-          <h2 class="card-title">Your Accounts</h2>
-        </div>
-        
-        <div class="accounts-list">
-          <% if (accounts && accounts.length > 0) { %>
-            <% accounts.forEach(function(account) { %>
-              <div class="account-item">
-                <div class="account-left">
-                  <span class="account-icon"><%= account.icon || '💳' %></span>
-                  <div class="account-details">
-                    <h4><%= account.name %></h4>
-                    <span><%= account.number %></span>
-                  </div>
-                </div>
-                <span class="account-balance">$<%= account.balance.toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
-              </div>
-            <% }); %>
-          <% } else { %>
-            <p style="color: #718096; text-align: center; padding: 20px;">No accounts found.</p>
-          <% } %>
-        </div>
-      </div>
-
-      <!-- Edit Profile Card - Full Width -->
-      <div class="card full-width">
-        <div class="card-header">
-          <span class="card-icon">✏️</span>
-          <h2 class="card-title">Edit Profile</h2>
-        </div>
-        
-        <form method="POST" action="/profile">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" value="<%= user.email || '' %>" placeholder="Enter your email">
-          </div>
-          
-          <div class="form-group">
-            <label for="address">Street Address</label>
-            <input type="text" id="address" name="address" value="<%= user.address || '' %>" placeholder="Enter your street address">
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="city">City</label>
-              <input type="text" id="city" name="city" value="<%= user.city || '' %>" placeholder="City">
-            </div>
-            
-            <div class="form-group">
-              <label for="state">State</label>
-              <input type="text" id="state" name="state" value="<%= user.state || '' %>" placeholder="State">
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="zip">ZIP Code</label>
-            <input type="text" id="zip" name="zip" value="<%= user.zip || '' %>" placeholder="ZIP Code" style="max-width: 200px;">
-          </div>
-          
-          <button type="submit" class="submit-btn">Save Changes</button>
-        </form>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="footer">
-    <p>© 2024 AgriBank Texas. All rights reserved.</p>
-  </div>
-
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+  </script>
 </body>
 </html>
+

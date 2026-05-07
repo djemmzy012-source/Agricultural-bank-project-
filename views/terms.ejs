@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service | AgriBank Texas Regional</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1c14;
+      --green-900: #0f2b1f;
+      --green-800: #144a25;
+      --green-700: #1a5c30;
+      --green-600: #22753d;
+      --gold: #d4a047;
+      --gold-light: #e8b85e;
+      --bg: #f8faf8;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --sidebar-w: 260px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* ==========================================
+       NAVIGATION
+       ========================================== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green-900); }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
+    .nav-links a:hover { color: var(--green-700); }
+    .btn-nav { background: var(--green-800) !important; color: white !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
+    .btn-nav:hover { background: var(--green-700) !important; }
+
+    /* ==========================================
+       HERO SECTION
+       ========================================== */
+    .page-hero {
+      background: linear-gradient(170deg, var(--green-900) 0%, #1a5c30 40%, #2ea55a 100%);
+      color: white;
+      padding: 7rem 2rem 3.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 0.4rem 1.15rem;
+      font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--gold-light);
+      margin-bottom: 1.5rem; position: relative;
+    }
+    .page-hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .page-hero p {
+      max-width: 600px; margin: 0 auto;
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      position: relative;
+    }
+
+    /* ==========================================
+       CONTENT LAYOUT
+       ========================================== */
+    .content-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 2.5rem;
+      padding: 3rem 2rem 4rem;
+    }
+
+    /* SIDEBAR TABLE OF CONTENTS */
+    .toc-sidebar {
+      position: sticky;
+      top: 80px;
+      align-self: start;
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .toc-title {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-secondary);
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 0.15rem; }
+    .toc-list a {
+      display: block;
+      padding: 0.45rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.2s;
+      line-height: 1.4;
+    }
+    .toc-list a:hover { background: #f0fdf4; color: var(--green-700); }
+    .toc-list a.active { background: #ecfdf5; color: var(--green-700); font-weight: 700; }
+
+    /* MAIN CONTENT AREA */
+    .main-content { min-width: 0; }
+
+    /* TERMS SECTIONS */
+    .t-section {
+      scroll-margin-top: 80px;
+      margin-bottom: 3rem;
+      animation: fadeInUp 0.5s ease both;
+    }
+    .t-section:nth-child(1) { animation-delay: 0.05s; }
+    .t-section:nth-child(2) { animation-delay: 0.1s; }
+    .t-section:nth-child(3) { animation-delay: 0.15s; }
+    .t-section:nth-child(4) { animation-delay: 0.2s; }
+    .t-section:nth-child(5) { animation-delay: 0.25s; }
+    .t-section:nth-child(6) { animation-delay: 0.3s; }
+    .t-section:nth-child(7) { animation-delay: 0.35s; }
+    .t-section:nth-child(8) { animation-delay: 0.4s; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .section-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--gold);
+      font-weight: 700;
+      min-width: 28px;
+    }
+    .t-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.55rem;
+      color: var(--green-900);
+      line-height: 1.3;
+    }
+    .t-section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .t-section > p, .t-section li {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 0.75rem;
+      line-height: 1.8;
+    }
+    .t-section ul {
+      padding-left: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .t-section li { margin-bottom: 0.35rem; }
+    .t-section li::marker { color: var(--gold); }
+
+    .highlight-box {
+      background: linear-gradient(135deg, #fffbeb, #fefce8);
+      border-left: 4px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .highlight-box p {
+      color: #92400e;
+      font-size: 0.88rem;
+      margin-bottom: 0;
+      line-height: 1.7;
+    }
+    .highlight-box strong { color: #78350f; }
+
+    .info-banner {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .info-banner-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .info-banner p { color: #166534; font-size: 0.88rem; line-height: 1.7; margin: 0; }
+
+    .term-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .term-item {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .term-item-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    .term-item-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    /* BUTTONS */
+    .btn-back-top {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--green-800); color: white;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s; cursor: pointer; border: none;
+      margin-top: 1rem;
+    }
+    .btn-back-top:hover { background: var(--green-700); transform: translateY(-2px); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 0.25rem;
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-subtitle {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      opacity: 0.5;
+      margin-bottom: 1.5rem;
+    }
+    .footer-links {
+      display: flex; justify-content: center; gap: 1.5rem;
+      margin-bottom: 1.25rem; flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: rgba(255,255,255,0.6); font-weight: 600;
+      font-size: 0.85rem;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* MOBILE BOTTOM NAV */
+    .mobile-nav {
+      display: none;
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid var(--border);
+      z-index: 100; padding: 0.5rem 0;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 0.2rem; padding: 0.5rem 0;
+      font-size: 0.6rem; font-weight: 600;
+      color: var(--text-secondary); cursor: pointer;
+    }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .content-layout { grid-template-columns: 1fr; }
+      .toc-sidebar {
+        position: static;
+        display: flex; gap: 1rem; flex-wrap: wrap;
+        padding: 1rem;
+      }
+      .toc-title { width: 100%; }
+      .toc-list { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .toc-list a { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .content-layout { padding: 2rem 1rem 5rem; }
+      .page-hero { padding: 5.5rem 1rem 2.5rem; }
+      .mobile-nav { display: block; }
+      .t-section h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/loans">Loans</a>
+      <a href="/about">About Us</a>
+      <a href="/register" class="btn-nav">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section class="page-hero">
+    <div class="hero-badge">📄 Legal Agreement</div>
+    <h1>Terms of Service</h1>
+    <p>Please read these Terms of Service carefully before using any AgriBank Texas Regional services. Your access to and use of our platform is conditioned on your acceptance of and compliance with these terms.</p>
+  </section>
+
+  <!-- ========== CONTENT ========== -->
+  <div class="content-layout">
+
+    <!-- SIDEBAR TOC -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#t1" class="active">Acceptance of Terms</a></li>
+        <li><a href="#t2">Account Eligibility</a></li>
+        <li><a href="#t3">Your Responsibilities</a></li>
+        <li><a href="#t4">Banking Services & Fees</a></li>
+        <li><a href="#t5">Transfers & Payments</a></li>
+        <li><a href="#t6">Loans & Credit Products</a></li>
+        <li><a href="#t7">Security Obligations</a></li>
+        <li><a href="#t8">Limitation of Liability</a></li>
+        <li><a href="#t9">Intellectual Property</a></li>
+        <li><a href="#t10">Dispute Resolution</a></li>
+        <li><a href="#t11">Termination</a></li>
+        <li><a href="#t12">Governing Law</a></li>
+        <li><a href="#t13">Contact Us</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- 1. ACCEPTANCE -->
+      <div class="t-section" id="t1">
+        <div class="section-header"><span class="section-number">01</span><h2>Acceptance of Terms</h2></div>
+        <p>
+          By creating an account, logging into our online banking platform, using our mobile application, initiating a transfer, applying for a loan, or otherwise accessing any AgriBank Texas Regional ("AgriBank," "we," "us," or "our") service, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service ("Terms"), our <a href="/privacy" style="color:var(--green-600);font-weight:600;">Privacy Policy</a>, and all applicable rules, policies, and guidelines incorporated herein by reference.
+        </p>
+        <div class="highlight-box">
+          <p><strong>Important:</strong> These Terms constitute a legally binding agreement between you and AgriBank Texas Regional. If you do not agree to any provision herein, you must immediately discontinue use of all services and close your account.</p>
+        </div>
+        <p>We reserve the right to modify these Terms at any time. Material changes will be communicated via email notification, prominent website notice, or updated login screens. Continued use after modifications constitutes acceptance of the revised Terms. We encourage you to review this page periodically.</p>
+      </div>
+
+      <!-- 2. ELIGIBILITY -->
+      <div class="t-section" id="t2">
+        <div class="section-header"><span class="section-number">02</span><h2>Account Eligibility & Requirements</h2></div>
+        <p>To open or use any AgriBank service, you must meet all of the following requirements:</p>
+        <ul>
+          <li><strong>Age Requirement:</strong> You must be at least 18 years old and legally capable of entering into a binding contract under applicable law.</li>
+          <li><strong>Identity Verification:</strong> You must provide valid, government-issued identification (driver's license, passport, or state ID), Social Security Number or Taxpayer Identification Number, and proof of address documentation.</li>
+          <li><strong>Residency:</strong> You must be a resident of the United States and possess a valid U.S. mailing address. Some products may have additional geographic restrictions.</li>
+          <li><strong>Credit Standing:</strong> For credit-based products (loans, lines of credit), you must satisfy our creditworthiness standards as determined solely by AgriBank.</li>
+          <li><strong>No Prior Restrictions:</strong> You must not be subject to any sanctions administered by OFAC, listed on any government denied-party list, or previously barred from opening an account with us.</li>
+          <li><strong>One Person, One Account:</strong> Each individual may maintain only one primary personal account unless you obtain written authorization from AgriBank.</li>
+        </ul>
+
+        <div class="term-grid">
+          <div class="term-item">
+            <div class="term-item-label">Minimum Age</div>
+            <div class="term-item-value">18 Years Old</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">ID Required</div>
+            <div class="term-item-value">Government-Issued Photo ID</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Tax ID</div>
+            <div class="term-item-value">SSN or ITIN Required</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Credit Check</div>
+            <div class="term-item-value">Soft Pull for Accounts, Hard for Loans</div>
+          </div>
+        </div>
+
+        <p>Juvenile accounts (ages 13–17) require a custodial relationship with an eligible adult (parent or legal guardian) and are subject to separate <strong>Custodial Account Agreement</strong> terms. Business accounts require valid business registration documents, Employer Identification Number (EIN), and authorized signatory resolutions.</p>
+      </div>
+
+      <!-- 3. USER RESPONSIBILITIES -->
+      <div class="t-section" id="t3">
+        <div class="section-header"><span class="section-number">03</span><h2>Your Responsibilities</h2></div>
+        <p>By maintaining an account with AgriBank, you agree to the following responsibilities:</p>
+
+        <h3>Accurate Information</h3>
+        <p>You represent and warrant that all information provided during account opening, updates, and transactions is true, accurate, complete, and current. Failure to promptly update your contact information, employment details, or identity documents may result in account restriction or closure.</p>
+
+        <h3>Lawful Use</h3>
+        <p>You agree to use our services solely for lawful purposes and in accordance with all applicable federal, state, and local laws, including but not limited to the Bank Secrecy Act, USA PATRIOT Act, and Anti-Money Laundering regulations. You shall not use any AgriBank account for:**</p>
+        <ul>
+          <li>Illégal activities, terrorism financing, or money laundering</li>
+          <li>Sanctions evasion or transactions with sanctioned parties or countries</li>
+          <li>Fraudulent transactions, identity theft, or impersonation</li>
+          <li>Unauthorized testing of systems, hacking, or attempts to compromise security</li>
+          <li>Spam, phishing, or any form of electronic harassment</li>
+          <li>Operating an unlicensed money services business</li>
+        </ul>
+
+        <h3>Account Maintenance</h3>
+        <ul>
+          <li>Maintain minimum balance requirements where applicable to avoid monthly maintenance fees.</li>
+          <li>Review statements regularly and report discrepancies within 60 days of receipt.</li>
+          <li>Keep your registered email address and phone number current for security alerts and communications.</li>
+          <li>Respond promptly to verification requests from AgriBank's fraud prevention team.</li>
+        </ul>
+
+        <div class="info-banner">
+          <span class="info-banner-icon">📋</span>
+          <p><strong>Statement Reconciliation:</strong> Under Regulation CC and UCC Article 4, you are responsible for reporting unauthorized signatures, alterations, or forged items within 30 days of receiving your statement. Failure to do so may shift liability for subsequent fraudulent activity to you.</p>
+        </div>
+      </div>
+
+      <!-- 4. SERVICES & FEES -->
+      <div class="t-section" id="t4">
+        <div class="section-header"><span class="section-number">04</span><h2>Banking Services & Fee Schedule</h2></div>
+        <p>AgriBank offers a range of deposit, lending, and digital banking services. Below are the key product categories and associated fees. The complete Fee Schedule is available upon request, on our website, and at every branch.</p>
+
+        <h3>Deposit Accounts</h3>
+        <ul>
+          <li><strong>Primary Checking:</strong> No overdraft fee (opt-in required for courtesy pay), $3/month maintenance (waived with $500 daily minimum or direct deposit)</li>
+          <li><strong>Harvest Savings:</strong> 4.25% APY yield, $0 monthly fee, $25 minimum opening deposit, 6 withdrawal limit per month (federal regulation)</li>
+          <li><strong>Business Operating:</strong> $8/month maintenance (waived with $5,000 average daily balance), unlimited transactions included</li>
+        </ul>
+
+        <h3>Digital Services Fees</h3>
+        <div class="term-grid">
+          <div class="term-item">
+            <div class="term-item-label">Internal Transfer</div>
+            <div class="term-item-value">Free</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Domestic Wire</div>
+            <div class="term-item-value">$25 per wire</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">International Wire</div>
+            <div class="term-item-value">$45 per wire</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Mobile Deposit</div>
+            <div class="term-item-value">Free</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Bill Pay</div>
+            <div class="term-item-value">Free</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Overdraft (Opt-In)</div>
+            <div class="term-item-value">$35 per item</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p><strong>Fee Changes:</strong> AgriBank reserves the right to change fees with 30 days advance notice. If we increase fees, you may close your account without penalty before the new fees take effect. No fees will be applied retroactively to transactions already processed.</p>
+        </div>
+
+        <p>Additional ancillary fees may apply, including stop-payment fees ($25), returned item fees ($25), certified check fees ($10), cashier's check fees ($8), and expedited document delivery fees. A complete schedule is provided at account opening.</p>
+      </div>
+
+      <!-- 5. TRANSFERS & PAYMENTS -->
+      <div class="t-section" id="t5">
+        <div class="section-header"><span class="section-number">05</span><h2>Transfers, Payments & Authorizations</h2></div>
+
+        <h3>Electronic Fund Transfers (EFT)</h3>
+        <p>All electronic transfers conducted through our platforms are governed by <strong>Regulation E</strong> (Electronic Fund Transfer Act). You authorize AgriBank to process transfers initiated through your authenticated sessions, linked devices, and authorized biometric actions. Each transfer instruction is considered irrevocable once confirmed, except as required by law.</p>
+
+        <h3>ACH Transactions</h3>
+        <p>By enrolling in ACH origination or debit authorization, you agree to:</p>
+        <ul>
+          <li>Ensure sufficient funds exist at the time of each scheduled debit.</li>
+          <li>Provide at least 3 business days' notice for one-time ACH originations.</li>
+          <li>Notify us immediately of any disputes regarding ACH entries within 60 calendar days of the statement date showing the entry.</li>
+          <li>Not initiate ACH transactions without proper underlying authority or contractual obligation.</li>
+        </ul>
+
+        <h3>Wire Transfers</h3>
+        <p>Wire transfer instructions are binding once confirmed. AgriBank acts only as a conduit and does not verify the accuracy of recipient information beyond basic compliance checks. Funds wired in error are recoverable only if recovered from the receiving institution, which may take 10-30 business days. AgriBank is not liable for errors originating outside our control.</p>
+
+        <h3>Bill Pay Service</h3>
+        <p>Our Bill Pay service schedules payments on behalf of customers according to entered dates and amounts. While we strive for accuracy, paper-check delivery delays, vendor processing issues, or postal service disruptions are beyond our control. Ensure sufficient funding in your designated source account before the payment due date.</p>
+      </div>
+
+      <!-- 6. LOANS & CREDIT -->
+      <div class="t-section" id="t6">
+        <div class="section-header"><span class="section-number">06</span><h2>Loans & Credit Products</h2></div>
+
+        <h3>Loan Origination</h3>
+        <p>Approval of any loan or line of credit is discretionary and based on factors including but not limited to credit score, debt-to-income ratio, collateral value, cash flow analysis, and purpose of the loan. Pre-qualification does not constitute a commitment to lend. A formal commitment letter will be issued upon final underwriting approval.</p>
+
+        <h3>Interest Rates & Terms</h3>
+        <p>Rates are subject to change based on market conditions, credit profile, loan amount, term length, and collateral. Variable-rate loans adjust according to the specified index (typically Prime Rate or SOFR) plus our margin. Annual Percentage Rate (APR) includes interest and certain fees and represents the true cost of borrowing.</p>
+
+        <h3>Repayment Obligation</h3>
+        <ul>
+          <li>You are obligated to repay the full principal, accrued interest, and any applicable fees according to the agreed amortization schedule.</li>
+          <li>Prior payment (prepayment) is permitted on most agricultural loans without penalty. Certain commercial facilities may carry a prepayment premium — see your promissory note for specifics.</li>
+          <li>Late payments incur a fee of $25 or 5% of the overdue amount, whichever is greater.</li>
+          <li>Default occurs when a payment is more than 30 days past due, financial covenants are breached, or bankruptcy is filed.</li>
+        </ul>
+
+        <div class="info-banner">
+          <span class="info-banner-icon">🌾</span>
+          <p><strong>Agricultural Seasonality:</strong> Our Harvest-First Loan products offer deferred payment structures aligned with crop harvest cycles. Repayment schedules are customized based on your operation type, expected revenue timing, and historical performance data.</p>
+        </div>
+
+        <h3>Collateral & Security</h3>
+        <p>Secured loans require collateral in the form of real property, equipment, livestock, crop liens, or business assets. AgriBank retains a first-priority lien on pledged collateral until the obligation is satisfied. You are responsible for maintaining adequate insurance coverage on secured assets at your sole expense.</p>
+      </div>
+
+      <!-- 7. SECURITY -->
+      <div class="t-section" id="t7">
+        <div class="section-header"><span class="section-number">07</span><h2>Security & Authentication</h2></div>
+        <p>Protecting your account requires shared responsibility between you and AgriBank.</p>
+
+        <h3>Your Security Duties</h3>
+        <ul>
+          <li><strong>Password Hygiene:</strong> Create strong, unique passwords (minimum 12 characters with mixed case, numbers, and symbols). Never share login credentials with third parties.</li>
+          <li><strong>Multi-Factor Authentication:</strong> Enable MFA on all accounts. AgriBank sends one-time codes via SMS, authenticator app push notifications, or hardware tokens.</li>
+          <li><strong>Device Security:</strong> Keep your operating system, browser, and banking apps up to date. Do not use public Wi-Fi for sensitive transactions.</li>
+          <li><strong>Immediate Reporting:</strong> Report lost/stolen devices, suspicious login attempts, or unauthorized activity within 24 hours by calling 1-800-555-AGRI.</li>
+        </ul>
+
+        <h3>AgriBank Security Measures</h3>
+        <ul>
+          <li>End-to-end TLS 1.3 encryption for all data in transit</li>
+          <li>AES-256 encryption for all data at rest</li>
+          <li>Real-time AI-powered fraud monitoring on every transaction</li>
+          <li>SOC 2 Type II certified infrastructure</li>
+          <li>Quarterly penetration testing by independent cybersecurity firms</li>
+          <li>Zero-trust architecture with mandatory role-based access controls</li>
+        </ul>
+
+        <div class="highlight-box">
+          <p><strong>Liability Disclaimer:</strong> While we employ industry-leading security measures, no system is 100% impenetrable. You are responsible for maintaining the confidentiality of your credentials and immediate notification of any suspected breach. Unauthorized activity reported promptly will be investigated and resolved in accordance with Regulation E.</p>
+        </div>
+      </div>
+
+      <!-- 8. LIMITATION OF LIABILITY -->
+      <div class="t-section" id="t8">
+        <div class="section-header"><span class="section-number">08</span><h2>Limitation of Liability</h2></div>
+        <p>To the maximum extent permitted by applicable law:</p>
+        <ul>
+          <li>AgriBank shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or relating to your use of our services, including loss of profits, data, or business opportunities.</li>
+          <li>Total aggregate liability of AgriBank shall not exceed the total fees paid by you to AgriBank in the 12 months preceding the claim.</li>
+          <li>We do not guarantee uninterrupted, error-free, or secure operation of our platforms. Technical outages during scheduled maintenance windows are explicitly excluded from liability claims.</li>
+          <li>Information provided on our website, in applications, or through customer support is for general guidance only and does not constitute legal, tax, or investment advice. Consult qualified professionals for such guidance.</li>
+          <li>Third-party links, integrations, and embedded services are provided "as-is." AgriBank assumes no responsibility for their availability, accuracy, or content.</li>
+        </ul>
+
+        <div class="info-banner">
+          <span class="info-banner-icon">⚖️</span>
+          <p><strong>No Waiver:</strong> Our failure or delay in exercising any right or remedy under these Terms does not constitute a waiver of that right or remedy. Any single exercise of a remedy does not preclude further remedies.</p>
+        </div>
+      </div>
+
+      <!-- 9. INTELLECTUAL PROPERTY -->
+      <div class="t-section" id="t9">
+        <div class="section-header"><span class="section-number">09</span><h2>Intellectual Property Rights</h2></div>
+        <p>All content, features, and functionality of the AgriBank platform — including but not limited to text, graphics, logos, icons, images, audio clips, digital downloads, data compilations, software, and the design, selection, and arrangement thereof — are owned by AgriBank Texas Regional, its licensors, or other providers and are protected by U.S. and international copyright, trademark, patent, trade secret, and moral rights laws.</p>
+
+        <h3>Permitted Use</h3>
+        <p>You are granted a limited, non-exclusive, non-transferable, revocable license to access and use the platform for personal, family, or internal business purposes only. Prohibited uses include:**</p>
+        <ul>
+          <li>Reverse engineering, decompiling, or disassembling any software components</li>
+          <li>Scraping, crawling, or extracting data from our databases</li>
+          <li>Removing proprietary notices or branding from any content</li>
+          <li>Using our trademarks, logos, or trade dress without prior written consent</li>
+          <li>Creating derivative works, competitive services, or mimicking our platform design</li>
+        </ul>
+
+        <p>The AgriBank name, logo, "AgriRewards," "Harvest-First Loan," and all related marks are registered trademarks of AgriBank Texas Regional. Unauthorized use is strictly prohibited.</p>
+      </div>
+
+      <!-- 10. DISPUTE RESOLUTION -->
+      <div class="t-section" id="t10">
+        <div class="section-header"><span class="section-number">10</span><h2>Dispute Resolution & Arbitration</h2></div>
+
+        <h3>Informal Resolution First</h3>
+        <p>In the event of any dispute, complaint, or controversy arising from these Terms or our services, we commit to attempting resolution informally first. Contact our Customer Advocacy team at <strong>advocacy@agribanktx.com</strong> or call 1-800-555-AGRI (Option 4). We aim to resolve complaints within 15 business days.</p>
+
+        <h3>Binding Arbitration</h3>
+        <p>If informal resolution fails, any unresolved claim shall be settled by <strong>binding individual arbitration</strong> administered by the American Arbitration Association (AAA) under its Consumer Arbitration Rules. Key provisions:</p>
+        <ul>
+          <li>Arbitration takes place in Dallas, Texas (or virtually if preferred).</li>
+          <li>No class actions or representative proceedings are permitted.</li>
+          <li>The arbitrator's award is final and binding, enforceable in any court of competent jurisdiction.</li>
+          <li>AgriBank will pay all arbitration filing fees for claims under $10,000.</li>
+          <li>Arbitration proceedings are confidential.</li>
+        </ul>
+
+        <div class="highlight-box">
+          <p><strong>Class Action Waiver:</strong> BY AGREEING TO THESE TERMS, YOU AND AGRIBANK ARE BOTH WAIVING THE RIGHT TO PARTICIPATE IN A CLASS-ACTION LAWSUIT OR CLASS-WIDE ARBITRATION. Claims may only be brought in your individual capacity.</p>
+        </div>
+
+        <p><strong>Opt-Out Right:</strong> You may opt out of the arbitration provision within 30 days of account opening by sending written notice to: Opt-Out Department, AgriBank Texas Regional, 100 Market Street, Austin, TX 78701. Postmarked opt-out notices received within 30 days will be honored.</p>
+      </div>
+
+      <!-- 11. TERMINATION -->
+      <div class="t-section" id="t11">
+        <div class="section-header"><span class="section-number">11</span><h2>Termination & Account Closure</h2></div>
+        <p>Either party may terminate this agreement and close your account at any time:</p>
+
+        <h3>Your Right to Close</h3>
+        <p>You may close your account at any time by logging into your Dashboard → Settings → Close Account, visiting any branch in person with valid ID, or contacting customer support. Outstanding balances, pending transactions, or holds must be resolved before closure is finalized. Remaining funds will be disbursed via cashier's check mailed to your address on file within 10 business days.</p>
+
+        <h3>Our Right to Close</h3>
+        <p>AgriBank reserves the right to suspend or terminate your access to any service, immediately and without prior notice, in circumstances including but not limited to:**</p>
+        <ul>
+          <li>Breach of these Terms or any supplementary agreement</li>
+          <li>Suspicious or illegal transaction activity</li>
+          <li>Failure to provide requested KYC / AML documentation</li>
+          <li>Insolvency, bankruptcy filing, or death of account holder</li>
+          <li>Direction from regulatory authorities or law enforcement</li>
+          <li>Extended dormancy exceeding 24 months (subject to escheatment laws)</li>
+        </ul>
+
+        <p>Upon termination, all outstanding obligations remain fully enforceable. Accrued interest on loans continues to accrue until the balance is paid in full.</p>
+      </div>
+
+      <!-- 12. GOVERNING LAW -->
+      <div class="t-section" id="t12">
+        <div class="section-header"><span class="section-number">12</span><h2>Governing Law & Jurisdiction</h2></div>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the <strong>State of Texas</strong>, without regard to conflict-of-law principles. The United States Federal Reserve Regulations, Uniform Commercial Code (UCC), Electronic Fund Transfer Act (Regulation E), Truth in Lending Act (Regulation Z), and Dodd-Frank Act shall also apply where relevant.</p>
+        <p>Any legal action or proceeding arising under these Terms shall be brought exclusively in the federal or state courts located in <strong>Dallas County, Texas</strong>, and you hereby consent to personal jurisdiction and venue therein. The prevailing party in any dispute shall be entitled to recover reasonable attorneys' fees and costs.</p>
+        <p>If any provision of these Terms is held to be invalid or unenforceable, the remaining provisions shall continue in full force and effect. The invalid provision shall be reformed to reflect the original intent of the parties to the maximum extent permissible.</p>
+      </div>
+
+      <!-- 13. CONTACT -->
+      <div class="t-section" id="t13">
+        <div class="section-header"><span class="section-number">13</span><h2>Contact & Support</h2></div>
+        <p>If you have questions about these Terms, need clarification on any provision, or wish to discuss terms that don't fit your specific situation, our team is ready to help:</p>
+        <div class="term-grid">
+          <div class="term-item">
+            <div class="term-item-label">Phone</div>
+            <div class="term-item-value">1-800-555-AGRI</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Email</div>
+            <div class="term-item-value">legal@agribanktx.com</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Headquarters</div>
+            <div class="term-item-value">100 Market St, Austin TX 78701</div>
+          </div>
+          <div class="term-item">
+            <div class="term-item-label">Legal Affairs</div>
+            <div class="term-item-value">legal@agribanktx.com</div>
+          </div>
+        </div>
+        <p style="margin-top: 1.5rem;"><em>Last updated: April 10, 2025 — Version 4.2.1</em></p>
+        <button class="btn-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="footer-brand">Agri<span>Bank</span></div>
+    <div class="footer-subtitle">Texas Regional • Since 1987</div>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms" style="color:var(--gold);">Terms of Service</a>
+      <a href="/help">Help Center</a>
+      <a href="/careers">Careers</a>
+    </div>
+    <div>© <%= new Date().getFullYear() || 2025 %> AgriBank Texas Regional. Member FDIC. Equal Housing Lender. NMLS# 482910</div>
+  </footer>
+
+  <!-- ========== MOBILE NAV ========== -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/" class="mob-nav-item"><span class="mob-icon">🏠</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+</body>
+</html>
+

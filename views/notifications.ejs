@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Account Details | AgriBank Texas' }) %>
+  <%- include('partials/head', { title: 'Notifications | AgriBank Texas' }) %>
   <style>
     :root {
       --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
       --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
       --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
       --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444;
+      --success: #10b981; --danger: #ef4444; --info: #3b82f6; --warning: #f59e0b;
       --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
       --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
       --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
@@ -46,66 +46,44 @@
     .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
     .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
     .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    .content { padding: 2rem; max-width: 1000px; margin: 0 auto; }
 
-    /* ACCOUNT DETAIL PAGE STYLES */
-    .detail-hero {
-      background: linear-gradient(135deg, var(--green-900), var(--green-700));
-      color: white;
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      box-shadow: var(--shadow-lg);
-    }
+    /* NOTIFICATION STYLES */
+    .notif-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .unread-count { background: var(--gold); color: var(--green-900); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
     
-    .detail-icon {
-      width: 80px; height: 80px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem;
-      flex-shrink: 0;
-      border: 1px solid rgba(255,255,255,0.2);
+    .btn-mark { padding: 0.5rem 1rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-mark:hover { background: var(--green-700); }
+    .btn-mark:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .notif-list { display: flex; flex-direction: column; gap: 1rem; }
+    .notif-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.25rem; display: flex; gap: 1rem; transition: all 0.2s; cursor: pointer;
     }
+    .notif-card:hover { box-shadow: var(--shadow); transform: translateY(-2px); }
+    .notif-card.unread { border-left: 4px solid var(--gold); background: #fefce8; }
 
-    .detail-text h2 { font-size: 2rem; font-family: 'DM Serif Display', serif; margin-bottom: 0.5rem; }
-    .detail-text p { opacity: 0.85; font-size: 1rem; max-width: 500px; }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2rem;
+    .notif-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
     }
+    .icon-security { background: #fef2f2; }
+    .icon-statement { background: #eff6ff; }
+    .icon-loan { background: #ecfdf5; }
+    .icon-transfer { background: #fefce8; }
+    .icon-billpay { background: #f5f3ff; }
+    .icon-general { background: #f0f9ff; }
 
-    .feature-card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      border: 1px solid var(--border);
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .feature-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .notif-content { flex: 1; }
+    .notif-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
+    .notif-badge { font-size: 0.65rem; background: var(--success); color: white; padding: 0.1rem 0.4rem; border-radius: 4px; }
+    .notif-msg { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .notif-time { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; }
 
-    .feature-icon {
-      width: 36px; height: 36px;
-      background: #ecfdf5;
-      color: var(--success);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .feature-content h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; color: var(--text); }
-    .feature-content p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+    .empty-state { text-align: center; padding: 3rem 1.5rem; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.5; }
+    .empty-state p { color: var(--text-secondary); font-size: 0.9rem; }
 
     /* MOBILE */
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
@@ -124,16 +102,10 @@
       .content { padding: 1.25rem; padding-bottom: 5rem; }
       .topbar { padding: 0 1.25rem; }
       .mobile-nav { display: block; }
-      .detail-hero { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
-      .detail-text h2 { font-size: 1.5rem; }
     }
 
     .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
     .btn-text:hover { color: var(--green-900); }
-    
-    .cta-box { background: var(--surface); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); text-align: center; }
-    .cta-btn { display: inline-block; background: var(--green-800); color: white; padding: 0.75rem 2rem; border-radius: 8px; font-weight: 600; transition: 0.2s; }
-    .cta-btn:hover { background: var(--green-700); transform: translateY(-2px); }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .animate { animation: fadeInUp 0.4s ease both; }
   </style>
@@ -142,8 +114,9 @@
   <%
     const safeUser = user || { firstName: 'Customer', lastName: '' };
     const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
-    const safeTitle = title || 'Account Details';
-    const features = typeof features !== 'undefined' ? features : [];
+    const isAdmin = safeUser.isAdmin === 1;
+    const notifs = notifications || [];
+    const unreadCount = notifs.filter(n => !n.isRead).length;
   %>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -152,7 +125,7 @@
     <nav class="sidebar-nav">
       <div class="nav-section">Main</div>
       <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-      <a href="/accounts" class="nav-item active"><span class="icon">💳</span> Accounts</a>
+      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
       <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
       <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
       <div class="nav-section">Services</div>
@@ -161,12 +134,13 @@
       <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
       <div class="nav-section">Account</div>
       <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
-      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+      <a href="/notifications" class="nav-item active"><span class="icon">🔔</span> Notifications <% if(unreadCount > 0) { %><span class="badge-dot"></span><% } %></a>
+      <% if(isAdmin) { %><a href="/admin" class="nav-item"><span class="icon">⚙️</span> Admin</a><% } %>
     </nav>
     <div class="sidebar-footer">
       <a href="/logout" class="sidebar-user">
         <div class="avatar"><%= initials %></div>
-        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role">Member</div></div>
+        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
       </a>
     </div>
   </aside>
@@ -175,54 +149,68 @@
     <header class="topbar">
       <div class="topbar-left">
         <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1><%= safeTitle %></h1></div>
+        <div class="topbar-title"><h1>Notifications</h1></div>
       </div>
       <div class="topbar-right">
-        <a href="/notifications" class="topbar-btn">🔔</a>
-        <a href="/profile" class="topbar-btn">👤</a>
+        <a href="/dashboard" class="topbar-btn">🏠</a>
       </div>
     </header>
 
     <div class="content">
-      
-      <a href="/accounts" class="btn-text animate">← Back to Accounts</a>
+      <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
 
-      <div class="detail-hero animate">
-        <div class="detail-icon">🏦</div>
-        <div class="detail-text">
-          <h2><%= safeTitle %></h2>
-          <p>Discover the benefits and features designed specifically for your financial needs.</p>
-        </div>
+      <div class="notif-header animate">
+        <span class="unread-count"><%= unreadCount %> Unread</span>
+        <% if (unreadCount > 0) { %>
+          <form action="/notifications/read-all" method="POST">
+            <button type="submit" class="btn-mark">Mark All as Read</button>
+          </form>
+        <% } %>
       </div>
 
-      <% if (features.length > 0) { %>
-        <h3 style="font-size:1.1rem; margin-bottom:1rem;">Features & Benefits</h3>
-        <div class="features-grid">
-          <% features.forEach((feat, i) => { %>
-            <div class="feature-card animate delay-<%= i % 4 %>">
-              <div class="feature-icon">✓</div>
-              <div class="feature-content">
-                <h4><%= feat %></h4>
-                <p>Enjoy premium banking tools and support.</p>
+      <% if (notifs.length > 0) { %>
+        <div class="notif-list">
+          <% notifs.forEach(n => { 
+             const isUnread = !n.isRead;
+             const typeClass = n.type === 'security' ? 'icon-security' : 
+                               n.type === 'statement' ? 'icon-statement' : 
+                               n.type === 'loan' ? 'icon-loan' : 
+                               n.type === 'transfer' ? 'icon-transfer' : 
+                               n.type === 'billpay' ? 'icon-billpay' : 'icon-general';
+             const icon = n.type === 'security' ? '🔒' : 
+                          n.type === 'statement' ? '📄' : 
+                          n.type === 'loan' ? '🏦' : 
+                          n.type === 'transfer' ? '⇄' : 
+                          n.type === 'billpay' ? '💸' : '🔔';
+             const timeStr = n.created_at ? new Date(n.created_at).toLocaleString() : 'Recently';
+          %>
+            <div class="notif-card <%= isUnread ? 'unread' : '' %> animate">
+              <div class="notif-icon <%= typeClass %>"><%= icon %></div>
+              <div class="notif-content">
+                <div class="notif-title">
+                  <%= n.title %>
+                  <% if (isUnread) { %><span class="notif-badge">NEW</span><% } %>
+                </div>
+                <div class="notif-msg"><%= n.message %></div>
+                <div class="notif-time"><%= timeStr %></div>
               </div>
             </div>
           <% }) %>
         </div>
+      <% } else { %>
+        <div class="empty-state animate">
+          <div class="icon">🔔</div>
+          <h3>All Caught Up!</h3>
+          <p>You don't have any new notifications right now.</p>
+        </div>
       <% } %>
-
-      <div class="cta-box animate">
-        <h3 style="margin-bottom:0.5rem;">Ready to apply?</h3>
-        <p style="color:var(--text-secondary); margin-bottom:1.5rem; font-size:0.9rem;">Join thousands of Texans banking with AgriBank today.</p>
-        <a href="/register" class="cta-btn">Open Account</a>
-      </div>
-
     </div>
   </div>
 
   <nav class="mobile-nav">
     <div class="mobile-nav-grid">
       <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
-      <a href="/accounts" class="mob-nav-item active"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
       <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
       <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
       <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>

@@ -1,0 +1,321 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head', { title: 'Credit Cards | AgriBank Texas' }) %>
+  <style>
+    :root {
+      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
+      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
+      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
+      --text-secondary: #64748b; --border: #e2e8f0;
+      --success: #10b981; --danger: #ef4444;
+      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
+    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
+    .sidebar-brand span { color: var(--gold); }
+    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
+    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
+    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
+    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
+    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
+    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
+    .user-info .name { font-size: 0.85rem; font-weight: 600; }
+    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
+    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 1rem; }
+    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
+    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* CREDIT CARDS STYLES */
+    .card-hero {
+      background: linear-gradient(135deg, var(--green-800), var(--navy));
+      color: white;
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+    .hero-text h2 { font-size: 2rem; font-family: 'DM Serif Display', serif; margin-bottom: 0.5rem; }
+    .hero-text p { opacity: 0.9; font-size: 1.1rem; }
+    .hero-badges { display: flex; gap: 1rem; }
+    .badge-pill { background: rgba(255,255,255,0.1); padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.2); }
+
+    .cc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    
+    .cc-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 0; overflow: hidden; transition: all 0.3s; position: relative;
+    }
+    .cc-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+
+    .cc-header { padding: 2rem 1.5rem; text-align: center; position: relative; }
+    .cc-card:nth-child(1) .cc-header { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
+    .cc-card:nth-child(2) .cc-header { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
+    .cc-card:nth-child(3) .cc-header { background: linear-gradient(135deg, #d4a047, #b45309); color: #1c1917; }
+
+    .cc-chip { font-size: 2.5rem; margin-bottom: 1rem; }
+    .cc-name { font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 700; }
+    .cc-badge { position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 700; }
+
+    .cc-body { padding: 1.5rem; }
+    .cc-features { list-style: none; margin-bottom: 1.5rem; }
+    .cc-features li { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.5rem; }
+    .cc-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
+
+    .btn-apply { width: 100%; padding: 0.75rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 1rem; }
+    .btn-apply:hover { background: var(--green-700); }
+
+    .comparison-widget { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 1.5rem; }
+    .comparison-row { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    .comparison-row:last-child { border-bottom: none; }
+    .comparison-row .label { color: var(--text-secondary); }
+    .comparison-row .value { font-weight: 600; }
+
+    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
+    .btn-text:hover { color: var(--green-900); }
+
+    /* MOBILE */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-overlay.show { display: block; opacity: 1; }
+    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    @media (max-width: 1024px) {
+      .card-hero { flex-direction: column; text-align: center; }
+      .hero-badges { justify-content: center; }
+    }
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger { display: flex; }
+      .content { padding: 1.25rem; padding-bottom: 5rem; }
+      .topbar { padding: 0 1.25rem; }
+      .mobile-nav { display: block; }
+    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.4s ease both; }
+  </style>
+</head>
+<body>
+  <%
+    // SAFE VARIABLE INITIALIZATION
+    const sUser = (typeof user !== 'undefined' && user) ? user : { firstName: 'Guest', lastName: '', isAdmin: 0 };
+    const initials = ((sUser.firstName || 'G')[0] + (sUser.lastName || '')[0]).toUpperCase();
+    const isAdmin = sUser.isAdmin === 1;
+  %>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Main</div>
+      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
+      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
+      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
+      <div class="nav-section">Services</div>
+      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
+      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
+      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
+      <a href="/credit-cards" class="nav-item active"><span class="icon">💳</span> Credit Cards</a>
+      <div class="nav-section">Account</div>
+      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
+      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+      <% if(isAdmin) { %><a href="/admin" class="nav-item"><span class="icon">⚙️</span> Admin</a><% } %>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/logout" class="sidebar-user">
+        <div class="avatar"><%= initials %></div>
+        <div class="user-info"><div class="name"><%= sUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Guest' %></div></div>
+      </a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title"><h1>Credit Cards</h1></div>
+      </div>
+      <div class="topbar-right">
+        <a href="/notifications" class="topbar-btn">🔔</a>
+        <a href="/profile" class="topbar-btn">👤</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <% if(sUser.firstName !== 'Guest') { %>
+        <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
+      <% } %>
+
+      <div class="card-hero animate">
+        <div class="hero-text">
+          <h2>Power Your Business</h2>
+          <p>Earn rewards on every purchase. From feed to fuel, get cash back on what matters to you.</p>
+        </div>
+        <div class="hero-badges">
+          <div class="badge-pill">✓ No Foreign Transaction Fees</div>
+          <div class="badge-pill">✓ 0% APR Intro Offer</div>
+        </div>
+      </div>
+
+      <div class="cc-grid animate">
+        <!-- Card 1 -->
+        <div class="cc-card">
+          <div class="cc-header">
+            <div class="cc-badge">Most Popular</div>
+            <div class="cc-chip">💳</div>
+            <div class="cc-name">AgriRewards Cash</div>
+          </div>
+          <div class="cc-body">
+            <ul class="cc-features">
+              <li>Earn 3% Cash Back on Feed, Seed & Supplies</li>
+              <li>Earn 1% Cash Back on all other purchases</li>
+              <li>No annual fee for the first year</li>
+              <li>Fraud protection & 24/7 monitoring</li>
+            </ul>
+            <button class="btn-apply" onclick="startApp('AgriRewards Cash')">Apply Now</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="cc-card">
+          <div class="cc-header">
+            <div class="cc-badge">Travel Ready</div>
+            <div class="cc-chip">✈️</div>
+            <div class="cc-name">Agri Travel Plus</div>
+          </div>
+          <div class="cc-body">
+            <ul class="cc-features">
+              <li>Earn 50,000 bonus points after $3k spend</li>
+              <li>2X Points on flights and hotels</li>
+              <li>Free checked bag for cardholder</li>
+              <li>Travel insurance included</li>
+            </ul>
+            <button class="btn-apply" onclick="startApp('Agri Travel Plus')">Apply Now</button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="cc-card">
+          <div class="cc-header">
+            <div class="cc-badge">Premium</div>
+            <div class="cc-chip">🏆</div>
+            <div class="cc-name">Platinum Business</div>
+          </div>
+          <div class="cc-body">
+            <ul class="cc-features">
+              <li>High credit limits for large operations</li>
+              <li>Employee cards with spending controls</li>
+              <li>Extended warranty on equipment</li>
+              <li>Dedicated relationship manager</li>
+            </ul>
+            <button class="btn-apply" onclick="startApp('Platinum Business')">Apply Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="comparison-widget animate">
+        <h3 style="font-size:1rem; font-weight:700; margin-bottom:1rem;">Card Comparison</h3>
+        <div class="comparison-row">
+          <span class="label">Annual Fee</span>
+          <span class="value">$0 First Year / $95 Thereafter</span>
+        </div>
+        <div class="comparison-row">
+          <span class="label">Regular APR</span>
+          <span class="value">16.24% - 24.24% Variable</span>
+        </div>
+        <div class="comparison-row">
+          <span class="label">Intro APR</span>
+          <span class="value">0% for 12 months</span>
+        </div>
+        <div class="comparison-row">
+          <span class="label">Credit Score Needed</span>
+          <span class="value">Good to Excellent (670+)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+    function startApp(type) {
+      alert('Thank you for your interest in the ' + type + '. Our team will contact you to complete the application.');
+    }
+  </script>
+</body>
+</html>
+
+
+
+              <script>
+                              // CHANGE THIS:
+// app.get('/credit-cards', (req, res) => res.redirect('/login'));
+
+// TO THIS:
+app.get('/credit-cards', (req, res) => res.render('credit-cards', { user: req.session.user || null }));
+
+
+              </script>
+                        </body>
+                        </html>
+                    

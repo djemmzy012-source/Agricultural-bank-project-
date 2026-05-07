@@ -1,178 +1,328 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transactions<% if (typeof accountNumber !== 'undefined' && accountNumber) { %> - Account <%= accountNumber %><% } %> | AgriBank Texas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background: #f5f1e8; color: #1A1A1A; line-height: 1.6; transition: opacity 0.5s ease; }
-        body.fade-out { opacity: 0; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        /* Top-bar styles */
-        .top-bar { background: #2C2416; color: white; padding: 8px 0; font-size: 14px; }
-        .top-bar-content { display: flex; justify-content: space-between; align-items: center; }
-        .top-bar-left { display: flex; gap: 20px; }
-        .top-bar-right { display: flex; gap: 15px; }
-        .top-bar a { color: white; text-decoration: none; transition: color 0.3s; }
-        .top-bar a:hover { color: #C4A35A; }
-        /* Navbar styles */
-        .navbar { background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); padding: 16px 0; }
-        .navbar-content { display: flex; justify-content: space-between; align-items: center; }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: #2C2416; }
-        .logo-icon { font-size: 24px; }
-        .logo-name { font-family: 'Merriweather', serif; font-weight: 700; font-size: 20px; }
-        .logo-tagline { font-size: 12px; color: #888; }
-        .nav-links { display: flex; gap: 24px; }
-        .nav-links a { color: #1A1A1A; text-decoration: none; font-weight: 500; transition: color 0.3s; }
-        .nav-links .active { color: #2D5A27; font-weight: 600; }
-        .nav-links a:hover { color: #2D5A27; }
-        .nav-user { display: flex; align-items: center; gap: 16px; }
-        .user-greeting { font-size: 14px; }
-        .btn-logout { color: #2D5A27; text-decoration: none; font-weight: 600; transition: color 0.3s; }
-        .btn-logout:hover { color: #1F3A1F; }
-        /* Main content styles */
-        h1 { font-family: 'Merriweather', serif; font-weight: 700; font-size: 2.5rem; margin-bottom: 0.5rem; }
-        h2 { font-family: 'Merriweather', serif; font-weight: 700; }
-        .section-title { font-size: 20px; color: #2C2416; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
-        .account-info { font-size: 16px; color: #666; margin-bottom: 20px; text-align: center; }
-        .transactions-table { background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(44,36,22,0.08); border: 1px solid #E5E0D8; overflow: hidden; margin-top: 40px; }
-        .table-header { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding: 16px 24px; background: #F5F1E8; border-bottom: 1px solid #E5E0D8; font-weight: 600; }
-        .table-header span:last-child { text-align: right; }
-        .table-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; padding: 18px 24px; align-items: center; border-bottom: 1px solid #F0ECE4; }
-        .table-row:last-child { border-bottom: none; }
-        .table-row:hover { background: #FDFCF9; }
-        .tx-amount { font-family: 'Merriweather', serif; font-weight: 700; font-size: 15px; text-align: right; }
-        .tx-amount.positive { color: #2C2416; }
-        .tx-amount.negative { color: #D32F2F; }
-        .mt-3 { margin-top: 1rem; }
-        .view-all-link { color: #2D5A27; text-decoration: none; font-weight: 600; }
-        .view-all-link:hover { text-decoration: underline; }
-        /* Footer styles */
-        .footer { background: #2C2416; color: white; padding: 40px 0 20px; margin-top: 60px; }
-        .footer-content { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-        .footer-brand p { color: #CCC; }
-        .footer-column h4 { font-weight: 600; margin-bottom: 8px; }
-        .footer-column ul { list-style: none; margin: 0; padding: 0; }
-        .footer-column li { margin-bottom: 6px; }
-        .footer-column a { color: white; text-decoration: none; transition: color 0.3s; }
-        .footer-column a:hover { color: #C4A35A; }
-        .footer-bottom { border-top: 1px solid #444; padding-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
-        .footer-legal { display: flex; gap: 15px; }
-        .footer-logo { display: flex; align-items: center; gap: 8px; }
-        .footer-logo-icon { font-size: 20px; }
-        .footer-logo-text { font-weight: 700; }
-        /* Responsive tweaks */
-        @media (max-width: 768px) { 
-            .navbar-content, .footer-content { grid-template-columns: 1fr; } 
-            .nav-links { flex-direction: column; gap: 12px; } 
-            .footer-bottom { flex-direction: column; gap: 10px; } 
-            h1 { font-size: 2rem; } 
-            .table-header, .table-row { grid-template-columns: 1fr; padding: 12px 16px; } 
-            .table-header span, .tx-amount { text-align: left; } 
-        }
-    </style>
+  <%- include('partials/head', { title: 'Transactions | AgriBank Texas' }) %>
+  <style>
+    :root {
+      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
+      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
+      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
+      --text-secondary: #64748b; --border: #e2e8f0;
+      --success: #10b981; --danger: #ef4444; --info: #3b82f6;
+      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* SIDEBAR */
+    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
+    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
+    .sidebar-brand span { color: var(--gold); }
+    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
+    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
+    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
+    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
+    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
+    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
+    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
+    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
+    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
+    .user-info .name { font-size: 0.85rem; font-weight: 600; }
+    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
+    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
+    .topbar-left { display: flex; align-items: center; gap: 1rem; }
+    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
+    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
+    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
+    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* FILTER BAR */
+    .filter-bar { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
+    .filter-group { flex: 1; min-width: 180px; }
+    .filter-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .filter-group select, .filter-group input { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; background: #fafbfc; color: var(--text); transition: 0.2s; }
+    .filter-group select:focus, .filter-group input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
+    .filter-actions { display: flex; gap: 0.5rem; }
+    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: 0.2s; text-align: center; }
+    .btn:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .btn-primary { background: var(--green-800); color: white; border-color: var(--green-800); }
+    .btn-primary:hover { background: var(--green-700); }
+    .btn-ghost { background: transparent; border-color: transparent; padding: 0.5rem; }
+
+    /* SUMMARY STRIP */
+    .summary-strip { display: flex; gap: 1rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
+    .summary-chip { background: var(--surface); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); flex: 1; min-width: 140px; display: flex; flex-direction: column; gap: 0.25rem; }
+    .chip-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: var(--text-secondary); }
+    .chip-value { font-size: 1.35rem; font-weight: 800; font-family: 'DM Serif Display', serif; }
+    .chip-value.in { color: var(--success); }
+    .chip-value.out { color: var(--danger); }
+
+    /* TRANSACTION LIST */
+    .tx-widget { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+    .tx-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+    .tx-header h3 { font-size: 1rem; font-weight: 700; }
+    .tx-count { font-size: 0.75rem; color: var(--text-secondary); background: #f1f5f9; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
+
+    .tx-list { display: flex; flex-direction: column; }
+    .tx-row { display: flex; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #f1f5f9; transition: background 0.15s; gap: 1rem; }
+    .tx-row:last-child { border-bottom: none; }
+    .tx-row:hover { background: #fafbfc; }
+
+    .tx-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .tx-icon.in { background: #ecfdf5; color: var(--success); }
+    .tx-icon.out { background: #fef2f2; color: var(--danger); }
+    .tx-icon.tr { background: #f0f9ff; color: var(--info); }
+    .tx-icon.fee { background: #fefce8; color: #ca8a04; }
+
+    .tx-details { flex: 1; min-width: 0; }
+    .tx-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tx-meta { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem; display: flex; gap: 0.5rem; align-items: center; }
+    .tx-meta .badge { background: #f1f5f9; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; }
+
+    .tx-right { text-align: right; flex-shrink: 0; min-width: 100px; }
+    .tx-amount { font-weight: 700; font-size: 0.95rem; }
+    .tx-amount.in { color: var(--success); }
+    .tx-amount.out { color: var(--text); }
+    .tx-date { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem; }
+
+    .empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--text-secondary); }
+    .empty-state .icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.5; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* MOBILE */
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
+    .sidebar-overlay.show { display: block; opacity: 1; }
+    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger { display: flex; }
+      .content { padding: 1.25rem; padding-bottom: 5rem; }
+      .topbar { padding: 0 1.25rem; }
+      .mobile-nav { display: block; }
+      .filter-bar { flex-direction: column; gap: 0.75rem; }
+      .filter-group { min-width: 100%; }
+      .tx-row { padding: 0.75rem 1rem; }
+      .tx-right { min-width: 80px; }
+    }
+    @media (max-width: 500px) {
+      .tx-meta .badge { display: none; }
+      .tx-right .tx-date { display: none; }
+    }
+
+    /* UTILS */
+    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; }
+    .btn-text:hover { color: var(--green-900); }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.4s ease both; }
+  </style>
 </head>
 <body>
-    <% var accountNumber = typeof accountNumber !== 'undefined' ? accountNumber : null; %>
-    <div class="top-bar">
-        <div class="container">
-            <div class="top-bar-content">
-                <div class="top-bar-left"><span>📍 Austin, TX</span><span>📞 1-800-AGRIBTX</span></div>
-                <div class="top-bar-right"><a href="#">Locations</a><a href="#">Help</a></div>
-            </div>
-        </div>
-    </div>
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-content">
-                <a href="/dashboard" class="logo">
-                    <div class="logo-icon">🌾</div>
-                    <div>
-                        <div class="logo-name">AgriBank</div>
-                        <div class="logo-tagline">Texas</div>
-                    </div>
-                </a>
-                <div class="nav-links">
-                    <a href="/dashboard">Dashboard</a>
-                    <a href="/accounts" class="active">Accounts</a>
-                    <a href="/transfer">Transfer</a>
-                    <a href="/billpay">Bill Pay</a>
-                    <a href="/profile">Profile</a>
-                </div>
-                <div class="nav-user">
-                    <span class="user-greeting">Welcome,<strong><%= user.firstName %></strong></span>
-                    <a href="/logout" class="btn-logout">Sign Out</a>
-                </div>
-            </div>
-        </div>
+  <%
+    const safeUser = user || { firstName: 'Customer', lastName: '' };
+    const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
+    const isAdmin = safeUser.isAdmin === 1;
+    const txs = transactions || [];
+
+    // Calculate summaries
+    let totalIn = 0, totalOut = 0;
+    txs.forEach(t => { const a = Number(t.amount || 0); if(a > 0) totalIn += a; else totalOut += Math.abs(a); });
+    const txCount = txs.length;
+
+    function money(v) { return '$' + Number(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }); }
+    function txIcon(t) {
+      const d = (t.description || t.type || '').toLowerCase();
+      if(d.includes('deposit')||d.includes('payroll')||d.includes('salary')) return '↓';
+      if(d.includes('transfer')) return '⇄';
+      if(d.includes('fee')) return '⚙️';
+      if(d.includes('bill')||d.includes('payment')) return '📄';
+      if(d.includes('loan')) return '🏦';
+      return '•';
+    }
+    function txClass(t) { const a = Number(t.amount||0); return a > 0 ? 'in' : (t.type === 'Transfer' ? 'tr' : (t.type === 'Fee' ? 'fee' : 'out')); }
+    function txAmountStr(t) { const n = Number(t.amount||0); return (n >= 0 ? '+' : '-') + money(Math.abs(n)); }
+    function formatDate(d) { if(!d) return ''; try { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); } catch { return d; } }
+    const filterQ = (typeof filters !== 'undefined' && filters && filters.q) ? filters.q : '';
+    const filterAcc = (typeof filters !== 'undefined' && filters && filters.accountId) ? filters.accountId : '';
+    const filterType = (typeof filters !== 'undefined' && filters && filters.type) ? filters.type : '';
+  %>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Main</div>
+      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
+      <a href="/transactions" class="nav-item active"><span class="icon">📋</span> Transactions</a>
+      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
+      <div class="nav-section">Services</div>
+      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
+      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
+      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
+      <div class="nav-section">Account</div>
+      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
+      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+      <% if(isAdmin) { %><a href="/admin" class="nav-item"><span class="icon">⚙️</span> Admin</a><% } %>
     </nav>
+    <div class="sidebar-footer">
+      <a href="/logout" class="sidebar-user">
+        <div class="avatar"><%= initials %></div>
+        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
+      </a>
+    </div>
+  </aside>
 
-    <main class="container">
-        <h1>Transaction History<% if (accountNumber) { %> for Account <%= accountNumber %><% } %></h1>
-        <% if (accountNumber) { %>
-        <div class="account-info">Showing transactions for account ending in ****<%= accountNumber.slice(-4) %>. <a href="/transactions" class="view-all-link">View all accounts →</a></div>
-        <% } %>
-        <% if (transactions && transactions.length > 0) { %>
-        <section class="transactions-section">
-            <h2 class="section-title">Recent Transactions</h2>
-            <div class="transactions-table">
-                <div class="table-header">
-                    <span>Description</span><span>Type</span><span>Date</span><span style="text-align: right;">Amount</span>
-                </div>
-                <% transactions.forEach(function(tx) { %>
-                <div class="table-row">
-                    <span><%= tx.description %></span>
-                    <span class="tx-category"><%= tx.type %></span>
-                    <span><%= new Date(tx.date).toLocaleDateString() %></span>
-                    <span class="tx-amount <%= tx.amount >= 0 ? 'positive' : 'negative' %>"><%= tx.amount >= 0 ? '+' : '-' %>$<%= Math.abs(tx.amount).toFixed(2) %></span>
-                </div>
-                <% }); %>
-            </div>
-            <div class="mt-3">
-                <a href="/accounts" class="view-all-link view-transitions">← Back to Accounts</a>
-            </div>
-        </section>
-        <% } else { %>
-        <section>
-            <p>No transactions found for this account. <a href="/accounts" class="view-all-link view-transitions">← Back to Accounts</a></p>
-        </section>
-        <% } %>
-    </main>
+  <div class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title"><h1>Transaction History</h1></div>
+      </div>
+      <div class="topbar-right">
+        <a href="/transactions/export" class="btn btn-sm" style="font-size:0.75rem; padding:0.4rem 0.8rem;">⬇️ Export CSV</a>
+        <a href="/notifications" class="topbar-btn">🔔</a>
+      </div>
+    </header>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="footer-logo"><div class="footer-logo-icon">🌾</div><span class="footer-logo-text">AgriBank Texas</span></div>
-                    <p>Serving Texas farmers, ranchers, and families since 1923. Member FDIC.</p>
-                </div>
-                <div class="footer-column"><h4>Banking</h4><ul><li><a href="#">Checking</a></li><li><a href="#">Savings</a></li><li><a href="#">Loans</a></li></ul></div>
-                <div class="footer-column"><h4>Support</h4><ul><li><a href="#">Help Center</a></li><li><a href="#">Contact Us</a></li></ul></div>
-                <div class="footer-column"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Careers</a></li></ul></div>
-            </div>
-            <div class="footer-bottom">
-                <p>© 2024 AgriBank Texas. All rights reserved.</p>
-                <div class="footer-legal"><a href="#">Privacy</a><a href="#">Terms</a></div>
-            </div>
+    <div class="content">
+      
+      <!-- BACK & FILTER -->
+      <div style="margin-bottom:1rem;">
+        <a href="/accounts" class="btn-text">← Back to Accounts</a>
+      </div>
+
+      <!-- SUMMARY CHIPS -->
+      <div class="summary-strip animate">
+        <div class="summary-chip">
+          <div class="chip-label">Total Transactions</div>
+          <div class="chip-value"><%= txCount %></div>
         </div>
-    </footer>
+        <div class="summary-chip">
+          <div class="chip-label">Money In</div>
+          <div class="chip-value in"><%= money(totalIn) %></div>
+        </div>
+        <div class="summary-chip">
+          <div class="chip-label">Money Out</div>
+          <div class="chip-value out"><%= money(totalOut) %></div>
+        </div>
+      </div>
 
-    <!-- JavaScript for view transitions -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const links = document.querySelectorAll('.view-transitions');
-            links.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.body.classList.add('fade-out');
-                    setTimeout(() => {
-                        window.location.href = link.href;
-                    }, 300);
-                });
-            });
-        });
-    </script>
+      <!-- FILTER BAR -->
+      <form method="get" action="/transactions" class="filter-bar animate">
+        <div class="filter-group">
+          <label>Account</label>
+          <select name="accountId">
+            <option value="">All Accounts</option>
+            <% if (accounts) { accounts.forEach(a => { %>
+              <option value="<%= a.id %>" <%= filterAcc == a.id ? 'selected' : '' %>><%= a.name %> (****<%= a.number %>)</option>
+            <% }) } %>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Type</label>
+          <select name="type">
+            <option value="">All Types</option>
+            <option value="deposit" <%= filterType === 'deposit' ? 'selected' : '' %>>Deposit</option>
+            <option value="withdrawal" <%= filterType === 'withdrawal' ? 'selected' : '' %>>Withdrawal</option>
+            <option value="transfer" <%= filterType === 'transfer' ? 'selected' : '' %>>Transfer</option>
+            <option value="bill" <%= filterType === 'bill' ? 'selected' : '' %>>Bill Pay</option>
+            <option value="fee" <%= filterType === 'fee' ? 'selected' : '' %>>Fee</option>
+          </select>
+        </div>
+        <div class="filter-group" style="flex:2;">
+          <label>Search Description</label>
+          <input type="text" name="q" placeholder="e.g. Fuel, Payroll..." value="<%= filterQ %>">
+        </div>
+        <div class="filter-actions">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="/transactions" class="btn">Clear</a>
+        </div>
+      </form>
+
+      <!-- TRANSACTION LIST -->
+      <div class="tx-widget animate">
+        <div class="tx-header">
+          <h3>
+            <% if (filterAcc && accounts) {
+                 const acc = accounts.find(a => a.id == filterAcc);
+                 if(acc) { %>Transactions for <strong><%= acc.name %></strong><% } 
+               } else { %>All Transactions<% } %>
+          </h3>
+          <span class="tx-count"><%= txCount %> records</span>
+        </div>
+        
+        <% if (txs.length > 0) { %>
+          <div class="tx-list">
+            <% txs.forEach(tx => { %>
+              <div class="tx-row">
+                <div class="tx-icon <%= txClass(tx) %>"><%= txIcon(tx) %></div>
+                <div class="tx-details">
+                  <div class="tx-name"><%= tx.description || tx.type %></div>
+                  <div class="tx-meta">
+                    <span class="badge"><%= tx.type %></span>
+                    <% if (tx.accountName) { %><span><%= tx.accountName %></span><% } %>
+                  </div>
+                </div>
+                <div class="tx-right">
+                  <div class="tx-amount <%= txClass(tx) %>"><%= txAmountStr(tx) %></div>
+                  <div class="tx-date"><%= formatDate(tx.date) %></div>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="empty-state">
+            <div class="icon">🔍</div>
+            <h3>No transactions found</h3>
+            <p>Try adjusting your filters or search terms.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+    // Highlight active transaction type based on icon class
+    document.querySelectorAll('.tx-row').forEach(row => {
+      row.addEventListener('click', function() {
+        this.style.background = this.style.background === 'rgb(241, 245, 249)' ? '' : '#f1f5f9';
+        setTimeout(() => { this.style.background = ''; }, 2000);
+      });
+    });
+  </script>
 </body>
 </html>
+

@@ -5,123 +5,200 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>Sign In | AgriBank Texas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
   <style>
+    /* Institutional Bank Theme Variables */
     :root {
-      --primary: #059669;
-      --primary-dark: #047857;
-      --bg: #f8fafc;
+      --primary: #0a4d2e;
+      --primary-dark: #073822;
+      --gold: #d8a441;
+      --bg-light: #f4f6f5;
       --surface: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
+      --text-main: #111827;
+      --text-muted: #4b5563;
+      --border: #d1d5db;
+      --error-bg: #fef2f2;
+      --error-text: #991b1b;
+      --success-bg: #f0fdf4;
+      --success-text: #166534;
     }
     
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
       -webkit-text-size-adjust: 100%;
     }
-    
-    .login-container {
+
+    /* Animations */
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Split Screen Layout */
+    .login-wrapper {
+      display: flex;
       width: 100%;
-      max-width: 440px;
-      background: var(--surface);
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      padding: 48px 40px;
-      border: 1px solid var(--border);
+      min-height: 100vh;
     }
-    
-    .login-header {
-      text-align: center;
-      margin-bottom: 32px;
+
+    /* Left Side - Visual & Trust (Lively) */
+    .login-visual {
+      flex: 1;
+      background: linear-gradient(to bottom, rgba(10, 77, 46, 0.85), rgba(7, 56, 34, 0.95)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+      color: white;
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
     }
-    
-    .login-logo {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      border-radius: 16px;
+
+    .visual-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+    }
+
+    .visual-logo-icon {
+      background: var(--gold);
+      color: var(--primary-dark);
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      margin: 0 auto 20px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.2rem;
     }
+
+    .visual-logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+    }
+
+    .visual-content h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.5rem;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .visual-content p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.8);
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .visual-footer {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Right Side - The Bank Form */
+    .login-form-area {
+      flex: 1;
+      max-width: 600px;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 80px;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+      z-index: 10;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .login-header { margin-bottom: 32px; }
     
-    .login-header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
+    .login-header h2 {
+      font-size: 1.8rem;
+      color: var(--text-main);
       margin-bottom: 8px;
-      color: var(--text);
     }
     
     .login-header p {
       color: var(--text-muted);
       font-size: 0.95rem;
     }
-    
+
+    /* Alerts */
     .alert {
       padding: 16px;
       border-radius: 8px;
       margin-bottom: 24px;
       font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
     }
-    
-    .alert-error {
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-    }
-    
-    .alert-success {
-      background: #f0fdf4;
-      color: #166534;
-      border: 1px solid #bbf7d0;
-    }
-    
-    .form-group {
-      margin-bottom: 24px;
-    }
+    .alert-error { background: var(--error-bg); color: var(--error-text); border: 1px solid #fca5a5; }
+    .alert-success { background: var(--success-bg); color: var(--success-text); border: 1px solid #86efac; }
+
+    /* Inputs */
+    .form-group { margin-bottom: 24px; }
     
     .form-label {
       display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
       margin-bottom: 8px;
     }
     
     .form-input {
       width: 100%;
       padding: 14px 16px;
-      border: 2px solid var(--border);
+      border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 16px; /* Prevents iOS zoom */
-      font-family: 'Inter', sans-serif;
+      font-size: 16px; /* 16px prevents iOS zoom */
+      font-family: inherit;
       transition: all 0.2s;
+      background: #fff;
     }
     
     .form-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+      box-shadow: 0 0 0 4px rgba(10, 77, 46, 0.1);
     }
+
+    /* Remember Me & Help */
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-muted); }
+    .checkbox-wrap input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
     
+    .help-link { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .help-link:hover { text-decoration: underline; }
+
+    /* Button */
     .btn {
       width: 100%;
       padding: 16px;
@@ -129,98 +206,154 @@
       color: white;
       border: none;
       border-radius: 8px;
-      font-weight: 600;
-      font-size: 1rem;
+      font-weight: 700;
+      font-size: 1.05rem;
       cursor: pointer;
       transition: all 0.2s;
-      min-height: 56px; /* Touch-friendly */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
     }
     
     .btn:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+      box-shadow: 0 8px 16px rgba(10, 77, 46, 0.2);
     }
-    
+
+    /* Footer Links */
     .login-footer {
+      margin-top: 40px;
       text-align: center;
-      margin-top: 32px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
       font-size: 0.9rem;
       color: var(--text-muted);
     }
-    
-    .login-footer a {
-      color: var(--primary);
-      font-weight: 600;
-      text-decoration: none;
+    .login-footer a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .login-footer a:hover { text-decoration: underline; }
+
+    .security-badge {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
     }
-    
-    .login-footer a:hover {
-      text-decoration: underline;
+
+    /* ========================================= */
+    /* MOBILE RESPONSIVE DESIGN                  */
+    /* ========================================= */
+    @media (max-width: 900px) {
+      .login-wrapper { flex-direction: column; }
+      
+      .login-visual {
+        flex: none;
+        padding: 30px 20px;
+        min-height: 220px;
+      }
+      
+      .visual-content h1 { font-size: 2rem; margin-bottom: 10px; }
+      .visual-content p { font-size: 1rem; }
+      .visual-footer { display: none; } /* Hide complex footer on mobile top banner */
+      
+      .login-form-area {
+        flex: 1;
+        max-width: 100%;
+        padding: 40px 20px;
+        border-radius: 24px 24px 0 0;
+        margin-top: -24px; /* Overlap effect */
+      }
     }
-    
-    /* Mobile Responsive */
+
     @media (max-width: 480px) {
-      body {
-        padding: 16px;
-      }
-      
-      .login-container {
-        padding: 32px 24px;
-      }
-      
-      .login-header h1 {
-        font-size: 1.75rem;
-      }
-      
-      .form-input {
-        font-size: 16px !important; /* Critical for iOS */
-        padding: 16px;
-      }
-      
-      .btn {
-        padding: 16px;
-        min-height: 56px;
-      }
+      .login-header h2 { font-size: 1.5rem; }
+      .form-options { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
-    <div class="login-header">
-      <div class="login-logo">🌾</div>
-      <h1>Welcome Back</h1>
-      <p>Sign in to access your accounts</p>
-    </div>
+
+  <div class="login-wrapper">
     
-    <% if (error) { %>
-      <div class="alert alert-error"><%= error %></div>
-    <% } %>
-    
-    <% if (success) { %>
-      <div class="alert alert-success"><%= success %></div>
-    <% } %>
-    
-    <form method="POST" action="/login">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" name="username" class="form-input" placeholder="Enter your username" required autocomplete="username">
-      </div>
+    <!-- Left Side: Lively & Premium Brand Image -->
+    <div class="login-visual">
+      <a href="/" class="visual-logo">
+        <div class="visual-logo-icon">AB</div>
+        <div class="visual-logo-text">AgriBank</div>
+      </a>
       
-      <div class="form-group">
-        <label class="form-label">Password</label>
-        <input type="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+      <div class="visual-content">
+        <h1>Welcome Back.</h1>
+        <p>Institutional-grade tools to manage your cash flow, analyze yields, and grow your enterprise securely.</p>
       </div>
-      
-      <button type="submit" class="btn">Sign In</button>
-    </form>
-    
-    <div class="login-footer">
-      <p>Don't have an account? <a href="/register">Open an Account</a></p>
-      <p style="margin-top: 12px;"><a href="/forgot-password">Forgot password?</a></p>
+
+      <div class="visual-footer">
+        <span>🔒 Member FDIC</span>
+        <span>•</span>
+        <span>Equal Housing Lender</span>
+      </div>
     </div>
+
+    <!-- Right Side: Clean, Bank-Grade Form -->
+    <div class="login-form-area">
+      <div class="form-container">
+        
+        <div class="login-header">
+          <h2>Sign In</h2>
+          <p>Access your accounts securely</p>
+        </div>
+        
+        <% if (error) { %>
+          <div class="alert alert-error">
+            <span>⚠️</span> <%= error %>
+          </div>
+        <% } %>
+        
+        <% if (success) { %>
+          <div class="alert alert-success">
+            <span>✅</span> <%= success %>
+          </div>
+        <% } %>
+        
+        <form method="POST" action="/login">
+          <div class="form-group">
+            <label class="form-label">User ID</label>
+            <input type="text" name="username" class="form-input" placeholder="Enter your User ID" required autocomplete="username">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-input" placeholder="Enter your password" required autocomplete="current-password">
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-wrap">
+              <input type="checkbox" name="remember">
+              <span>Save User ID</span>
+            </label>
+            <a href="/forgot-password" class="help-link">Forgot User ID / Password?</a>
+          </div>
+          
+          <button type="submit" class="btn">
+            Secure Sign In 🔒
+          </button>
+        </form>
+        
+        <div class="login-footer">
+          <p>Not enrolled in online banking? <br><a href="/register">Open an Account / Enroll Now</a></p>
+        </div>
+
+        <div class="security-badge">
+          <span>🛡️</span> 256-bit TLS Encryption. Your connection is secure.
+        </div>
+
+      </div>
+    </div>
+
   </div>
+
 </body>
 </html>

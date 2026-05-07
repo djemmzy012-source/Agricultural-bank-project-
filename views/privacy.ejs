@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head', { title: 'Privacy Policy | AgriBank Texas' }) %>
+  <style>
+    :root {
+      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
+      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
+      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
+      --text-secondary: #64748b; --border: #e2e8f0;
+      --sidebar-w: 260px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 200;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green-900); }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
+    .nav-links a:hover { color: var(--green-700); }
+    .btn-nav { background: var(--green-800); color: white !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
+    .btn-nav:hover { background: var(--green-700); }
+
+    /* HERO */
+    .page-hero {
+      background: linear-gradient(170deg, var(--green-900) 0%, var(--green-700) 100%);
+      color: white;
+      padding: 7rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .page-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 0.75rem; position: relative; }
+    .page-hero p { color: rgba(255,255,255,0.75); max-width: 550px; margin: 0 auto; position: relative; font-size: 1.05rem; }
+    .last-updated {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gold-light);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    /* CONTENT AREA */
+    .content-wrapper { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+
+    /* SIDEBAR TOC */
+    .toc-sidebar {
+      position: sticky;
+      top: 80px;
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .toc-title { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 700; margin-bottom: 1rem; }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 0.25rem; }
+    .toc-list a {
+      display: block;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .toc-list a:hover { background: #f0fdf4; color: var(--green-700); }
+    .toc-list a.active { background: #ecfdf5; color: var(--green-700); font-weight: 700; }
+
+    /* POLICY SECTIONS */
+    .policy-section { margin-bottom: 3rem; scroll-margin-top: 80px; }
+    .section-icon {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .section-icon.green { background: #ecfdf5; }
+    .section-icon.gold { background: #fefce8; }
+    .section-icon.blue { background: #eff6ff; }
+    .section-icon.purple { background: #faf5ff; }
+    .section-icon.red { background: #fef2f2; }
+    .section-icon.teal { background: #f0fdfa; }
+
+    .policy-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--green-900);
+    }
+    .policy-section h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+    .policy-section p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+    .policy-section ul {
+      padding-left: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .policy-section li {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.7;
+    }
+    .policy-section li::marker { color: var(--gold); }
+
+    .highlight-box {
+      background: #fffbeb;
+      border-left: 4px solid var(--gold);
+      border-radius: 0 10px 10px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .highlight-box p { color: #92400e; font-size: 0.88rem; margin-bottom: 0; }
+    .highlight-box strong { color: #78350f; }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+    .info-item {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .info-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.25rem; }
+    .info-item .value { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+
+    .back-to-top {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--green-800); color: white;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s; cursor: pointer; border: none;
+      margin-top: 2rem;
+    }
+    .back-to-top:hover { background: var(--green-700); transform: translateY(-2px); }
+
+    /* MOBILE NAV */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid var(--border);
+      z-index: 100; padding: 0.5rem 0;
+      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    @media (max-width: 900px) {
+      .navbar { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .content-wrapper { padding: 2rem 1rem 5rem; }
+      .page-hero { padding: 5.5rem 1rem 2.5rem; }
+      .mobile-nav { display: block; }
+    }
+
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.5s ease both; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/loans">Loans</a>
+      <a href="/about">About Us</a>
+      <a href="/register" class="btn-nav">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="last-updated">📅 Updated April 10, 2025</div>
+    <h1>Privacy Policy</h1>
+    <p>Your data security and privacy are foundational to everything we do at AgriBank Texas Regional.</p>
+  </section>
+
+  <!-- CONTENT -->
+  <div class="content-wrapper">
+
+    <!-- INTRODUCTION -->
+    <div class="policy-section animate">
+      <h2>Introduction & Commitment</h2>
+      <p>
+        AgriBank Texas Regional ("we," "us," or "our") is committed to protecting the privacy and confidentiality of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your data when you use our website, mobile applications, online banking platform, or any of our financial services.
+      </p>
+      <div class="highlight-box">
+        <p><strong>Key Promise:</strong> We will never sell your personal information to third parties. Your data is used solely to provide and improve our banking services to you.</p>
+      </div>
+      <p>By accessing or using any part of our services, you agree to the practices described in this policy. If you do not agree, please discontinue use of our services immediately.</p>
+    </div>
+
+    <!-- INFORMATION WE COLLECT -->
+    <div class="policy-section animate" style="animation-delay: 0.1s;">
+      <div class="section-icon green">📋</div>
+      <h2>Information We Collect</h2>
+      <p>We collect information to provide better services to our customers. The types of information we collect fall into several categories:</p>
+
+      <h3>1. Information You Provide Directly</h3>
+      <ul>
+        <li><strong>Account Opening Data:</strong> Full name, date of birth, Social Security Number or Tax ID, government-issued identification, contact information (address, phone, email), employment details, and income verification.</li>
+        <li><strong>Login Credentials:</strong> Username, encrypted passwords, biometric data (for mobile devices), and security questions.</li>
+        <li><strong>Transaction Details:</strong> Payment instructions, transfer amounts, payee information, check images, and memos.</li>
+        <li><strong>Communication Records:</strong> Correspondence via email, chat support transcripts, call recordings (where legally permitted), and feedback submissions.</li>
+        <li><strong>KYC / Compliance Documents:</strong> Proof of identity, address verification documents, source-of-funds documentation, and beneficial ownership information.</li>
+      </ul>
+
+      <h3>2. Information Collected Automatically</h3>
+      <ul>
+        <li><strong>Device Information:</strong> IP address, browser type, operating system, device model, unique device identifiers, and screen resolution.</li>
+        <li><strong>Usage Data:</strong> Pages visited, features accessed, time spent on pages, clickstream data, referring URLs, and navigation paths.</li>
+        <li><strong>Location Data:</strong> General geographic location derived from IP address (when you access our services). GPS-based location only with explicit consent for branch locator features.</li>
+        <li><strong>Cookies & Tracking:</strong> Session cookies, persistent cookies, analytics cookies, and security cookies. See our Cookie Policy section below.</li>
+      </ul>
+
+      <h3>3. Information From Third Parties</h3>
+      <ul>
+        <li><strong>Credit Reporting Agencies:</strong> Credit scores, credit history summaries, and creditworthiness indicators for loan evaluations.</li>
+        <li><strong>Identity Verification Services:</strong> Address validation, fraud detection flags, and watchlist screening results.</li>
+        <li><strong>Financial Data Providers:</strong> Account verification data through Plaid or similar aggregation services (with your explicit permission).</li>
+        <li><strong>Government Sources:</strong> OFAC sanctions lists, PEP (Politically Exposed Person) databases, and regulatory compliance databases.</li>
+      </ul>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Data Categories</div>
+          <div class="value">12 Distinct Types</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Retention Period</div>
+          <div class="value">7 Years (Min.)</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Encryption Standard</div>
+          <div class="value">AES-256</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Compliance Frameworks</div>
+          <div class="value">GLBA, FCRA, CCPA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW WE USE -->
+    <div class="policy-section animate" style="animation-delay: 0.15s;">
+      <div class="section-icon gold">⚙️</div>
+      <h2>How We Use Your Information</h2>
+
+      <h3>Primary Purposes</h3>
+      <ul>
+        <li><strong>Account Management:</strong> To open, maintain, process transactions on, and administer your bank accounts and loan facilities.</li>
+        <li><strong>Transaction Processing:</strong> To execute transfers, wire payments, bill payments, direct deposits, and ACH transactions.</li>
+        <li><strong>Fraud Prevention:</strong> To detect, prevent, investigate, and respond to fraudulent activities, cyber threats, and unauthorized access attempts.</li>
+        <li><strong>Risk Assessment:</strong> To evaluate creditworthiness for loans, determine risk profiles, and set appropriate terms and interest rates.</li>
+        <li><strong>Regulatory Compliance:</strong> To fulfill obligations under the Bank Secrecy Act (BSA), Anti-Money Laundering (AML) laws, USA PATRIOT Act, GDPR (for EU citizens), and other applicable regulations.</li>
+        <li><strong>Service Improvement:</strong> To analyze usage patterns, enhance user experience, develop new products, and optimize platform performance.</li>
+      </ul>
+
+      <h3>Secondary Purposes</h3>
+      <ul>
+        <li>Sending service announcements, maintenance notifications, and critical security alerts (non-promotional — you cannot opt out of these).</li>
+        <li>Personalizing your dashboard experience, account recommendations, and product suggestions based on your usage patterns.</li>
+        <li>Conducting customer satisfaction surveys and research studies (always optional with clear opt-out).</li>
+        <li>Marketing our own financial products, including loans, credit cards, savings accounts, and investment services. <em>You may opt out of marketing communications at any time.</em></li>
+        <li>Legal proceedings defense, regulatory investigations, or court orders as required by law.</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>Opt-Out Rights:</strong> For marketing and promotional communications, you may opt out anytime by clicking the unsubscribe link in emails, adjusting your notification preferences in Dashboard → Profile → Privacy Settings, or contacting us directly.</p>
+      </div>
+    </div>
+
+    <!-- DATA SHARING -->
+    <div class="policy-section animate" style="animation-delay: 0.2s;">
+      <div class="section-icon blue">🔗</div>
+      <h2>Data Sharing & Disclosure</h2>
+      <p>We share your information only in the circumstances described below. We do <strong>not sell your personal information</strong>.</p>
+
+      <h3>With Your Consent</h3>
+      <p>We will share your information with third parties only when you explicitly authorize us to do so — for example, when you connect a third-party financial app, initiate a wire transfer to an external recipient, or apply for a joint account.</p>
+
+      <h3>Service Providers</h3>
+      <p>We engage trusted third-party vendors who perform services on our behalf under strict data processing agreements. These include:</p>
+      <ul>
+        <li>Cloud hosting infrastructure (AWS GovCloud)</li>
+        <li>Email delivery and notification services</li>
+        <li>Payment processing networks (ACH, SWIFT, FedWire)</li>
+        <li>Cybersecurity and fraud monitoring providers</li>
+        <li>Data analytics and business intelligence platforms</li>
+        <li>Customer support ticketing systems</li>
+      </ul>
+      <p>All vendors are contractually obligated to use your data solely for the services they provide to us and are subject to regular security audits.</p>
+
+      <h3>Legal & Regulatory Requirements</h3>
+      <p>We may disclose your information when required by law or legal process, including:</p>
+      <ul>
+        <li>Response to subpoenas, court orders, or regulatory examinations</li>
+        <li>Reporting suspicious activities to FinCEN (Financial Crimes Enforcement Network)</li>
+        <li>Communicating with federal agencies (FDIC, OCC, Federal Reserve) during examinations</li>
+        <li>Protecting the rights, property, or safety of AgriBank, our customers, or the public</li>
+        <li>Establishing or exercising legal claims in judicial or administrative proceedings</li>
+      </ul>
+
+      <h3>Business Transfers</h3>
+      <p>In the event of a merger, acquisition, or sale of all or part of our assets, your personal information may be transferred as part of that transaction. We will notify you via email and prominent notice on our website within 30 days of any such change in data ownership.</p>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="policy-section animate" style="animation-delay: 0.25s;">
+      <div class="section-icon purple">🔒</div>
+      <h2>Data Security Measures</h2>
+      <p>We employ industry-leading security measures designed to protect your personal and financial data against unauthorized access, alteration, disclosure, or destruction:</p>
+
+      <h3>Technical Safeguards</h3>
+      <ul>
+        <li><strong>Encryption in Transit:</strong> All data transmitted between your device and our servers is encrypted using TLS 1.3 (Transport Layer Security).</li>
+        <li><strong>Encryption at Rest:</strong> All stored data is encrypted using AES-256 encryption standards.</li>
+        <li><strong>Multi-Factor Authentication (MFA):</strong> Required for all account access — supporting SMS codes, authenticator apps, hardware tokens, and biometric verification.</li>
+        <li><strong>Endpoint Protection:</strong> Advanced threat detection on all servers, workstations, and network devices.</li>
+        <li><strong>Penetration Testing:</strong> Quarterly third-party penetration tests and annual SOC 2 Type II audits.</li>
+        <li><strong>Zero Trust Architecture:</strong> Least-privilege access controls for all internal systems and employees.</li>
+      </ul>
+
+      <h3>Organizational Safeguards</h3>
+      <ul>
+        <li>Employees undergo mandatory privacy and security training annually.</li>
+        <li>Background checks required for all staff with data access.</li>
+        <li>Data access restricted on a need-to-know basis with audit logging of all access events.</li>
+        <li>Incident response team available 24/7 with breach notification protocols meeting FDIC requirements.</li>
+        <li>Regular employee access reviews and privilege revocation procedures.</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>Breach Notification:</strong> In the unlikely event of a data breach, we will notify affected customers via email and/or certified mail within 72 hours of discovery, as required by applicable state and federal law.</p>
+      </div>
+    </div>
+
+    <!-- COOKIES -->
+    <div class="policy-section animate" style="animation-delay: 0.3s;">
+      <div class="section-icon teal">🍪</div>
+      <h2>Cookies & Tracking Technologies</h2>
+      <p>We use cookies and similar tracking technologies to enhance your experience, analyze usage patterns, and maintain security.</p>
+
+      <h3>Types of Cookies Used</h3>
+      <ul>
+        <li><strong>Essential Cookies:</strong> Required for core functionality — session management, authentication, and security. Cannot be disabled.</li>
+        <li><strong>Analytics Cookies:</strong> Help us understand how visitors interact with our website (Google Analytics with IP anonymization). These help us improve our services.</li>
+        <li><strong>Preference Cookies:</strong> Remember your settings like language preference, theme mode, and recent accounts viewed.</li>
+        <li><strong>Functional Cookies:</strong> Enable features like saving draft transfer forms, remembering login sessions, and accessibility settings.</li>
+      </ul>
+
+      <h3>Managing Your Preferences</h3>
+      <p>You can control cookies through your browser settings. Most browsers allow you to refuse or accept cookies, delete existing cookies, and view which cookies have been set. Note that disabling essential cookies may impair certain features of our online banking platform.</p>
+      <p>We also respect Do Not Track (DNT) signals and will adjust our tracking accordingly.</p>
+    </div>
+
+    <!-- YOUR RIGHTS -->
+    <div class="policy-section animate" style="animation-delay: 0.35s;">
+      <div class="section-icon red">✊</div>
+      <h2>Your Rights & Choices</h2>
+      <p>Depending on your jurisdiction, you may have the following rights regarding your personal information:</p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Right to Access</div>
+          <div class="value">Request a copy of your data</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Right to Correct</div>
+          <div class="value">Update inaccurate info</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Right to Delete</div>
+          <div class="value">Request deletion (subject to legal holds)</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Right to Portability</div>
+          <div class="value">Export data in standard format</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Right to Opt-Out</div>
+          <div class="value">Decline marketing & targeted ads</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Right to Non-Discrimination</div>
+          <div class="value">Equal service regardless of opt-out</div>
+        </div>
+      </div>
+
+      <h3>Exercise Your Rights</h3>
+      <p>To exercise any of these rights, please contact us through one of the methods below:</p>
+      <ul>
+        <li><strong>Online:</strong> Log in to Dashboard → Profile → Privacy Settings → Request Data Action</li>
+        <li><strong>Email:</strong> privacy@agribanktx.com</li>
+        <li><strong>Phone:</strong> 1-800-555-AGRI (Option 3)</li>
+        <li><strong>Mail:</strong> AgriBank Texas Regional, Attn: Privacy Office, 100 Market Street, Austin, TX 78701</li>
+      </ul>
+      <p>We will respond to verified requests within 30 days. For California residents, additional rights are available under the California Consumer Privacy Act (CCPA) and California Privacy Rights Act (CPRA).</p>
+    </div>
+
+    <!-- CHILDREN'S PRIVACY -->
+    <div class="policy-section animate" style="animation-delay: 0.4s;">
+      <div class="section-icon green">👨‍👩‍</div>
+      <h2>Children's Privacy</h2>
+      <p>Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If you are a parent or guardian and believe your child has provided us with personal data, please contact us immediately. We will take prompt action to delete such information upon verification.</p>
+      <p>Juvenile accounts require a custodian (parent or legal guardian) and are managed entirely through the custodian's credentials with age-appropriate visibility features.</p>
+    </div>
+
+    <!-- INTERNATIONAL -->
+    <div class="policy-section animate" style="animation-delay: 0.45s;">
+      <div class="section-icon blue">🌐</div>
+      <h2>International Data Transfers</h2>
+      <p>If you are located outside the United States, please note that your information may be transferred to, processed, and stored in the United States. By using our services, you consent to this transfer and processing in accordance with this policy and U.S. data protection laws.</p>
+      <p>We ensure appropriate safeguards for international transfers, including Standard Contractual Clauses (SCCs) approved by the European Commission and adequate data protection assessments.</p>
+    </div>
+
+    <!-- CHANGES -->
+    <div class="policy-section animate" style="animation-delay: 0.5s;">
+      <div class="section-icon gold">📝</div>
+      <h2>Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technology, legal requirements, or other factors. When we make material changes, we will:</p>
+      <ul>
+        <li>Post the updated policy on this page with a revised "Last Updated" date.</li>
+        <li>Send you an email notification at least 30 days before the changes take effect.</li>
+        <li>Display a prominent banner on our website and mobile app for 30 days.</li>
+      </ul>
+      <p>We encourage you to review this policy periodically. Continued use of our services after changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="policy-section animate" style="animation-delay: 0.55s;">
+      <div class="section-icon teal">📞</div>
+      <h2>Contact Us</h2>
+      <p>If you have any questions, concerns, or complaints about this Privacy Policy or our data practices, please reach out to our Privacy Officer:</p>
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Email</div>
+          <div class="value">privacy@agribanktx.com</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Phone</div>
+          <div class="value">1-800-555-AGRI (Ext. 4)</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Address</div>
+          <div class="value">100 Market St, Austin, TX 78701</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Ombudsman</div>
+          <div class="value">Privacy@agribanktx.com</div>
+        </div>
+      </div>
+      <p>If you are unsatisfied with our response, you have the right to lodge a complaint with the FDIC Consumer Complaint Division at 1-877-275-3342 or visit fdic.gov/consumers/complaints.</p>
+    </div>
+
+    <button class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--navy);color:rgba(255,255,255,0.5);padding:2rem;text-align:center;font-size:0.85rem;">
+    <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;color:white;margin-bottom:0.25rem;">Agri<span style="color:var(--gold)">Bank</span></div>
+    <div style="font-size:0.65rem;text-transform:uppercase;letter-spacing:1.5px;opacity:0.5;margin-bottom:1rem;">Texas Regional</div>
+    <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <a href="/about" style="color:rgba(255,255,255,0.6);font-weight:600;">About</a>
+      <a href="/privacy" style="color:var(--gold);font-weight:700;">Privacy Policy</a>
+      <a href="/terms" style="color:rgba(255,255,255,0.6);font-weight:600;">Terms of Service</a>
+      <a href="/help" style="color:rgba(255,255,255,0.6);font-weight:600;">Help Center</a>
+    </div>
+    <div>© <%= new Date().getFullYear() ? new Date().getFullYear() : 2025 %> AgriBank Texas Regional. Member FDIC. Equal Housing Lender. NMLS# 482910</div>
+  </footer>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/" class="mob-nav-item"><span class="mob-icon">🏠</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+</body>
+</html>
+

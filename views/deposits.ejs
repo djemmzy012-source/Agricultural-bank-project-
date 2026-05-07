@@ -1,0 +1,351 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                body {
+                  background-color: white; /* Ensure the iframe has a white background */
+                }
+
+                
+              </style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head', { title: 'Mobile Deposit | AgriBank Texas' }) %>
+  <style>
+    :root {
+      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
+      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
+      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
+      --text-secondary: #64748b; --border: #e2e8f0;
+      --success: #10b981; --danger: #ef4444;
+      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
+    a { text-decoration: none; color: inherit; }
+
+    /* SIDEBAR (Standardized) */
+    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; }
+    .sidebar-brand { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); font-family: 'DM Serif Display', serif; font-size: 1.5rem; }
+    .sidebar-brand span { color: var(--gold); }
+    .sidebar-nav { padding: 1rem; flex: 1; }
+    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem; border-radius: 8px; color: rgba(255,255,255,0.7); margin-bottom: 0.25rem; }
+    .nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-item.active { background: rgba(212, 160, 71, 0.2); color: var(--gold); font-weight: 600; }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
+    .topbar { height: 70px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .content { padding: 2rem; max-width: 900px; margin: 0 auto; }
+
+    /* DEPOSIT SPECIFIC */
+    .deposit-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: var(--shadow); max-width: 650px; margin: 0 auto; }
+    .step-indicator { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .step { display: flex; align-items: center; gap: 0.5rem; color: var(--text-secondary); font-size: 0.9rem; font-weight: 600; }
+    .step.active { color: var(--green-700); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+    .step.active .step-num { background: var(--green-700); color: white; }
+
+    .form-group { margin-bottom: 1.5rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; }
+    .form-input, .form-select { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--green-600); }
+    .amount-input { font-size: 1.5rem; font-weight: 700; text-align: center; padding: 1rem; }
+
+    /* UPLOAD ZONES */
+    .upload-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 12px; padding: 1.5rem; text-align: center;
+      cursor: pointer; transition: all 0.2s; position: relative; min-height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .upload-zone:hover { border-color: var(--green-600); background: #f8fafc; }
+    .upload-zone.has-image { border-style: solid; border-color: var(--success); background: #f0fdf4; }
+    .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; color: var(--text-secondary); }
+    .upload-text { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .upload-hint { font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem; }
+    .preview-img { max-width: 100%; max-height: 150px; border-radius: 8px; object-fit: contain; }
+    .remove-btn { position: absolute; top: 8px; right: 8px; background: var(--danger); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; cursor: pointer; display: none; }
+    .upload-zone.has-image .remove-btn { display: flex; align-items: center; justify-content: center; }
+
+    .btn { padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; transition: 0.2s; }
+    .btn-primary { background: var(--green-800); color: white; width: 100%; font-size: 1rem; }
+    .btn-primary:hover { background: var(--green-700); }
+    .btn-secondary { background: var(--bg); color: var(--text); border: 1px solid var(--border); }
+    .btn-group { display: flex; gap: 1rem; margin-top: 1rem; }
+
+    .alert { padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.9rem; }
+    .alert-info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+
+    .hidden { display: none !important; }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .content { padding: 1rem; }
+      .upload-grid { grid-template-columns: 1fr; }
+      .deposit-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <% var currentUser = user || { firstName: 'User' }; %>
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">Agri<span>Bank</span></div>
+    <nav class="sidebar-nav">
+      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
+      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
+      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
+      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
+      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
+      <a href="/deposits" class="nav-item active"><span class="icon">📱</span> Mobile Deposit</a>
+      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
+      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
+      <a href="/logout" class="nav-item"><span class="icon">🚪</span> Logout</a>
+    </nav>
+  </aside>
+
+  <div class="main">
+    <header class="topbar">
+      <h3>Mobile Check Deposit</h3>
+      <span>Welcome, <%= currentUser.firstName %></span>
+    </header>
+
+    <div class="content">
+      <div class="deposit-card">
+        
+        <% if (typeof success !== 'undefined' && success) { %>
+          <div class="alert alert-success">✅ <%= success %></div>
+        <% } %>
+
+        <div class="alert alert-info">
+          ℹ️ Tips: Ensure the check is endorsed with "For Mobile Deposit Only at AgriBank Texas". Capture in good lighting with a dark background.
+        </div>
+
+        <!-- STEP INDICATORS -->
+        <div class="step-indicator">
+          <div class="step active" id="step1-ind">
+            <div class="step-num">1</div>
+            <span>Amount & Account</span>
+          </div>
+          <div class="step" id="step2-ind">
+            <div class="step-num">2</div>
+            <span>Upload Check</span>
+          </div>
+          <div class="step" id="step3-ind">
+            <div class="step-num">3</div>
+            <span>Review</span>
+          </div>
+        </div>
+
+        <form id="depositForm" action="/deposits" method="POST" enctype="multipart/form-data">
+          
+          <!-- STEP 1: AMOUNT & ACCOUNT -->
+          <div id="step1" class="form-section">
+            <div class="form-group">
+              <label class="form-label">Deposit Amount</label>
+              <input type="number" name="amount" id="amountInput" class="form-input amount-input" placeholder="$0.00" min="0.01" step="0.01" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Deposit To Account</label>
+              <select name="accountId" class="form-select" required>
+                <option value="">Select Account</option>
+                <% if (typeof accounts !== 'undefined' && accounts.length > 0) { 
+                     accounts.forEach(function(acc) { %>
+                  <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>)</option>
+                <% }); } else { %>
+                  <option value="">No accounts available</option>
+                <% } %>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Check Number (Optional)</label>
+              <input type="text" name="checkNumber" class="form-input" placeholder="e.g. 1001">
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next: Upload Check</button>
+            </div>
+          </div>
+
+          <!-- STEP 2: UPLOAD CHECK -->
+          <div id="step2" class="form-section hidden">
+            <div class="upload-grid">
+              <div class="upload-zone" id="frontZone" onclick="document.getElementById('frontInput').click()">
+                <input type="file" id="frontInput" name="frontImage" accept="image/*" class="hidden" onchange="previewImage(this, 'frontZone', 'frontPreview')">
+                <button type="button" class="remove-btn" onclick="removeImage(event, 'frontZone', 'frontInput')">✕</button>
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">Front of Check</div>
+                <div class="upload-hint">Tap to upload</div>
+                <img id="frontPreview" class="preview-img hidden">
+              </div>
+
+              <div class="upload-zone" id="backZone" onclick="document.getElementById('backInput').click()">
+                <input type="file" id="backInput" name="backImage" accept="image/*" class="hidden" onchange="previewImage(this, 'backZone', 'backPreview')">
+                <button type="button" class="remove-btn" onclick="removeImage(event, 'backZone', 'backInput')">✕</button>
+                <div class="upload-icon">📝</div>
+                <div class="upload-text">Back of Check</div>
+                <div class="upload-hint">Endorsement required</div>
+                <img id="backPreview" class="preview-img hidden">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Memo (Optional)</label>
+              <input type="text" name="memo" class="form-input" placeholder="Note for your records...">
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" onclick="prevStep(1)">Back</button>
+              <button type="button" class="btn btn-primary" onclick="nextStep(3)">Review Deposit</button>
+            </div>
+          </div>
+
+          <!-- STEP 3: REVIEW -->
+          <div id="step3" class="form-section hidden">
+            <div style="background: var(--bg); padding: 1.5rem; border-radius: 10px; margin-bottom: 1.5rem;">
+              <h4 style="margin-bottom: 1rem; font-size: 1.1rem;">Deposit Summary</h4>
+              <div style="display: grid; gap: 0.75rem; font-size: 0.95rem;">
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-secondary);">Amount</span>
+                  <span style="font-weight: 700; font-size: 1.1rem;" id="reviewAmount">$0.00</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-secondary);">Account</span>
+                  <span style="font-weight: 600;" id="reviewAccount">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-secondary);">Check #</span>
+                  <span id="reviewCheckNum">—</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                  <span style="color: var(--text-secondary);">Images</span>
+                  <span style="color: var(--success); font-weight: 600;">✓ Front & Back Captured</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-info" style="font-size: 0.85rem;">
+              By submitting, you agree to the <strong>Mobile Deposit Agreement</strong>. Funds may be held for verification.
+            </div>
+
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Back</button>
+              <button type="submit" class="btn btn-primary">Submit Deposit</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+
+    function updateSteps() {
+      document.querySelectorAll('.step').forEach((s, i) => {
+        s.classList.toggle('active', i < currentStep);
+      });
+      document.getElementById('step1').classList.toggle('hidden', currentStep !== 1);
+      document.getElementById('step2').classList.toggle('hidden', currentStep !== 2);
+      document.getElementById('step3').classList.toggle('hidden', currentStep !== 3);
+    }
+
+    function nextStep(step) {
+      if (step === 2 && !document.querySelector('input[name="amount"]').value) {
+        alert('Please enter a deposit amount.');
+        return;
+      }
+      if (step === 3) {
+        if (!document.getElementById('frontPreview').src || document.getElementById('frontPreview').classList.contains('hidden')) {
+          alert('Please upload the front of the check.');
+          return;
+        }
+        if (!document.getElementById('backPreview').src || document.getElementById('backPreview').classList.contains('hidden')) {
+          alert('Please upload the back of the check.');
+          return;
+        }
+        // Populate review
+        const amt = parseFloat(document.querySelector('input[name="amount"]').value);
+        document.getElementById('reviewAmount').textContent = '$' + amt.toFixed(2);
+        
+        const accSelect = document.querySelector('select[name="accountId"]');
+        document.getElementById('reviewAccount').textContent = accSelect.options[accSelect.selectedIndex].text;
+        
+        const checkNum = document.querySelector('input[name="checkNumber"]').value;
+        document.getElementById('reviewCheckNum').textContent = checkNum || '—';
+      }
+      currentStep = step;
+      updateSteps();
+    }
+
+    function prevStep(step) {
+      currentStep = step;
+      updateSteps();
+    }
+
+    function previewImage(input, zoneId, previewId) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById(previewId);
+          preview.src = e.target.result;
+          preview.classList.remove('hidden');
+          document.getElementById(zoneId).classList.add('has-image');
+        }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function removeImage(e, zoneId, inputId) {
+      e.stopPropagation();
+      document.getElementById(zoneId).classList.remove('has-image');
+      document.getElementById(zoneId).querySelector('.preview-img').classList.add('hidden');
+      document.getElementById(inputId).value = '';
+    }
+  </script>
+</body>
+</html>
+
+
+
+              <script>
+                              app.get('/deposits', requireLogin, (req, res) => {
+  res.render('deposit', {
+    user: req.session.user,
+    accounts: getUserAccounts(req.session.user.id) || []
+  });
+});
+
+app.post('/deposits', requireLogin, (req, res) => {
+  const { amount, accountId, checkNumber, memo } = req.body;
+  const amt = Number(amount);
+  
+  if (!amt || amt <= 0) {
+    return res.render('deposit', { user: req.session.user, accounts: getUserAccounts(req.session.user.id), error: 'Invalid amount.' });
+  }
+
+  // Here you would normally process file uploads (multer) and insert into DB
+  // For now, we'll simulate success
+  req.session.successMessage = `Mobile deposit of $${amt.toFixed(2)} submitted successfully.`;
+  res.redirect('/dashboard');
+});
+
+
+              </script>
+                        </body>
+                        </html>
+                    

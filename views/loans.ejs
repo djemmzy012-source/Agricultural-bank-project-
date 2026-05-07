@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Bill Pay | AgriBank Texas' }) %>
+  <%- include('partials/head', { title: 'Loan Services | AgriBank Texas' }) %>
   <style>
     :root {
       --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
       --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
       --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
       --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
       --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
       --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
       --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
@@ -48,55 +48,47 @@
     .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
     .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
 
-    /* BILL PAY LAYOUT */
-    .billpay-grid { display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem; }
-    .form-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .form-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.5rem; }
-    .form-input, .form-select {
-      width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.9rem; font-family: inherit; transition: 0.2s; background: white;
-    }
-    .form-input:focus, .form-select:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
-    .form-hint { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.4rem; }
+    /* LOANS LAYOUT */
+    .loans-grid { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; }
     
-    .input-icon-wrap { position: relative; }
-    .input-icon-wrap .form-input { padding-left: 2.5rem; }
-    .input-icon-wrap::before {
-      content: '$'; position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%);
-      color: var(--text-secondary); font-weight: 600; pointer-events: none;
+    /* PRODUCT CARDS */
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .product-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
     }
+    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
+    .product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--green-600); }
+    .product-card:nth-child(2)::before { background: var(--warning); }
+    .product-card:nth-child(3)::before { background: #8b5cf6; }
 
-    .btn-submit {
-      width: 100%; padding: 0.85rem; background: var(--green-800); color: white; border: none;
-      border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.2s; margin-top: 0.5rem;
-    }
-    .btn-submit:hover { background: var(--green-700); }
-    .btn-submit:active { transform: scale(0.98); }
+    .prod-icon { width: 56px; height: 56px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.25rem; }
+    .product-card:nth-child(2) .prod-icon { background: #fefce8; }
+    .product-card:nth-child(3) .prod-icon { background: #f5f3ff; }
 
-    .btn-outline {
-      width: 100%; padding: 0.6rem; border: 1px solid var(--border); background: white; color: var(--text);
-      border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; text-align: center; transition: 0.2s;
-      margin-top: 0.5rem;
-    }
-    .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+    .prod-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text); }
+    .prod-rate { font-size: 0.85rem; font-weight: 700; color: var(--success); margin-bottom: 1rem; display: inline-block; background: #ecfdf5; padding: 0.2rem 0.5rem; border-radius: 4px; }
+    .prod-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+    .prod-features { list-style: none; margin-bottom: 1.5rem; }
+    .prod-features li { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .prod-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
 
-    .alert { padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
-    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-    .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+    .btn-apply { width: 100%; padding: 0.75rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-apply:hover { background: var(--green-700); }
 
-    /* SIDEBAR WIDGETS */
-    .widget { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); border: 1px solid var(--border); margin-bottom: 1.5rem; }
-    .widget h4 { font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
-    
-    .info-item { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-    .info-icon { width: 36px; height: 36px; background: #f0fdf4; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .info-text .label { font-size: 0.75rem; color: var(--text-secondary); }
-    .info-text .value { font-weight: 700; font-size: 0.9rem; }
+    /* CALCULATOR SIDEBAR */
+    .calc-widget { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); position: sticky; top: calc(var(--header-h) + 1.5rem); }
+    .calc-widget h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
+    .calc-group { margin-bottom: 1rem; }
+    .calc-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
+    .calc-input { width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
+    .calc-result { background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; border: 1px solid var(--border); }
+    .calc-val { font-size: 1.75rem; font-weight: 800; font-family: 'DM Serif Display', serif; color: var(--green-700); }
+    .calc-label { font-size: 0.75rem; color: var(--text-secondary); }
 
-    .action-list { display: flex; flex-direction: column; gap: 0.5rem; }
-    
+    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
+    .btn-text:hover { color: var(--green-900); }
+
     /* MOBILE */
     .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
     .sidebar-overlay.show { display: block; opacity: 1; }
@@ -107,7 +99,8 @@
     .mob-nav-item .mob-icon { font-size: 1.25rem; }
 
     @media (max-width: 1024px) {
-      .billpay-grid { grid-template-columns: 1fr; }
+      .loans-grid { grid-template-columns: 1fr; }
+      .calc-widget { position: static; margin-top: 1rem; }
     }
     @media (max-width: 900px) {
       .sidebar { transform: translateX(-100%); }
@@ -118,19 +111,25 @@
       .topbar { padding: 0 1.25rem; }
       .mobile-nav { display: block; }
     }
-
-    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; }
-    .btn-text:hover { color: var(--green-900); }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .animate { animation: fadeInUp 0.4s ease both; }
   </style>
 </head>
 <body>
   <%
-    const safeUser = user || { firstName: 'Customer', lastName: '' };
+    /* 
+       FIX: Added strict checks for 'user' and 'products' variables.
+       This prevents the "ReferenceError: user is not defined" (500 Error).
+    */
+    const safeUser = (typeof user !== 'undefined' && user) ? user : { firstName: 'Customer', lastName: '' };
     const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
     const isAdmin = safeUser.isAdmin === 1;
-    function money(v) { return '$' + Number(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }); }
+    
+    const loanProducts = (typeof products !== 'undefined' && Array.isArray(products)) ? products : [
+      { title: 'Operating Loan', rate: '6.25% APR', desc: 'Flexible financing for seed, feed, labor, and seasonal cash flow.' },
+      { title: 'Equipment Loan', rate: '5.90% APR', desc: 'Finance tractors, combines, irrigation systems, and processing equipment.' },
+      { title: 'Land Improvement Loan', rate: '6.75% APR', desc: 'Support fencing, barns, drainage, and infrastructure upgrades.' }
+    ];
   %>
 
   <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
@@ -143,9 +142,9 @@
       <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
       <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
       <div class="nav-section">Services</div>
-      <a href="/billpay" class="nav-item active"><span class="icon">💸</span> Bill Pay</a>
+      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
       <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
-      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
+      <a href="/loans" class="nav-item active"><span class="icon">🏦</span> Loans</a>
       <div class="nav-section">Account</div>
       <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
       <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
@@ -163,7 +162,7 @@
     <header class="topbar">
       <div class="topbar-left">
         <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1>Bill Pay</h1></div>
+        <div class="topbar-title"><h1>Loan Services</h1></div>
       </div>
       <div class="topbar-right">
         <a href="/notifications" class="topbar-btn">🔔</a>
@@ -172,76 +171,63 @@
     </header>
 
     <div class="content">
-      
-      <div style="margin-bottom: 1.25rem;">
-        <a href="/dashboard" class="btn-text">← Back to Dashboard</a>
-      </div>
+      <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
 
-      <% if (typeof error !== 'undefined' && error) { %>
-        <div class="alert alert-error animate">⚠️ <%= error %></div>
-      <% } %>
-      <% if (typeof success !== 'undefined' && success) { %>
-        <div class="alert alert-success animate">✓ Payment completed successfully!</div>
-      <% } %>
-
-      <div class="billpay-grid">
+      <div class="loans-grid">
         
-        <!-- LEFT: PAYMENT FORM -->
+        <!-- LEFT: PRODUCTS -->
         <div>
-          <div class="form-card animate">
-            <h3>Make a One-Time Payment</h3>
-            <form action="/billpay" method="POST">
-              <div class="form-group">
-                <label class="form-label">Payee Name</label>
-                <input type="text" name="payeeName" class="form-input" placeholder="e.g. Texas Power & Light, John Deere" required>
+          <h2 style="font-size:1.5rem; margin-bottom:0.5rem;" class="animate">Agricultural Financing</h2>
+          <p style="color:var(--text-secondary); margin-bottom:1.5rem;" class="animate">Flexible rates and terms designed for the Texas farming cycle.</p>
+          
+          <div class="products-grid animate">
+            <% loanProducts.forEach(p => { 
+               const icon = p.title.includes('Equipment') ? '🚜' : (p.title.includes('Operating') ? '🌱' : '🏗️');
+               const features = [
+                 'Funds available within 24 hours',
+                 'No pre-payment penalties',
+                 'Dedicated loan officer'
+               ];
+            %>
+              <div class="product-card">
+                <div class="prod-icon"><%= icon %></div>
+                <div class="prod-title"><%= p.title %></div>
+                <div class="prod-rate">Starting at <%= p.rate %></div>
+                <p class="prod-desc"><%= p.desc %></p>
+                <ul class="prod-features">
+                  <% features.forEach(f => { %><li><%= f %></li><% }) %>
+                </ul>
+                <button class="btn-apply" onclick="alert('Our loan officer will contact you shortly to begin the <%= p.title %> application process.')">
+                  Apply for <%= p.title %>
+                </button>
               </div>
-              <div class="form-group">
-                <label class="form-label">Payee Account / Reference</label>
-                <input type="text" name="accountNumber" class="form-input" placeholder="The number on your bill" required>
-                <p class="form-hint">Enter the reference number so the payee can identify your payment.</p>
-              </div>
-              <div class="form-divider" style="height:1px; background:var(--border); margin:1.5rem 0;"></div>
-              <div class="form-group">
-                <label class="form-label">Pay From Account</label>
-                <select name="fromAccount" class="form-select" required>
-                  <option value="">Select source account</option>
-                  <% if (accounts) { accounts.forEach(acc => { %>
-                    <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>) — <%= money(acc.balance) %></option>
-                  <% }) } %>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Amount</label>
-                <div class="input-icon-wrap">
-                  <input type="number" name="amount" class="form-input" placeholder="0.00" min="0.01" step="0.01" required>
-                </div>
-              </div>
-              <button type="submit" class="btn-submit">Submit Payment</button>
-            </form>
+            <% }) %>
           </div>
         </div>
 
-        <!-- RIGHT: SIDEBAR INFO -->
+        <!-- RIGHT: CALCULATOR -->
         <div>
-          <div class="widget animate">
-            <h4>Payment History</h4>
-            <div class="info-item">
-              <div class="info-icon">📄</div>
-              <div class="info-text">
-                <div class="label">Total Paid This Month</div>
-                <div class="value">View in Statement</div>
-              </div>
+          <div class="calc-widget animate">
+            <h3>🧮 Payment Estimator</h3>
+            <div class="calc-group">
+              <label>Loan Amount ($)</label>
+              <input type="number" id="calc-amount" class="calc-input" value="50000" oninput="calculateLoan()">
             </div>
-            <div class="action-list">
-              <a href="/billpay/history" class="btn-outline">View Full History</a>
-              <a href="/billpay/history/export" class="btn-outline">Download CSV Export</a>
+            <div class="calc-group">
+              <label>Interest Rate (%)</label>
+              <input type="number" id="calc-rate" class="calc-input" value="6.25" step="0.01" oninput="calculateLoan()">
             </div>
-          </div>
-
-          <div class="widget animate">
-            <h4>Security Notice</h4>
-            <p style="font-size:0.8rem; color:var(--text-secondary); line-height:1.5;">
-              Payments are processed securely. Allow <strong>1-2 business days</strong> for payments to post to your payee's account. Please double-check account numbers before submitting.
+            <div class="calc-group">
+              <label>Term (Months)</label>
+              <input type="number" id="calc-term" class="calc-input" value="60" oninput="calculateLoan()">
+            </div>
+            
+            <div class="calc-result">
+              <div class="calc-val" id="calc-monthly">$972.40</div>
+              <div class="calc-label">Estimated Monthly Payment</div>
+            </div>
+            <p style="font-size:0.65rem; color:var(--text-secondary); margin-top:0.75rem; text-align:center;">
+              *Estimates only. Final rates based on creditworthiness.
             </p>
           </div>
         </div>
@@ -255,7 +241,7 @@
       <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
       <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
       <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
-      <a href="/billpay" class="mob-nav-item active"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
       <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
     </div>
   </nav>
@@ -264,6 +250,21 @@
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('open');
       document.getElementById('sidebarOverlay').classList.toggle('show');
+    }
+
+    // Simple Loan Calculator Logic
+    function calculateLoan() {
+      const amount = parseFloat(document.getElementById('calc-amount').value);
+      const rate = parseFloat(document.getElementById('calc-rate').value) / 100 / 12;
+      const term = parseFloat(document.getElementById('calc-term').value);
+
+      if (amount > 0 && rate > 0 && term > 0) {
+        const x = Math.pow(1 + rate, term);
+        const monthly = (amount * x * rate) / (x - 1);
+        document.getElementById('calc-monthly').textContent = '$' + monthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      } else {
+        document.getElementById('calc-monthly').textContent = '—';
+      }
     }
   </script>
 </body>

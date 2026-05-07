@@ -2,389 +2,464 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Open an Account | AgriBank Texas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>Open an Account | AgriBank</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
   <style>
-    .auth-wrapper {
+    /* Institutional Bank Theme Variables */
+    :root {
+      --primary: #0a4d2e;
+      --primary-dark: #073822;
+      --gold: #d8a441;
+      --bg-light: #f4f6f5;
+      --surface: #ffffff;
+      --text-main: #111827;
+      --text-muted: #4b5563;
+      --border: #d1d5db;
+      --error-bg: #fef2f2;
+      --error-text: #991b1b;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-main);
+      min-height: 100vh;
       display: flex;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Smooth Animations to make it lively */
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes popIn {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Split Screen Layout */
+    .register-wrapper {
+      display: flex;
+      width: 100%;
       min-height: 100vh;
     }
-    .auth-sidebar {
-      flex: 1;
-      background: linear-gradient(135deg, var(--green-dark), var(--green-main));
+
+    /* Left Side - Visual & Trust */
+    .register-visual {
+      flex: 0 0 40%;
+      background: linear-gradient(to bottom, rgba(10, 77, 46, 0.92), rgba(7, 56, 34, 0.98)), url('https://images.unsplash.com/photo-1595053818318-de9256910dd9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
       color: white;
-      padding: 60px 48px;
+      padding: 60px 40px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      position: relative;
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
     }
-    .auth-sidebar h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2.5rem;
-      margin: 24px 0 16px;
+
+    .visual-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: white;
+      margin-bottom: 60px;
+      transition: transform 0.2s;
     }
-    .auth-sidebar p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      line-height: 1.6;
-    }
-    .auth-main {
-      flex: 1;
+    .visual-logo:hover { transform: scale(1.02); }
+
+    .visual-logo-icon {
+      background: var(--gold);
+      color: var(--primary-dark);
+      width: 48px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 48px;
-      background: var(--bg-light);
-    }
-    .auth-form-container {
-      width: 100%;
-      max-width: 600px;
-    }
-    .auth-form-container h2 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-    .auth-subtitle {
-      color: var(--text-mid);
-      margin-bottom: 32px;
-    }
-    .form-section {
-      margin-bottom: 32px;
-    }
-    .form-section h3 {
-      font-size: 1.1rem;
-      margin-bottom: 16px;
-      color: var(--text-dark);
-    }
-    .account-type-selector {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .account-type-option {
-      border: 2px solid var(--border);
       border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
+      font-weight: 800;
+      font-size: 1.2rem;
     }
-    .account-type-option:hover {
-      border-color: var(--green-main);
-      background: var(--green-pale);
+
+    .visual-logo-text { font-family: 'DM Serif Display', serif; font-size: 1.8rem; }
+
+    .visual-content h1 { font-family: 'DM Serif Display', serif; font-size: 3rem; line-height: 1.1; margin-bottom: 20px; animation: slideUpFade 0.6s ease forwards; }
+    .visual-content p { font-size: 1.1rem; color: rgba(255, 255, 255, 0.85); line-height: 1.6; margin-bottom: 40px; animation: slideUpFade 0.8s ease forwards; }
+
+    .trust-badges {
+      margin-top: auto;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 30px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.6;
+      animation: slideUpFade 1s ease forwards;
     }
-    .account-type-option.selected {
-      border-color: var(--green-main);
-      background: var(--green-pale);
+
+    .badge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-weight: 600; color: white; }
+
+    /* Right Side - The Bank Form */
+    .register-form-area {
+      flex: 0 0 60%;
+      margin-left: 40%;
+      background: var(--bg-light);
+      padding: 60px 80px;
     }
-    .account-type-option input[type="radio"] {
-      display: none;
-    }
-    .account-type-icon {
-      font-size: 2.5rem;
-      margin-bottom: 8px;
-    }
-    .account-type-label {
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-label {
-      display: block;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--text-mid);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .form-input {
+
+    .form-container {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: all 0.2s;
+      max-width: 650px;
+      margin: 0 auto;
+      background: var(--surface);
+      padding: 50px;
+      border-radius: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+      animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .form-input:focus {
-      outline: none;
-      border-color: var(--green-main);
-      box-shadow: 0 0 0 3px rgba(46, 125, 90, 0.1);
-    }
-    .form-note {
-      font-size: 0.8rem;
-      color: var(--text-light);
-      margin-top: 4px;
-    }
-    .alert {
+
+    .form-header { margin-bottom: 30px; border-bottom: 2px solid var(--bg-light); padding-bottom: 20px; }
+    .form-header h2 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; color: var(--text-main); margin-bottom: 8px; }
+    
+    /* Security Notice (Like Chase/BoA) */
+    .security-notice {
+      background: #f8fafc;
+      border: 1px solid var(--border);
       padding: 16px;
       border-radius: 8px;
-      margin-bottom: 24px;
-      background: #fef2f2;
-      color: #991b1b;
-      border: 1px solid #fecaca;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      display: flex;
+      gap: 12px;
+      line-height: 1.5;
     }
+
+    .alert { padding: 16px; border-radius: 8px; margin-bottom: 24px; font-size: 0.95rem; font-weight: 500; background: var(--error-bg); color: var(--error-text); border: 1px solid #fca5a5; display: flex; align-items: center; gap: 10px; }
+
+    /* Account Type Cards - App Feel */
+    .section-title { font-size: 1.1rem; font-weight: 700; margin: 30px 0 16px; color: var(--primary); display: flex; align-items: center; gap: 8px; transition: 0.3s; }
     
-    /* Mobile Responsive */
+    .account-type-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
+    .account-type-option { border: 2px solid var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); background: white; position: relative; overflow: hidden; }
+    .account-type-option:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 8px 16px rgba(10, 77, 46, 0.08); }
+    .account-type-option.selected { border-color: var(--primary); background: #f0fdf4; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(10, 77, 46, 0.12); }
+    
+    /* The active indicator dot */
+    .account-type-option::before { content: ''; position: absolute; top: 12px; right: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--border); transition: 0.3s; }
+    .account-type-option.selected::before { background: var(--primary); box-shadow: 0 0 0 4px rgba(10, 77, 46, 0.2); }
+
+    .account-type-option input[type="radio"] { display: none; }
+    .account-type-icon { font-size: 2.2rem; margin-bottom: 10px; transition: transform 0.3s; }
+    .account-type-option:hover .account-type-icon { transform: scale(1.1); }
+    .account-type-label { font-weight: 700; font-size: 0.9rem; color: var(--text-main); line-height: 1.3; }
+
+    /* Inputs */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .form-group { margin-bottom: 20px; transition: 0.3s; }
+    
+    .form-label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; transition: 0.3s; }
+    
+    .form-input { width: 100%; padding: 14px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; font-family: inherit; transition: all 0.2s; background: #fff; }
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(10, 77, 46, 0.1); }
+    
+    /* Dynamic Security Icon */
+    .input-wrapper { position: relative; }
+    .input-icon { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 1rem; color: var(--text-muted); opacity: 0.5; transition: 0.3s; }
+    .form-input:focus + .input-icon { opacity: 1; color: var(--primary); }
+    
+    .form-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 6px; display: flex; align-items: center; gap: 4px; }
+
+    /* Submit Button */
+    .btn { width: 100%; padding: 18px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .btn:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(10, 77, 46, 0.2); }
+
+    .login-footer { margin-top: 30px; text-align: center; font-size: 0.95rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 30px; }
+    .login-footer a { color: var(--primary); font-weight: 700; text-decoration: none; }
+    .login-footer a:hover { text-decoration: underline; }
+
+    /* ========================================= */
+    /* MOBILE RESPONSIVE DESIGN                  */
+    /* ========================================= */
+    @media (max-width: 1024px) {
+      .register-form-area { padding: 40px; }
+      .form-container { padding: 30px; }
+    }
+
     @media (max-width: 900px) {
-      .auth-wrapper {
-        flex-direction: column;
-      }
-      .auth-sidebar {
+      .register-wrapper { flex-direction: column; }
+      
+      .register-visual {
+        flex: none;
+        position: relative;
+        height: auto;
         padding: 40px 24px;
-        text-align: center;
-        min-height: auto;
+        min-height: 280px;
       }
-      .auth-sidebar h1 {
-        font-size: 2rem;
+      
+      .visual-logo { margin-bottom: 20px; }
+      .visual-content h1 { font-size: 2.2rem; margin-bottom: 10px; }
+      .visual-content p { font-size: 1rem; margin-bottom: 0; }
+      .trust-badges { display: none; } /* Hide heavy text on mobile banner */
+      
+      .register-form-area {
+        flex: none;
+        margin-left: 0;
+        padding: 16px;
+        background: var(--bg-light);
+        margin-top: -20px; /* Seamless overlap effect */
+        position: relative;
+        z-index: 10;
       }
-      .auth-sidebar p {
-        font-size: 1rem;
-      }
-      .auth-main {
-        padding: 32px 24px;
-      }
-      .account-type-selector {
-        grid-template-columns: 1fr;
-      }
-      .form-row {
-        grid-template-columns: 1fr;
-        gap: 0;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      .auth-sidebar {
-        padding: 32px 16px;
-      }
-      .auth-sidebar h1 {
-        font-size: 1.75rem;
-      }
-      .auth-main {
-        padding: 24px 16px;
-      }
-      .auth-form-container h2 {
-        font-size: 1.5rem;
-      }
-      .form-input {
-        font-size: 16px; /* Prevents iOS zoom */
-        padding: 14px 16px;
-      }
+
+      .form-container { padding: 30px 20px; border-radius: 20px; }
+      .account-type-selector { grid-template-columns: 1fr; gap: 12px; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      
+      /* Make radio options more compact on mobile */
+      .account-type-option { display: flex; align-items: center; text-align: left; padding: 16px; gap: 16px; }
+      .account-type-icon { margin-bottom: 0; font-size: 1.8rem; }
+      .account-type-option::before { top: 50%; transform: translateY(-50%); }
     }
   </style>
 </head>
 <body>
-  <%- include('partials/navbar', { user: null }) %>
-  
-  <div class="auth-wrapper">
-    <div class="auth-sidebar">
-      <div class="logo" style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px;">🌾</div>
-        <div>
-          <div style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; font-weight: 700;">AgriBank</div>
-          <div style="font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Texas</div>
-        </div>
-      </div>
-      <h1>Join Our Community</h1>
-      <p>Open your account today and become part of a banking tradition that's been serving Texas farmers and families for over 100 years.</p>
-    </div>
+
+  <div class="register-wrapper">
     
-    <div class="auth-main">
-      <div class="auth-form-container">
-        <h2>Open an Account</h2>
-        <p class="auth-subtitle">Fill out the form below to create your new account</p>
+    <!-- Left Side: Brand & Trust -->
+    <div class="register-visual">
+      <a href="/" class="visual-logo">
+        <div class="visual-logo-icon">AB</div>
+        <div class="visual-logo-text">AgriBank</div>
+      </a>
+      
+      <div class="visual-content">
+        <h1>Secure Institutional Onboarding.</h1>
+        <p>Join thousands of businesses and individuals who trust AgriBank with their operating capital and financial growth.</p>
+      </div>
+
+      <div class="trust-badges">
+        <div class="badge-row"><span>🔒</span> 256-Bit TLS Secure Connection</div>
+        <div class="badge-row"><span>🏦</span> Member FDIC Insured</div>
+        <p style="margin-top: 16px;">To help the government fight the funding of terrorism and money laundering activities, Federal law requires all financial institutions to obtain, verify, and record information that identifies each person or business entity who opens an account.</p>
+      </div>
+    </div>
+
+    <!-- Right Side: The Form -->
+    <div class="register-form-area">
+      <div class="form-container">
         
-        <% if (error) { %>
-          <div class="alert"><%= error %></div>
+        <div class="form-header">
+          <h2>Open an Account</h2>
+          <p id="header-subtitle" style="color: var(--text-muted); transition: 0.3s;">Please provide your legal information as it appears on your government ID.</p>
+        </div>
+
+        <div class="security-notice">
+          <span style="font-size: 1.5rem;">🛡️</span>
+          <div>
+            <strong>USA PATRIOT Act Disclosure</strong><br>
+            We will ask for your name, address, date of birth, and other information that will allow us to identify you or your entity.
+          </div>
+        </div>
+        
+        <% if (locals.error) { %>
+          <div class="alert">
+            <span>⚠️</span> <%= error %>
+          </div>
         <% } %>
         
         <form method="POST" action="/register">
-          <!-- Account Type Selection -->
-          <div class="form-section">
-            <h3>Choose Account Type</h3>
-            <div class="account-type-selector">
-              <label class="account-type-option selected">
-                <input type="radio" name="accountType" value="checking" checked>
-                <div class="account-type-icon">🏦</div>
-                <div class="account-type-label">Primary Checking</div>
-              </label>
-              <label class="account-type-option">
-                <input type="radio" name="accountType" value="savings">
-                <div class="account-type-icon">💰</div>
-                <div class="account-type-label">Savings Account</div>
-              </label>
-              <label class="account-type-option">
-                <input type="radio" name="accountType" value="business">
-                <div class="account-type-icon">🏢</div>
-                <div class="account-type-label">Business Checking</div>
-              </label>
+          
+          <div class="section-title">1. Select Product</div>
+          <div class="account-type-selector">
+            <label class="account-type-option selected" id="opt-checking">
+              <input type="radio" name="accountType" value="checking" checked>
+              <div class="account-type-icon">🏦</div>
+              <div class="account-type-label">Personal Checking</div>
+            </label>
+            <label class="account-type-option" id="opt-savings">
+              <input type="radio" name="accountType" value="savings">
+              <div class="account-type-icon">📈</div>
+              <div class="account-type-label">High-Yield Savings</div>
+            </label>
+            <label class="account-type-option" id="opt-business">
+              <input type="radio" name="accountType" value="business">
+              <div class="account-type-icon">🏢</div>
+              <div class="account-type-label">Business & Commercial</div>
+            </label>
+          </div>
+          
+          <div class="section-title" id="id-section-title">2. Personal Identification</div>
+          
+          <!-- Smart Form Fields (Labels change via JS without breaking Backend) -->
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" id="lbl-fname">Legal First Name</label>
+              <input type="text" name="firstName" id="input-fname" class="form-input" placeholder="e.g. John" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="lbl-lname">Legal Last Name</label>
+              <input type="text" name="lastName" id="input-lname" class="form-input" placeholder="e.g. Smith" required>
             </div>
           </div>
           
-          <!-- Personal Information -->
-          <div class="form-section">
-            <h3>Personal Information</h3>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">First Name</label>
-                <input type="text" name="firstName" class="form-input" placeholder="John" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <input type="text" name="lastName" class="form-input" placeholder="Smith" required>
-              </div>
-            </div>
-            
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Date of Birth</label>
-                <input type="date" name="dateOfBirth" class="form-input" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">SSN</label>
-                <input type="text" name="ssn" class="form-input" placeholder="XXX-XX-XXXX" required>
-                <p class="form-note">Required for account verification</p>
-              </div>
-            </div>
-            
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Email Address</label>
-              <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+              <label class="form-label" id="lbl-dob">Date of Birth</label>
+              <input type="date" name="dateOfBirth" id="input-dob" class="form-input" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" id="lbl-ssn">Social Security Number</label>
+              <div class="input-wrapper">
+                <input type="password" name="ssn" id="input-ssn" class="form-input" placeholder="XXX-XX-XXXX" required>
+                <span class="input-icon">🔒</span>
+              </div>
+              <div class="form-note"><span>🛡️</span> Encrypted via 256-bit TLS</div>
             </div>
           </div>
           
-          <!-- Address -->
-          <div class="form-section">
-            <h3>Address</h3>
+          <div class="form-group">
+            <label class="form-label">Contact Email Address</label>
+            <input type="email" name="email" class="form-input" placeholder="contact@example.com" required>
+          </div>
+          
+          <div class="section-title">3. Physical Address</div>
+          <div class="form-group">
+            <label class="form-label">Street Address (No P.O. Boxes)</label>
+            <input type="text" name="address" class="form-input" placeholder="123 Financial Way" required>
+          </div>
+          <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Street Address</label>
-              <input type="text" name="address" class="form-input" placeholder="123 Main Street" required>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">City</label>
-                <input type="text" name="city" class="form-input" placeholder="Austin" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">State</label>
-                <input type="text" name="state" class="form-input" placeholder="TX" required>
-              </div>
+              <label class="form-label">City</label>
+              <input type="text" name="city" class="form-input" placeholder="Austin" required>
             </div>
             <div class="form-group">
-              <label class="form-label">ZIP Code</label>
-              <input type="text" name="zip" class="form-input" placeholder="78701" required>
+              <label class="form-label">State</label>
+              <input type="text" name="state" class="form-input" placeholder="TX" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">ZIP Code</label>
+            <input type="text" name="zip" class="form-input" placeholder="78701" required>
+          </div>
+          
+          <div class="section-title">4. Digital Access Setup</div>
+          <div class="form-group">
+            <label class="form-label">Create Online ID</label>
+            <input type="text" name="username" class="form-input" placeholder="Choose a User ID" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Create Password</label>
+              <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password</label>
+              <input type="password" name="confirmPassword" class="form-input" placeholder="••••••••" required>
             </div>
           </div>
           
-          <!-- Account Credentials -->
-          <div class="form-section">
-            <h3>Account Credentials</h3>
-            <div class="form-group">
-              <label class="form-label">Username</label>
-              <input type="text" name="username" class="form-input" placeholder="Choose a username" required>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <input type="password" name="confirmPassword" class="form-input" placeholder="••••••••" required>
-              </div>
-            </div>
-          </div>
-          
-          <button type="submit" class="btn btn-primary btn-block" style="padding: 16px; font-size: 1rem; margin-top: 24px;">
-            Create Account
+          <button type="submit" class="btn">
+            Submit Application 🔒
           </button>
           
-          <p style="text-align: center; margin-top: 24px; color: var(--text-mid);">
-            Already have an account? <a href="/login" style="color: var(--green-main); font-weight: 600;">Sign In</a>
-          </p>
+          <div class="login-footer">
+            Already a client? <a href="/login">Sign In to Online Banking</a>
+          </div>
         </form>
+
       </div>
     </div>
   </div>
   
-  <%- include('partials/footer') %>
-  
   <script>
-    // Account type selection
+    // --- DYNAMIC SMART FORM SCRIPT ---
+    
+    function updateFormFields(type) {
+      const title = document.getElementById('id-section-title');
+      const subtitle = document.getElementById('header-subtitle');
+      
+      const lblFname = document.getElementById('lbl-fname');
+      const inputFname = document.getElementById('input-fname');
+      
+      const lblLname = document.getElementById('lbl-lname');
+      const inputLname = document.getElementById('input-lname');
+      
+      const lblDob = document.getElementById('lbl-dob');
+      
+      const lblSsn = document.getElementById('lbl-ssn');
+      const inputSsn = document.getElementById('input-ssn');
+
+      if (type === 'business') {
+        // Switch to Business Fields (No backend schema changes needed!)
+        title.innerHTML = '2. Business Entity Information';
+        subtitle.innerHTML = 'Please provide your legally registered business information.';
+        
+        lblFname.innerHTML = 'Legal Business Name';
+        inputFname.placeholder = 'e.g. Smith Farms LLC';
+        
+        lblLname.innerHTML = 'DBA / Entity Type';
+        inputLname.placeholder = 'e.g. Corporation';
+        
+        lblDob.innerHTML = 'Date of Incorporation';
+        
+        lblSsn.innerHTML = 'Employer Identification Number (EIN)';
+        inputSsn.placeholder = 'XX-XXXXXXX';
+      } else {
+        // Switch back to Personal Fields
+        title.innerHTML = '2. Personal Identification';
+        subtitle.innerHTML = 'Please provide your legal information as it appears on your government ID.';
+        
+        lblFname.innerHTML = 'Legal First Name';
+        inputFname.placeholder = 'e.g. John';
+        
+        lblLname.innerHTML = 'Legal Last Name';
+        inputLname.placeholder = 'e.g. Smith';
+        
+        lblDob.innerHTML = 'Date of Birth';
+        
+        lblSsn.innerHTML = 'Social Security Number';
+        inputSsn.placeholder = 'XXX-XX-XXXX';
+      }
+    }
+
+    // 1. Handle Click Events on Radio Cards
     document.querySelectorAll('.account-type-option').forEach(option => {
       option.addEventListener('click', function() {
+        // Visual toggle
         document.querySelectorAll('.account-type-option').forEach(o => o.classList.remove('selected'));
         this.classList.add('selected');
+        
+        // Select internal radio
+        const radio = this.querySelector('input[type="radio"]');
+        radio.checked = true;
+        
+        // Trigger Smart Form update
+        updateFormFields(radio.value);
       });
     });
+
+    // 2. Handle Auto-Routing from Small Business Page
+    // If the URL is /register?type=business, auto-select it immediately
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedType = urlParams.get('type');
+      
+      if (requestedType === 'business') {
+        document.getElementById('opt-business').click();
+      }
+    });
+
   </script>
+
 </body>
 </html>
-/* Mobile Navigation Toggle */
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 4px;
-  cursor: pointer;
-  padding: 8px;
-  z-index: 101;
-}
-
-.menu-toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--text-dark);
-  border-radius: 2px;
-  transition: all 0.3s;
-}
-
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: flex;
-  }
-  
-  .nav-links {
-    position: fixed;
-    top: 70px;
-    left: 0;
-    right: 0;
-    background: var(--bg-white);
-    flex-direction: column;
-    padding: 24px;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    transform: translateY(-150%);
-    transition: transform 0.3s ease;
-    z-index: 100;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-  
-  .nav-links.active {
-    transform: translateY(0);
-  }
-  
-  .nav-links a {
-    padding: 12px !important;
-    text-align: center !important;
-    background: var(--green-pale) !important;
-    border-radius: 8px !important;
-    font-size: 1rem !important;
-  }
-  
-  .nav-right {
-    display: none;
-  }
-}

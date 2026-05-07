@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Commercial Banking | AgriBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-dark: #051009;
+      --green-main: #0a2614;
+      --gold: #d8a441;
+      --text-light: #e8f4ec;
+      --border: rgba(255,255,255,0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--green-dark); color: #fff; overflow-x: hidden; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .fade-in { animation: fadeIn 1s ease forwards; }
+
+    /* Institutional Nav */
+    .corp-nav { padding: 24px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--green-dark); position: sticky; top: 0; z-index: 100; }
+    .logo-corp { color: #fff; font-family: 'DM Serif Display', serif; font-size: 1.5rem; text-decoration: none; display: flex; align-items: center; gap: 10px; }
+    .logo-corp span { color: var(--gold); }
+    .corp-links { display: flex; gap: 30px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+    .corp-links a { color: var(--text-light); text-decoration: none; }
+    .corp-links a:hover { color: var(--gold); }
+
+    /* Epic Hero */
+    .corp-hero { padding: 120px 5%; background: radial-gradient(circle at center, var(--green-main) 0%, var(--green-dark) 100%); text-align: center; border-bottom: 1px solid var(--border); }
+    .corp-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(3rem, 5vw, 4.5rem); margin-bottom: 24px; max-width: 900px; margin-left: auto; margin-right: auto; line-height: 1.1; }
+    .corp-hero p { font-size: 1.25rem; color: rgba(255,255,255,0.7); max-width: 700px; margin: 0 auto 40px; }
+    
+    .btn-gold { background: var(--gold); color: var(--green-dark); padding: 18px 40px; border-radius: 4px; font-weight: 800; font-size: 1.1rem; text-decoration: none; display: inline-block; transition: 0.3s; }
+    .btn-gold:hover { background: #fff; }
+
+    /* Institutional Stats */
+    .stats-bar { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border-bottom: 1px solid var(--border); }
+    .stat-box { padding: 40px 20px; text-align: center; border-right: 1px solid var(--border); }
+    .stat-box:last-child { border-right: none; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--gold); margin-bottom: 8px; }
+    .stat-label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); font-weight: 700; }
+
+    /* Services Grid */
+    .services-wrapper { padding: 100px 5%; max-width: 1400px; margin: 0 auto; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+    .service-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 50px 40px; transition: 0.3s; }
+    .service-card:hover { background: rgba(255,255,255,0.05); border-color: var(--gold); transform: translateY(-5px); }
+    .service-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 16px; color: #fff; }
+    .service-card p { color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 24px; }
+    .service-link { color: var(--gold); text-decoration: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+    .service-link:hover { color: #fff; }
+
+    @media (max-width: 900px) {
+      .corp-links { display: none; }
+      .corp-hero { padding: 80px 5%; }
+      .stat-box { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="corp-nav">
+    <a href="/" class="logo-corp"><span>AB</span> AgriBank Commercial</a>
+    <div class="corp-links">
+      <a href="#">Treasury</a>
+      <a href="#">Financing</a>
+      <a href="#">Global Trade</a>
+      <a href="/login">Client Portal</a>
+    </div>
+  </nav>
+
+  <header class="corp-hero fade-in">
+    <h1>Scale your enterprise with institutional power.</h1>
+    <p>Comprehensive capital solutions, sophisticated treasury management, and global trade financing for the world's largest agricultural producers.</p>
+    <a href="/register" class="btn-gold">Schedule an Executive Consultation</a>
+  </header>
+
+  <div class="stats-bar fade-in">
+    <div class="stat-box">
+      <div class="stat-num">$8.5B</div>
+      <div class="stat-label">Capital Deployed</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">Top 10</div>
+      <div class="stat-label">U.S. Ag Lender</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">40+</div>
+      <div class="stat-label">Countries Traded</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">Dedicated Advisory</div>
+    </div>
+  </div>
+
+  <section class="services-wrapper fade-in">
+    <div style="margin-bottom: 60px;">
+      <h2 style="font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--gold);">Corporate Solutions</h2>
+    </div>
+    
+    <div class="services-grid">
+      <div class="service-card">
+        <h3>Treasury Management</h3>
+        <p>Optimize your liquidity, streamline payables and receivables, and mitigate risk with our industry-leading digital treasury platform designed for complex corporate structures.</p>
+        <a href="#" class="service-link">Explore Treasury &rarr;</a>
+      </div>
+      
+      <div class="service-card">
+        <h3>Syndicated Finance</h3>
+        <p>Access massive capital for acquisitions, facility expansions, or debt restructuring. We lead and structure multi-bank syndicated facilities up to $500M.</p>
+        <a href="#" class="service-link">Explore Financing &rarr;</a>
+      </div>
+
+      <div class="service-card">
+        <h3>Commodity Hedging & FX</h3>
+        <p>Protect your margins from currency fluctuations and volatile commodity markets with our dedicated trading desks and tailored derivative strategies.</p>
+        <a href="#" class="service-link">Explore Markets &rarr;</a>
+      </div>
+      
+      <div class="service-card">
+        <h3>Supply Chain Finance</h3>
+        <p>Improve working capital metrics by offering early payment options to your suppliers while extending your own days payable outstanding.</p>
+        <a href="#" class="service-link">Explore Supply Chain &rarr;</a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

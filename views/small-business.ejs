@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Small Business Banking | AgriBank Texas Regional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0c1f1a;
+      --green-dark: #132e22;
+      --green-main: #1a5c3a;
+      --green-mid: #22753d;
+      --green-light: #2ea55a;
+      --green-pale: #e6f2ec;
+      --gold: #c8a045;
+      --gold-hover: #d4af52;
+      --text-primary: #1a1f2c;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #e8ecef;
+      --bg-white: #ffffff;
+      --bg-offwhite: #f8faf9;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.07);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-white);
+      color: var(--text-primary);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: all 0.2s ease; }
+
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* ==================== UTILITY BAR ==================== */
+    .utility-bar {
+      background: var(--navy);
+      padding: 8px 0;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.7);
+    }
+    .utility-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .utility-tabs { display: flex; gap: 1.5rem; }
+    .utility-tabs a { color: rgba(255,255,255,0.7); font-weight: 500; font-size: 0.75rem; letter-spacing: 0.3px; }
+    .utility-tabs a:hover { color: white; }
+    .utility-tabs a.active { color: var(--gold); pointer-events: none; }
+    .utility-auth a {
+      color: rgba(255,255,255,0.8);
+      font-weight: 600;
+      font-size: 0.75rem;
+      margin-left: 1.25rem;
+    }
+    .utility-auth a:hover { color: var(--gold); }
+
+    /* ==================== TOP NAVIGATION ==================== */
+    .top-nav {
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.97);
+    }
+    .top-nav-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      color: var(--navy);
+    }
+    .logo span { color: var(--gold); }
+    .main-links { display: flex; align-items: center; gap: 0.25rem; }
+    .main-links a {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-radius: 6px;
+    }
+    .main-links a:hover { background: var(--bg-offwhite); color: var(--green-main); }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.55rem 1.35rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+    .btn-ghost:hover { color: var(--text-primary); background: var(--bg-offwhite); }
+    .btn-solid {
+      background: var(--green-main);
+      color: white;
+    }
+    .btn-solid:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+    .btn-gold:hover { background: var(--gold-hover); transform: translateY(-1px); box-shadow: 0 4px 15px rgba(200,160,69,0.3); }
+
+    /* ==================== HERO ==================== */
+    .hero-section {
+      background: linear-gradient(165deg, var(--navy) 0%, var(--green-dark) 45%, var(--green-main) 100%);
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-section::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-inner {
+      max-width: 1240px; margin: 0 auto; padding: 5rem 2rem 5.5rem;
+      display: grid; grid-template-columns: 1fr 0.85fr; gap: 4rem; align-items: center;
+      position: relative; z-index: 2;
+    }
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(200,160,69,0.15);
+      border: 1px solid rgba(200,160,69,0.3);
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .hero-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+      font-weight: 400;
+    }
+    .hero-subtitle {
+      font-size: 1.08rem;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 2rem;
+      max-width: 480px;
+      line-height: 1.75;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .btn-hero-primary {
+      padding: 0.85rem 2rem;
+      background: var(--gold);
+      color: var(--navy);
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-hero-primary:hover { background: var(--gold-hover); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(200,160,69,0.35); }
+    .btn-hero-outline {
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: white;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-hero-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.5); }
+    .hero-meta {
+      display: flex; align-items: center; gap: 2rem;
+      font-size: 0.78rem; color: rgba(255,255,255,0.5);
+    }
+    .hero-meta-item { display: flex; align-items: center; gap: 0.4rem; }
+
+    /* Hero Image Card */
+    .hero-visual {
+      position: relative;
+    }
+    .hero-image-frame {
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+    }
+    .hero-img {
+      width: 100%;
+      height: 380px;
+      object-fit: contain;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .hero-float-badge {
+      position: absolute;
+      bottom: -20px; left: 30px;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-lg);
+      display: flex; align-items: center; gap: 0.75rem;
+      min-width: 220px;
+    }
+    .badge-icon {
+      width: 40px; height: 40px;
+      background: #ecfdf5;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    .badge-text strong { display: block; font-size: 0.85rem; color: var(--green-dark); }
+    .badge-text span { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ==================== TRUST BAR ==================== */
+    .trust-bar {
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0;
+    }
+    .trust-bar-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+      display: flex; justify-content: center; align-items: center;
+      gap: 3rem; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-size: 0.82rem; font-weight: 600; color: var(--text-muted);
+    }
+    .trust-icon { font-size: 1.1rem; }
+
+    /* ==================== STATS SECTION ==================== */
+    .stats-section {
+      background: var(--bg-offwhite);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 0;
+    }
+    .stats-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.8rem;
+      color: var(--green-main);
+      font-weight: 700;
+    }
+    .stat-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ==================== PRODUCTS GRID ==================== */
+    .products-section {
+      padding: 5.5rem 0;
+    }
+    .section-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--navy);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+    .section-desc {
+      font-size: 1.02rem;
+      color: var(--text-secondary);
+      max-width: 550px;
+      margin: 0 auto;
+    }
+
+    .prod-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .prod-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .prod-card:hover {
+      border-color: var(--green-mid);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-4px);
+    }
+    .prod-card-icon-area {
+      height: 140px;
+      background: linear-gradient(135deg, var(--green-pale), #e8edf0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+    .prod-card-body { padding: 1.5rem; }
+    .prod-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .prod-card-body h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      color: var(--navy);
+      margin-bottom: 0.5rem;
+    }
+    .prod-card-body p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .prod-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; font-weight: 700;
+      color: var(--green-main);
+    }
+    .prod-link:hover { gap: 0.7rem; }
+
+    /* ==================== FEATURES ROW ==================== */
+    .features-row {
+      background: var(--bg-offwhite);
+      padding: 5rem 0;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--bg-white);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .feature-icon {
+      width: 48px; height: 48px;
+      background: var(--green-pale);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .feature-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--navy); }
+    .feature-card p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+    /* ==================== CTA BANNER ==================== */
+    .cta-banner {
+      background: linear-gradient(165deg, var(--navy), var(--green-main));
+      color: white;
+      padding: 5rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .cta-inner {
+      position: relative; z-index: 2;
+      max-width: 650px; margin: 0 auto; padding: 0 2rem;
+    }
+    .cta-banner h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .cta-banner p {
+      color: rgba(255,255,255,0.7);
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .cta-btn {
+      padding: 0.9rem 2.5rem;
+      background: var(--gold);
+      color: var(--navy);
+      border-radius: var(--radius);
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .cta-btn:hover { background: var(--gold-hover); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,160,69,0.35); }
+
+    /* ==================== MERCHANT SERVICES ==================== */
+    .merchant-section {
+      padding: 5.5rem 0;
+    }
+    .merchant-card {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+    }
+    .merchant-inner {
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 4rem;
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .merchant-inner::after {
+      content: '';
+      position: absolute; top: -50px; right: -50px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(200,160,69,0.08), transparent 70%);
+    }
+    .merchant-content { position: relative; z-index: 2; }
+    .merchant-content .tag {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1.5px; color: var(--gold); margin-bottom: 0.75rem;
+    }
+    .merchant-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      color: white;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .merchant-content p {
+      color: rgba(255,255,255,0.65);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+      max-width: 450px;
+    }
+    .merchant-features {
+      display: flex; flex-direction: column; gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+    .merchant-feat {
+      display: flex; align-items: center; gap: 0.75rem;
+      font-size: 0.88rem; color: rgba(255,255,255,0.85); font-weight: 500;
+    }
+    .m-check { color: var(--gold); font-weight: 900; font-size: 1rem; }
+    .merchant-visual {
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 2;
+    }
+    .terminal-icon { font-size: 6rem; opacity: 0.6; }
+
+    /* ==================== TESTIMONIALS ==================== */
+    .testimonials-section {
+      background: var(--bg-offwhite);
+      padding: 5rem 0;
+    }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .testi-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      transition: all 0.3s ease;
+    }
+    .testi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+    .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-quote {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      line-height: 1.7;
+      margin-bottom: 1.25rem;
+    }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--green-pale);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .testi-name { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
+    .testi-role { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ==================== FOOTER ==================== */
+    .site-footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.5);
+      padding: 3.5rem 0 1.5rem;
+    }
+    .footer-inner {
+      max-width: 1240px; margin: 0 auto; padding: 0 2rem;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: white; margin-bottom: 0.75rem; }
+    .footer-brand span { color: var(--gold); }
+    .footer-desc { font-size: 0.82rem; line-height: 1.7; max-width: 280px; }
+    .footer-col h5 {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.9); font-weight: 700; margin-bottom: 1rem;
+    }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul li a { font-size: 0.82rem; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+    }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .merchant-inner { grid-template-columns: 1fr; }
+      .merchant-visual { display: none; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .utility-inner { flex-direction: column; gap: 0.5rem; }
+      .utility-tabs { gap: 0.75rem; }
+      .top-nav-inner { padding: 0 1rem; }
+      .main-links { display: none; }
+      .hero-inner { padding: 3rem 1.5rem 3.5rem; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+      .product-card-icon-area { height: 120px; font-size: 2.5rem; }
+      .merchant-inner { padding: 2.5rem; }
+      .footer-top { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ UTILITY BAR ============ -->
+  <div class="utility-bar">
+    <div class="utility-inner">
+      <div class="utility-tabs">
+        <a href="/">Personal</a>
+        <a href="/small-business" class="active">Small Business</a>
+        <a href="/commercial-farming">Commercial Farming</a>
+      </div>
+      <div class="utility-auth">
+        <% if (typeof user !== 'undefined' && user) { %>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/logout">Sign Out</a>
+        <% } else { %>
+          <a href="/login">Secure Login</a>
+          <a href="/register">Open Account</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ TOP NAV ============ -->
+  <nav class="top-nav">
+    <div class="top-nav-inner">
+      <a href="/" class="logo">Agri<span>Bank</span></a>
+      <div class="main-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/accounts">Accounts</a>
+        <a href="/loans">Loans</a>
+        <a href="/credit-cards">Cards</a>
+        <a href="/about">About</a>
+        <a href="/help">Help</a>
+      </div>
+      <div class="nav-actions">
+        <a href="/login" class="btn btn-ghost">Log In</a>
+        <a href="/register" class="btn btn-solid">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-label fade-up">
+          🌾 Small Business Banking
+        </div>
+        <h1 class="hero-title fade-up delay-1">Grow your business from the ground up.</h1>
+        <p class="hero-subtitle fade-up delay-2">Whether you're running a local dairy, family orchard, or selling at the farmer's market — we provide the tools to manage your cash flow, fund your operations, and build for the future.</p>
+        <div class="hero-buttons fade-up delay-3">
+          <a href="/register" class="btn-hero-primary">Open a Business Account →</a>
+          <a href="#products" class="btn-hero-outline">Explore Products ↓</a>
+        </div>
+        <div class="hero-meta fade-up delay-4">
+          <div class="hero-meta-item">🔒 FDIC Insured</div>
+          <div class="hero-meta-item">📞 (800) 555-AGRI</div>
+          <div class="hero-meta-item">⭐ 4.9/5 Rating</div>
+        </div>
+      </div>
+      <div class="hero-visual fade-up delay-2">
+        <div class="hero-image-frame">
+          <div class="hero-img" style="background-image:url('https://image.qwenlm.ai/public_source/11875514-1596-4738-abbe-8d81d88c4045/1d226003e-ca3f-45d3-a26b-5c20c6759db8.png'); background-size:contain;"></div>
+        </div>
+        <div class="hero-float-badge">
+          <div class="badge-icon">📈</div>
+          <div class="badge-text">
+            <strong>Business Checking</strong>
+            <span>$0 monthly maintenance fee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TRUST BAR ============ -->
+  <div class="trust-bar">
+    <div class="trust-bar-inner">
+      <div class="trust-item"><span class="trust-icon">🏛️</span> Member FDIC</div>
+      <div class="trust-item"><span class="trust-icon">🔒</span> 256-Bit Encryption</div>
+      <div class="trust-item"><span class="trust-icon">👨‍</span> Agribank Experts</div>
+      <div class="trust-item"><span class="trust-icon">📞</span> 24/7 Support</div>
+      <div class="trust-item"><span class="trust-icon">🌱</span> Est. 1987</div>
+    </div>
+  </div>
+
+  <!-- ============ STATS ============ -->
+  <section class="stats-section">
+    <div class="stats-inner">
+      <div class="stat-item"><div class="stat-number">15K+</div><div class="stat-desc">Farm Families Served</div></div>
+      <div class="stat-item"><div class="stat-number">$2.4B</div><div class="stat-desc">Total Assets Managed</div></div>
+      <div class="stat-item"><div class="stat-number">42</div><div class="stat-desc">Branch Locations</div></div>
+      <div class="stat-item"><div class="stat-number">38+</div><div class="stat-desc">Years in Texas</div></div>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCTS ============ -->
+  <section class="products-section" id="products">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">Financial Solutions</div>
+        <h2 class="section-title">Built for the way you work</h2>
+        <p class="section-desc">Comprehensive banking products designed specifically for agricultural and rural businesses.</p>
+      </div>
+      <div class="prod-grid">
+        <div class="prod-card fade-up">
+          <div class="prod-card-icon-area">🏦</div>
+          <div class="prod-card-body">
+            <div class="prod-tag">Checking</div>
+            <h3>Business Operating Account</h3>
+            <p>A simple, low-fee checking account for daily operations, payroll, and purchasing supplies. $0 monthly fee with direct deposit.</p>
+            <a href="/register" class="prod-link">Apply Now →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-1">
+          <div class="prod-card-icon-area">🚜</div>
+          <div class="prod-card-body">
+            <div class="prod-tag">Lending</div>
+            <h3>Equipment & Operating Loans</h3>
+            <p>Access up to $250,000 for equipment, livestock, or seasonal expenses. Flexible repayment aligned with harvest cycles.</p>
+            <a href="/loans" class="prod-link">View Rates →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-2">
+          <div class="prod-card-icon-area">💳</div>
+          <div class="prod-card-body">
+            <div class="prod-tag">Credit Cards</div>
+            <h3>Business Rewards Card</h3>
+            <p>Earn 2% cash back on feed, seed, and fuel purchases. No annual fee for year one. Free credit score monitoring included.</p>
+            <a href="/credit-cards" class="prod-link">Explore Cards →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-3">
+          <div class="prod-card-icon-area">📈</div>
+          <div class="prod-card-body">
+            <div class="prod-tag">Savings</div>
+            <h3>Business Reserve Account</h3>
+            <p>Build your reserve fund with our high-yield savings. Earn competitive rates with no minimum balance requirements.</p>
+            <a href="/register" class="prod-link">Open Account →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="features-row">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">Digital Services</div>
+        <h2 class="section-title">Banking that works as hard as you do</h2>
+        <p class="section-desc">Full control from any device, anywhere on your property.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card fade-up">
+          <div class="feature-icon">📱</div>
+          <h4>Mobile Check Deposit</h4>
+          <p>Deposit checks instantly using your phone camera — no branch visits needed.</p>
+        </div>
+        <div class="feature-card fade-up delay-1">
+          <div class="feature-icon">⇄</div>
+          <h4>Instant Transfers</h4>
+          <p>Move money between accounts instantly or send domestic & international wires.</p>
+        </div>
+        <div class="feature-card fade-up delay-2">
+          <div class="feature-icon">💸</div>
+          <h4>Bill Pay Automation</h4>
+          <p>Schedule recurring payments, set reminders, and never miss a deadline.</p>
+        </div>
+        <div class="feature-card fade-up delay-3">
+          <div class="feature-icon"></div>
+          <h4>Cash Flow Dashboard</h4>
+          <p>Real-time visibility into your balances, upcoming payments, and spending patterns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MERCHANT SERVICES ============ -->
+  <section class="merchant-section">
+    <div class="merchant-card">
+      <div class="merchant-inner">
+        <div class="merchant-content">
+          <div class="tag">Merchant Services</div>
+          <h2>Accept payments anywhere you sell.</h2>
+          <p>Selling at the farmer's market? Hosting a roadside stand? Use AgriBank Merchant Services to accept tap-to-pay, Apple Pay, Google Pay, and credit cards directly from your smartphone.</p>
+          <div class="merchant-features">
+            <div class="merchant-feat"><span class="m-check">✓</span> Next-day funding guaranteed</div>
+            <div class="merchant-feat"><span class="m-check">✓</span> No monthly terminal fees</div>
+            <div class="merchant-feat"><span class="m-check">✓</span> Built-in inventory tracking</div>
+            <div class="merchant-feat"><span class="m-check">✓</span> Works offline — syncs when connected</div>
+          </div>
+          <a href="/register" class="btn-gold btn">Learn About Merchant Services →</a>
+        </div>
+        <div class="merchant-visual">
+          <div class="terminal-icon">📱💳</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TESTIMONIALS ============ -->
+  <section class="testimonials-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">Community Stories</div>
+        <h2 class="section-title">Trusted by operators across Texas</h2>
+        <p class="section-desc">Don't take our word for it — hear from the farmers and ranchers who trust us.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card fade-up">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"When my corn crop failed in '19, every big bank called to collect. AgriBank sat me down, had coffee, and restructured my entire loan. They saved my family farm."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">🧑‍🌾</div>
+            <div><div class="testi-name">Billy Ray Henderson</div><div class="testi-role">Henderson Family Farm · Gaines County</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-up delay-1">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"The Harvest-First Loan changed everything. No more awkward mid-season payment crunches. My banker actually visits the fields sometimes!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👩‍</div>
+            <div><div class="testi-name">Lisa Nakamura-Brown</div><div class="testi-role">NB Organics · Castro County</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-up delay-2">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"They funded our new milking parlor when three other banks laughed us out of the office. Jake Morrison signed paperwork on a Saturday."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👨‍🌾</div>
+            <div><div class="testi-name">Carlos & Ana Delgado</div><div class="testi-role">Delgado Dairy · Upton County</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BANNER ============ -->
+  <section class="cta-banner">
+    <div class="cta-inner">
+      <h2>Ready to grow your agribusiness?</h2>
+      <p>Join 15,000+ Texas farm families who trust AgriBank with their financial future. Open a business account today — takes just minutes.</p>
+      <a href="/register" class="cta-btn">Open Your Business Account →</a>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Agri<span>Bank</span></div>
+          <p class="footer-desc">Serving Texas farmers, ranchers, and small businesses since 1987. Member FDIC. Equal Housing Lender.</p>
+        </div>
+        <div class="footer-col">
+          <h5>Products</h5>
+          <ul>
+            <li><a href="/credit-cards">Credit Cards</a></li>
+            <li><a href="/register">Savings Accounts</a></li>
+            <li><a href="/loans">Farm Loans</a></li>
+            <li><a href="/register">Business Checking</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Services</h5>
+          <ul>
+            <li><a href="/register">Mobile Banking</a></li>
+            <li><a href="/register">Bill Pay</a></li>
+            <li><a href="/register">Wire Transfers</a></li>
+            <li><a href="/register">Deposit Checks</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Company</h5>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/security">Security Center</a></li>
+            <li><a href="/help">Help Center</a></li>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © <%= new Date().getFullYear() ? new Date().getFullYear() : 2025 %> AgriBank Texas Regional. All rights reserved. NMLS# 482910 · Routing # 111900659
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
+

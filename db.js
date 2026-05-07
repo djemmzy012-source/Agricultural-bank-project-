@@ -1,4 +1,3 @@
-// db.js – better-sqlite3 (synchronous, Railway-compatible)
 const Database = require('better-sqlite3');
 const path = require('path');
 
@@ -6,10 +5,10 @@ const isProd = process.env.NODE_ENV === 'production';
 const dbPath = isProd ? '/tmp/bank.db' : path.resolve(__dirname, 'bank.db');
 
 const db = new Database(dbPath);
-db.pragma('journal_mode = WAL'); // Optimizes concurrent reads/writes
+db.pragma('journal_mode = WAL');
+
 console.log('✅ Connected to SQLite DB at', dbPath);
 
-// Export simple SYNC API
 module.exports = {
   run: (sql, params = []) => {
     const stmt = db.prepare(sql);

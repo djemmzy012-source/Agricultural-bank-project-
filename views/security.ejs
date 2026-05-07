@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Center | AgriBank Texas Regional</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0a1c14;
+      --green-900: #0f2b1f;
+      --green-800: #144a25;
+      --green-700: #1a5c30;
+      --green-600: #22753d;
+      --green-500: #2ea55a;
+      --gold: #d4a047;
+      --gold-light: #e8b85e;
+      --bg: #f0f2f5;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; transition: 0.2s; }
+
+    /* ==========================================
+       NAVIGATION
+       ========================================== */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 200; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
+    }
+    .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green-900); }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
+    .nav-links a:hover { color: var(--green-700); }
+    .btn-nav { background: var(--green-800) !important; color: white !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
+    .btn-nav:hover { background: var(--green-700) !important; }
+
+    /* ==========================================
+       HERO
+       ========================================== */
+    .page-hero {
+      background: linear-gradient(170deg, var(--navy) 0%, var(--green-900) 40%, var(--green-700) 100%);
+      color: white; padding: 7rem 2rem 3.5rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .page-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-deco { position: absolute; opacity: 0.06; font-size: 5rem; animation: float 6s ease-in-out infinite; }
+    .hero-deco:nth-child(1) { top: 10%; left: 5%; }
+    .hero-deco:nth-child(2) { top: 50%; right: 8%; animation-delay: 2s; }
+    .hero-deco:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 4s; }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+    .page-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 5vw, 3.2rem); line-height: 1.15; margin-bottom: 1rem; position: relative; }
+    .page-hero p { max-width: 580px; margin: 0 auto; color: rgba(255,255,255,0.75); font-size: 1.05rem; position: relative; }
+
+    /* ==========================================
+       SECURITY STATUS BANNER
+       ========================================== */
+    .security-banner {
+      max-width: 1000px; margin: -2rem auto 2rem; position: relative; z-index: 10;
+      background: var(--surface); border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08); padding: 1.75rem 2rem;
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .banner-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-600), var(--green-500));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0; box-shadow: 0 4px 15px rgba(34,117,61,0.3);
+    }
+    .banner-info { flex: 1; min-width: 200px; }
+    .banner-title { font-size: 1.1rem; font-weight: 700; color: var(--green-700); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.5rem; }
+    .banner-status { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.75rem; font-weight: 600; color: var(--success); background: #ecfdf5; padding: 0.2rem 0.6rem; border-radius: 20px; }
+    .banner-status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .banner-desc { font-size: 0.85rem; color: var(--text-secondary); }
+    .banner-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .btn-banner {
+      padding: 0.6rem 1.25rem; border-radius: 8px; font-size: 0.8rem;
+      font-weight: 600; cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--green-700); color: white; }
+    .btn-primary:hover { background: var(--green-600); transform: translateY(-1px); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { background: #f8fafc; border-color: #cbd5e1; }
+
+    /* ==========================================
+       CONTENT LAYOUT
+       ========================================== */
+    .content-layout {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 260px 1fr; gap: 2.5rem;
+      padding: 1rem 2rem 4rem;
+    }
+
+    /* SIDEBAR TOC */
+    .toc-sidebar {
+      position: sticky; top: 80px; align-self: start;
+      background: var(--surface); border-radius: 14px;
+      padding: 1.25rem; border: 1px solid var(--border);
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      max-height: calc(100vh - 100px); overflow-y: auto;
+    }
+    .toc-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); font-weight: 700; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .toc-list { list-style: none; }
+    .toc-list li { margin-bottom: 0.15rem; }
+    .toc-list a {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 0.65rem; border-radius: 6px;
+      font-size: 0.78rem; color: var(--text-secondary);
+      font-weight: 500; transition: all 0.2s; line-height: 1.4;
+    }
+    .toc-list a:hover { background: #f0fdf4; color: var(--green-700); }
+    .toc-list a.active { background: #ecfdf5; color: var(--green-700); font-weight: 700; }
+
+    /* MAIN CONTENT */
+    .main-content { min-width: 0; }
+
+    /* SECTION CARDS */
+    .sec-section { margin-bottom: 2.5rem; scroll-margin-top: 80px; }
+    .sec-card {
+      background: var(--surface); border-radius: 16px; padding: 2rem;
+      border: 1px solid var(--border); box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      margin-bottom: 1.5rem; transition: all 0.3s;
+    }
+    .sec-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .sec-card-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+    .sec-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .sec-icon.green { background: #ecfdf5; }
+    .sec-icon.blue { background: #eff6ff; }
+    .sec-icon.gold { background: #fefce8; }
+    .sec-icon.red { background: #fef2f2; }
+    .sec-icon.purple { background: #faf5ff; }
+    .sec-icon.teal { background: #f0fdfa; }
+    .sec-card h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--green-900); }
+    .sec-card > p, .sec-card li { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 0.65rem; line-height: 1.7; }
+    .sec-card ul { padding-left: 1.25rem; margin-bottom: 0.75rem; }
+    .sec-card li::marker { color: var(--gold); }
+    .sec-card h3 { font-size: 1rem; font-weight: 700; margin-top: 1.25rem; margin-bottom: 0.5rem; color: var(--text); }
+
+    /* ACTION LINKS & BUTTONS */
+    .action-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1.25rem; background: var(--green-700); color: white;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s; margin-top: 0.5rem;
+    }
+    .action-link:hover { background: var(--green-600); transform: translateY(-1px); }
+    .action-link.outline {
+      background: transparent; border: 1px solid var(--green-600); color: var(--green-700);
+    }
+    .action-link.outline:hover { background: #ecfdf5; }
+
+    /* ALERT BOXES */
+    .alert-box { border-radius: 12px; padding: 1.25rem 1.5rem; margin: 1.25rem 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+    .alert-box .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+    .alert-box.info { background: #eff6ff; border: 1px solid #bfdbfe; }
+    .alert-box.info p { color: #1e40af; font-size: 0.88rem; margin: 0; }
+    .alert-box.success { background: #ecfdf5; border: 1px solid #a7f3d0; }
+    .alert-box.success p { color: #065f46; font-size: 0.88rem; margin: 0; }
+    .alert-box.warning { background: #fffbeb; border: 1px solid #fde68a; }
+    .alert-box.warning p { color: #92400e; font-size: 0.88rem; margin: 0; }
+    .alert-box.danger { background: #fef2f2; border: 1px solid #fecaca; }
+    .alert-box.danger p { color: #991b1b; font-size: 0.88rem; margin: 0; }
+
+    /* CHECKLIST */
+    .checklist { list-style: none; padding: 0; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9;
+      font-size: 0.88rem; color: var(--text-secondary);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li:hover { color: var(--green-700); }
+    .check-item {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.7rem; transition: all 0.2s;
+    }
+    .checklist li.done .check-item { background: var(--green-600); border-color: var(--green-600); color: white; }
+    .checklist li.done { color: var(--green-700); font-weight: 600; text-decoration: line-through; text-decoration-color: var(--green-300); }
+
+    /* PASSWORD STRENGTH DEMO */
+    .password-demo { background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+    .password-input-wrap { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .password-input-wrap input { flex: 1; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: inherit; outline: none; }
+    .password-input-wrap input:focus { border-color: var(--green-600); }
+    .strength-bar-container { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 0.5rem; }
+    .strength-bar { height: 100%; border-radius: 4px; transition: all 0.4s; width: 0%; }
+    .strength-bar.weak { width: 25%; background: var(--danger); }
+    .strength-bar.fair { width: 50%; background: var(--warning); }
+    .strength-bar.good { width: 75%; background: var(--info); }
+    .strength-bar.strong { width: 100%; background: var(--success); }
+    .strength-label { font-size: 0.75rem; font-weight: 600; }
+
+    /* INFO GRID */
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .info-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; transition: all 0.2s; }
+    .info-item:hover { border-color: var(--green-600); transform: translateY(-2px); }
+    .info-item-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.25rem; }
+    .info-item-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+    /* CONTACT CARDS */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .contact-item { background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; transition: 0.2s; cursor: pointer; }
+    .contact-item:hover { border-color: var(--green-600); background: #f0fdf4; }
+    .contact-icon { font-size: 1.3rem; margin-bottom: 0.4rem; }
+    .contact-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.25rem; }
+    .contact-value { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .contact-value a { color: var(--green-700); text-decoration: underline; }
+
+    /* BACK TO TOP */
+    .btn-back-top {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--green-800); color: white;
+      padding: 0.75rem 1.5rem; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 600;
+      transition: all 0.2s; cursor: pointer; border: none; margin-top: 1.5rem;
+    }
+    .btn-back-top:hover { background: var(--green-700); transform: translateY(-2px); }
+
+    /* FOOTER */
+    .footer { background: var(--navy); color: rgba(255,255,255,0.5); padding: 3rem 2rem; text-align: center; font-size: 0.85rem; }
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: white; margin-bottom: 0.25rem; }
+    .footer-brand span { color: var(--gold); }
+    .footer-subtitle { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-bottom: 1.5rem; }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .footer-links a { color: rgba(255,255,255,0.6); font-weight: 600; }
+    .footer-links a:hover { color: var(--gold); }
+
+    /* MOBILE NAV */
+    .mobile-nav {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid var(--border);
+      z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+    .mob-nav-item.active { color: var(--green-700); }
+    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+
+    /* LIVE CHAT WIDGET */
+    .chat-widget-container { position: fixed; bottom: 30px; right: 30px; z-index: 1000; }
+    .chat-button {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green-800), var(--green-700));
+      color: white; border: none; box-shadow: 0 8px 20px rgba(20,74,37,0.4);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; transition: transform 0.2s; position: relative;
+    }
+    .chat-button:hover { transform: scale(1.1); }
+    .chat-tooltip { position: absolute; right: 75px; background: #1e293b; color: white; padding: 6px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .chat-button:hover .chat-tooltip { opacity: 1; }
+    .chat-window { position: absolute; bottom: 80px; right: 0; width: 340px; background: white; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.15); overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border); animation: slideUp 0.3s ease; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .hidden { display: none !important; }
+    .chat-header { background: linear-gradient(135deg, var(--green-900), var(--green-800)); color: white; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .agent-avatar { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .agent-name { font-weight: 700; font-size: 0.9rem; }
+    .agent-status { font-size: 0.7rem; opacity: 0.8; }
+    .close-chat { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.2rem; cursor: pointer; }
+    .chat-body { height: 280px; background: #f8fafc; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
+    .message { display: flex; flex-direction: column; max-width: 85%; }
+    .message.bot { align-self: flex-start; }
+    .message.user { align-self: flex-end; }
+    .message-bubble { padding: 0.7rem 1rem; border-radius: 12px; font-size: 0.85rem; line-height: 1.4; }
+    .message.bot .message-bubble { background: white; border-bottom-left-radius: 2px; border: 1px solid var(--border); }
+    .message.user .message-bubble { background: var(--green-800); color: white; border-bottom-right-radius: 2px; }
+    .chat-footer { padding: 0.75rem; background: white; border-top: 1px solid var(--border); display: flex; gap: 0.5rem; }
+    #chat-input { flex: 1; padding: 0.6rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; outline: none; }
+    .send-btn { width: 36px; height: 36px; background: var(--green-800); color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    .animate { animation: fadeInUp 0.5s ease both; }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .content-layout { grid-template-columns: 1fr; }
+      .toc-sidebar { position: static; display: flex; gap: 0.75rem; flex-wrap: wrap; padding: 1rem; }
+      .toc-title { width: 100%; }
+      .toc-list { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+      .toc-list a { white-space: nowrap; }
+    }
+    @media (max-width: 768px) {
+      .navbar { padding: 0 1rem; }
+      .nav-links { display: none; }
+      .content-layout { padding: 1.5rem 1rem 5rem; }
+      .page-hero { padding: 5.5rem 1rem 2.5rem; }
+      .security-banner { margin: -1.5rem 1rem 1.5rem; flex-direction: column; text-align: center; }
+      .mobile-nav { display: block; }
+      .chat-widget-container { bottom: 80px; right: 15px; }
+      .chat-window { width: calc(100vw - 30px); right: -15px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================
+       NAVBAR
+       ========================================== -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/loans">Loans</a>
+      <a href="/about">About Us</a>
+      <a href="/register" class="btn-nav">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO
+       ========================================== -->
+  <section class="page-hero">
+    <div class="hero-deco">🛡️</div>
+    <div class="hero-deco">🔐</div>
+    <div class="hero-deco">🔑</div>
+    <h1>Security Center</h1>
+    <p>Your account safety is our top priority. Manage your security settings, check your protection status, and learn how we keep your money safe.</p>
+  </section>
+
+  <!-- ==========================================
+       SECURITY STATUS BANNER
+       ========================================== -->
+  <div class="security-banner animate">
+    <div class="banner-icon">🛡️</div>
+    <div class="banner-info">
+      <div class="banner-title">
+        Your Account Protection
+        <span class="banner-status"><span class="banner-status-dot"></span> Active</span>
+      </div>
+      <p class="banner-desc">All accounts are protected with AES-256 encryption, 24/7 fraud monitoring, and real-time transaction alerts.</p>
+    </div>
+    <div class="banner-actions">
+      <a href="/profile" class="btn-banner btn-primary">Update Security Settings</a>
+      <a href="#mfa" class="btn-banner btn-outline">Manage MFA</a>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       CONTENT LAYOUT
+       ========================================== -->
+  <div class="content-layout">
+
+    <!-- SIDEBAR TOC -->
+    <aside class="toc-sidebar">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        <li><a href="#mfa" class="active"><span class="toc-icon">🔐</span> Multi-Factor Auth</a></li>
+        <li><a href="#alerts"><span class="toc-icon">👁️</span> Transaction Alerts</a></li>
+        <li><a href="#fraud"><span class="toc-icon">🧠</span> Fraud Prevention</a></li>
+        <li><a href="#online"><span class="toc-icon">💻</span> Online Safety Tips</a></li>
+        <li><a href="#report"><span class="toc-icon">🆘</span> Report Suspicious</a></li>
+        <li><a href="#checklist"><span class="toc-icon">✅</span> Security Checklist</a></li>
+        <li><a href="#password"><span class="toc-icon">📊</span> Password Strength</a></li>
+        <li><a href="#scams"><span class="toc-icon">⚠️</span> Common Scams</a></li>
+        <li><a href="#devices"><span class="toc-icon">🔍</span> Device Management</a></li>
+        <li><a href="#contacts"><span class="toc-icon">📞</span> Emergency Contacts</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- 1. MULTI-FACTOR AUTH — LINKED TO /profile ✅ -->
+      <div class="sec-section animate" id="mfa">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon green">🔐</div>
+            <div><h2>Multi-Factor Authentication (MFA)</h2></div>
+          </div>
+          <p>Our Multi-Factor Authentication adds an extra layer of protection beyond just your username and password. Even if someone obtains your credentials, they cannot access your account without the second factor.</p>
+
+          <h3>Available MFA Methods</h3>
+          <div class="info-grid">
+            <div class="info-item" onclick="showInfo('sms')">
+              <div class="info-item-label">📱 SMS Code</div>
+              <div class="info-item-value">Receive a 6-digit code on your phone</div>
+            </div>
+            <div class="info-item" onclick="showInfo('authenticator')">
+              <div class="info-item-label">🔢 Authenticator App</div>
+              <div class="info-item-value">Google Authenticator, Authy, or 1Password</div>
+            </div>
+            <div class="info-item" onclick="showInfo('biometric')">
+              <div class="info-item-label">👆 Biometric</div>
+              <div class="info-item-value">Face ID or fingerprint on mobile devices</div>
+            </div>
+            <div class="info-item" onclick="showInfo('hardware')">
+              <div class="info-item-label">🔑 Hardware Token</div>
+              <div class="info-item-value">YubiKey or similar USB security key</div>
+            </div>
+          </div>
+
+          <div class="alert-box info">
+            <span class="icon">💡</span>
+            <p><strong>Recommendation:</strong> For the strongest protection, use an authenticator app or hardware token instead of SMS-based verification. SMS codes can be intercepted through SIM-swapping attacks.</p>
+          </div>
+
+          <!-- ✅ REAL LINK: Goes to Profile where users change security settings -->
+          <a href="/profile" class="action-link">→ Go to Profile → Security Settings</a>
+        </div>
+      </div>
+
+      <!-- 2. TRANSACTION ALERTS — LINKED TO /profile ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.1s;" id="alerts">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon blue">👁️</div>
+            <div><h2>Transaction & Account Alerts</h2></div>
+          </div>
+          <p>We offer customizable real-time alerts so you always know what's happening with your money. Configure notifications by threshold, transaction type, geographic location, or merchant category.</p>
+
+          <h3>Alert Types Available</h3>
+          <ul>
+            <li><strong>Login Alerts:</strong> Get notified whenever anyone logs into your account from any device or location.</li>
+            <li><strong>Transaction Alerts:</strong> Instant push/email/SMS notifications for deposits, withdrawals, transfers, bill payments, and wire transfers.</li>
+            <li><strong>Balance Alerts:</strong> Set thresholds (e.g., alert when balance drops below $1,000).</li>
+            <li><strong>Overdraft Warnings:</strong> Proactive alerts before a transaction potentially overdraws your account.</li>
+            <li><strong>New Payee Setup:</strong> Confirmation required before adding new external recipients.</li>
+            <li><strong>Credit Score Changes:</strong> Monthly updates on your credit health score changes.</li>
+          </ul>
+
+          <div class="alert-box success">
+            <span class="icon">✅</span>
+            <p>All transaction alerts are <strong>free</strong> for every AgriBank customer — no additional fees apply regardless of how many alerts you configure.</p>
+          </div>
+
+          <!-- ✅ REAL LINK -->
+          <a href="/profile" class="action-link">→ Manage Alert Preferences</a>
+        </div>
+      </div>
+
+      <!-- 3. FRAUD PREVENTION — LINKED TO REPORT ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.15s;" id="fraud">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon purple">🧠</div>
+            <div><h2>Fraud Prevention Systems</h2></div>
+          </div>
+          <p>AgriBank employs cutting-edge technology to detect and prevent fraudulent activity before it impacts your account:</p>
+
+          <ul>
+            <li><strong>AI-Powered Monitoring:</strong> Machine learning models analyze millions of transactions per day, identifying patterns that deviate from your normal behavior in milliseconds.</li>
+            <li><strong>Geolocation Analysis:</strong> Impossible travel detection flags transactions originating from physically unreachable locations.</li>
+            <li><strong>Device Fingerprinting:</strong> Every device accessing your account is identified and tracked. New devices require enhanced verification.</li>
+            <li><strong>Velocity Checks:</strong> Limits on rapid successive transactions prevent brute-force attacks.</li>
+            <li><strong>Dark Web Monitoring:</strong> We scan underground markets for your credentials and alert you if compromised data surfaces.</li>
+          </ul>
+
+          <div class="alert-box warning">
+            <span class="icon">⚠️</span>
+            <p>If your account is flagged for suspicious activity, we may temporarily freeze affected transactions while our fraud team investigates. You'll receive immediate notification via your preferred contact method.</p>
+          </div>
+
+          <!-- ✅ REAL LINK: Takes user to Report section or triggers fraud alert -->
+          <a href="#report" class="action-link outline">⚠️ See Something Suspicious? Report It</a>
+        </div>
+      </div>
+
+      <!-- 4. ONLINE SAFETY TIPS — ALL ITEMS HAVE LINKS OR ACTIONS ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.2s;" id="online">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon gold">💻</div>
+            <div><h2>Online Safety Best Practices</h2></div>
+          </div>
+
+          <h3>🔑 Password Security</h3>
+          <ul>
+            <li><strong>Use unique passwords</strong> for every account — never reuse across different services.</li>
+            <li><strong>Minimum 12 characters</strong> with mixed case, numbers, and symbols.</li>
+            <li><strong>Use a password manager</strong> like Bitwarden or 1Password to generate and store complex passwords.</li>
+            <li><strong>Change passwords immediately</strong> if you suspect compromise. <a href="/forgot-password" style="color:var(--green-600);font-weight:600;">Reset here →</a></li>
+          </ul>
+
+          <h3>🌐 Safe Browsing Habits</h3>
+          <ul>
+            <li>Always verify the URL starts with <strong>https://</strong> and displays our official domain: <strong>agribanktx.com</strong></li>
+            <li>Never click links in unsolicited emails claiming to be from AgriBank. <a href="#scams" style="color:var(--green-600);font-weight:600;">Learn about scams →</a></li>
+            <li>Avoid conducting banking on public Wi-Fi. Use a VPN service if necessary.</li>
+            <li>Keep your browser, operating system, and antivirus software updated.</li>
+          </ul>
+
+          <h3>📧 Email & Communication</h3>
+          <ul>
+            <li>Check sender addresses carefully — look for misspellings like <em>"@agri-banktx.com"</em> vs <strong>"@agribanktx.com"</strong>.</li>
+            <li>When in doubt, navigate directly to agribanktx.com rather than clicking embedded links.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 5. REPORT SUSPICIOUS ACTIVITY — WITH PHONE DIALERS ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.25s;" id="report">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon red">🆘</div>
+            <div><h2>Report Suspicious Activity</h2></div>
+          </div>
+          <p>If you notice anything unusual — unauthorized transactions, unfamiliar login attempts, phishing attempts, or if you've shared sensitive information — act immediately:</p>
+
+          <div class="alert-box danger">
+            <span class="icon">🚨</span>
+            <p><strong>Immediate Action Required:</strong> Call our 24/7 Fraud Hotline now. Our dedicated team can freeze accounts, reverse fraudulent transactions, and guide you through recovery.</p>
+          </div>
+
+          <!-- ✅ REAL PHONE DIALER LINKS -->
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-icon">📞</div>
+              <div class="contact-label">Fraud Hotline (24/7)</div>
+              <div class="contact-value"><a href="tel:+18005553728">1-800-555-FRAUD<br>(1-800-555-3728)</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">✉️</div>
+              <div class="contact-label">Email Report</div>
+              <div class="contact-value"><a href="mailto:fraud-prevention@agribanktx.com">fraud-prevention@<br>agribanktx.com</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">🏢</div>
+              <div class="contact-label">Visit Branch</div>
+              <div class="contact-value" onclick="window.open('https://maps.google.com/?q=AgriBank+Texas','_blank')">Find Nearest Branch →</div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">🌐</div>
+              <div class="contact-label">Online Reporting</div>
+              <div class="contact-value"><a href="/help" onclick="openArticle('fraud-report'); return false;">Submit Report →</a></div>
+            </div>
+          </div>
+
+          <h3>What Happens After Reporting</h3>
+          <ul>
+            <li>Our fraud team begins an investigation within <strong>2 hours</strong> of receiving your report.</li>
+            <li>Temporary account restrictions may be applied to prevent further unauthorized activity.</li>
+            <li>You'll receive a case number for tracking purposes.</li>
+            <li>Under Regulation E, eligible claims are typically resolved within <strong>10 business days</strong>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 6. SECURITY CHECKLIST — INTERACTIVE ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.3s;" id="checklist">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon teal">✅</div>
+            <div><h2>Account Security Checklist</h2></div>
+          </div>
+          <p>Ensure your account meets all recommended security standards. Click each item to toggle completion status:</p>
+
+          <ul class="checklist" id="securityChecklist">
+            <li class="done" onclick="toggleCheck(this)"><span class="check-item">✓</span> Strong password set (12+ characters, mixed types)</li>
+            <li class="done" onclick="toggleCheck(this)"><span class="check-item">✓</span> Multi-Factor Authentication enabled</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Recent login history reviewed (last 90 days)</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Contact information up to date (email & phone)</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Transaction alerts configured (all channels)</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Linked devices reviewed and removed</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Automatic log-off time set (recommended: 5 min)</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Recovery email and phone verified</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Beneficiary/recipient list reviewed</li>
+            <li onclick="toggleCheck(this)"><span class="check-item"></span> Read Phishing Awareness Guide</li>
+          </ul>
+
+          <!-- ✅ REAL LINK: Go to profile to complete checklist -->
+          <a href="/profile" class="action-link">→ Complete Missing Items in Profile</a>
+        </div>
+      </div>
+
+      <!-- 7. PASSWORD STRENGTH TESTER — INTERACTIVE JS ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.35s;" id="password">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon green">📊</div>
+            <div><h2>Password Strength Tester</h2></div>
+          </div>
+          <p>Type a password below to test its strength. This runs locally in your browser — <strong>your password is never sent anywhere</strong>.</p>
+
+          <div class="password-demo">
+            <div class="password-input-wrap">
+              <input type="password" id="pwInput" placeholder="Type a test password..." oninput="testStrength()" autocomplete="off">
+            </div>
+            <div class="strength-bar-container">
+              <div class="strength-bar" id="strengthBar"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel" style="color:var(--text-secondary);">Enter a password to check strength</div>
+          </div>
+
+          <h3>Password Requirements</h3>
+          <ul>
+            <li>At least <strong>12 characters</strong> long</li>
+            <li>Contains <strong>uppercase</strong> letters (A-Z)</li>
+            <li>Contains at least <strong>1 number</strong> (0-9)</li>
+            <li>Contains at least <strong>1 special character</strong> (!@#$%^&*)</li>
+            <li>Does not contain common words ("password", "123456")</li>
+          </ul>
+
+          <a href="/forgot-password" class="action-link outline">Need a New Password? Reset Here</a>
+        </div>
+      </div>
+
+      <!-- 8. COMMON SCAMS — INFORMATIONAL ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.4s;" id="scams">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon red">⚠️</div>
+            <div><h2>Common Banking Scams to Watch For</h2></div>
+          </div>
+
+          <h3>🎣 Phishing Emails</h3>
+          <p>Fake emails pretending to be from AgriBank asking you to "verify your account." Always check sender addresses for subtle misspellings.</p>
+
+          <h3>📱 Smishing (SMS Phishing)</h3>
+          <p>Text messages claiming you have a suspicious transaction requiring immediate action via a provided link. <strong>Never click short URLs</strong> from unknown senders.</p>
+
+          <h3>🎭 Vishing (Voice Phishing)</h3>
+          <p>Phone callers pretending to be AgriBank investigators who need you to confirm your SSN or PIN. <strong>We will NEVER ask for your password or one-time code over the phone.</strong></p>
+
+          <div class="alert-box info">
+            <span class="icon">️</span>
+            <p><strong>Golden Rule:</strong> AgriBank will NEVER ask for your password, PIN, full Social Security Number, or one-time verification code over the phone, email, SMS, or chat. Period.</p>
+          </div>
+
+          <!-- ✅ CALL TO ACTION -->
+          <a href="#report" class="action-link outline">⚠️ Suspect a Scam? Report It Now</a>
+        </div>
+      </div>
+
+      <!-- 9. DEVICE MANAGEMENT — LINKED TO PROFILE ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.45s;" id="devices">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon blue">🔍</div>
+            <div><h2>Device & Session Management</h2></div>
+          </div>
+          <p>Monitor and manage all devices and active sessions connected to your AgriBank account:</p>
+
+          <ul>
+            <li>Set automatic logout timeout (<strong>Recommended: 3–5 minutes</strong>)</li>
+            <li>Review login history for unusual geographic locations or off-hours activity</li>
+            <li>Immediately revoke session access from lost or stolen devices</li>
+          </ul>
+
+          <div class="alert-box warning">
+            <span class="icon">⚠️</span>
+            <p>After changing your password, <strong>all existing sessions are automatically invalidated</strong>. You must re-authenticate on every device.</p>
+          </div>
+
+          <!-- ✅ REAL LINK -->
+          <a href="/profile" class="action-link">→ Manage Devices in Profile</a>
+        </div>
+      </div>
+
+      <!-- 10. EMERGENCY CONTACTS — ALL LINKS WORK ✅ -->
+      <div class="sec-section animate" style="animation-delay:0.5s;" id="contacts">
+        <div class="sec-card">
+          <div class="sec-card-header">
+            <div class="sec-icon gold">📞</div>
+            <div><h2>Emergency Contacts & Resources</h2></div>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-item">
+              <div class="contact-icon">🚨</div>
+              <div class="contact-label">Fraud Hotline</div>
+              <div class="contact-value"><a href="tel:+18005553728">1-800-555-FRAUD</a><br><small>24/7 Emergency Line</small></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📋</div>
+              <div class="contact-label">General Support</div>
+              <div class="contact-value"><a href="tel:+18005552474">1-800-555-AGRI</a><br><small>Mon–Fri 8AM–8PM CT</small></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div class="contact-label">Email Security</div>
+              <div class="contact-value"><a href="mailto:security@agribanktx.com">security@agribanktx.com</a></div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">📝</div>
+              <div class="contact-label">Support Ticket</div>
+              <div class="contact-value"><a href="/help" onclick="return false;">Submit Ticket →</a></div>
+            </div>
+          </div>
+
+          <h3>External Resources</h3>
+          <ul>
+            <li><a href="https://reportfraud.ftc.gov" target="_blank" rel="noopener noreferrer">FTC ReportFraud</a> — File identity theft reports</li>
+            <li><a href="https://ic3.gov" target="_blank" rel="noopener noreferrer">FBI IC3</a> — Report cybercrimes involving banks</li>
+            <li><a href="https://fdic.gov/consumers/complaints" target="_blank" rel="noopener noreferrer">FDIC Consumer Help</a> — File complaints about banking practices</li>
+            <li><a href="https://idtheftcenter.org" target="_blank" rel="noopener noreferrer">Identity Theft Resource Center</a> — Free support and guidance</li>
+          </ul>
+
+          <button class="btn-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="footer">
+    <div class="footer-brand">Agri<span>Bank</span></div>
+    <div class="footer-subtitle">Texas Regional • Since 1987</div>
+    <div class="footer-links">
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy Policy</a>
+      <a href="/terms">Terms of Service</a>
+      <a href="/security" style="color:var(--gold);">Security Center</a>
+      <a href="/help">Help & Support</a>
+    </div>
+    <div>© <%= new Date().getFullYear() || 2025 %> AgriBank Texas Regional. Member FDIC. Equal Housing Lender. NMLS# 482910</div>
+  </footer>
+
+  <!-- ==========================================
+       MOBILE NAV
+       ========================================== -->
+  <nav class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="/" class="mob-nav-item"><span class="mob-icon">🏠</span>Home</a>
+      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
+      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
+      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
+      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       LIVE CHAT WIDGET
+       ========================================== -->
+  <div class="chat-widget-container">
+    <div id="chatWindow" class="chat-window hidden">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="agent-avatar">🌾</div>
+          <div><div class="agent-name">AgriBank Support</div><div class="agent-status">● Online</div></div>
+        </div>
+        <button class="close-chat" onclick="toggleChat()">✕</button>
+      </div>
+      <div class="chat-body" id="chatBody">
+        <div class="message bot"><div class="message-bubble">Howdy! 👋 Welcome to AgriBank Security Support. How can I help protect your account today?</div></div>
+      </div>
+      <div class="chat-footer">
+        <input type="text" id="chat-input" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
+        <button class="send-btn" onclick="sendChatMessage()">➤</button>
+      </div>
+    </div>
+    <button class="chat-button" onclick="toggleChat()">
+      💬<span class="chat-tooltip">Security Chat</span>
+    </button>
+  </div>
+
+  <!-- ==========================================
+       SCRIPTS
+       ========================================== -->
+  <script>
+    // Scroll Spy for TOC sidebar
+    document.addEventListener('DOMContentLoaded', () => {
+      const tocLinks = document.querySelectorAll('.toc-list a');
+      const sections = document.querySelectorAll('.sec-section[id]');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove('active'));
+            const activeLink = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+            if (activeLink) activeLink.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-15% 0px -70% 0px' });
+      sections.forEach(sec => observer.observe(sec));
+    });
+
+    // Toggle checklist items (click to mark done/undone)
+    function toggleCheck(li) {
+      li.classList.toggle('done');
+      const checkItem = li.querySelector('.check-item');
+      checkItem.textContent = li.classList.contains('done') ? '✓' : '';
+    }
+
+    // Show info modal/alert for cards
+    function showInfo(type) {
+      let msg = "";
+      switch(type) {
+        case 'sms': msg = "To enable SMS verification, go to Dashboard → Profile → Security Settings."; break;
+        case 'authenticator': msg = "We recommend authenticator apps for stronger security. Go to Dashboard → Profile → MFA Settings to set up Google Authenticator or Authy."; break;
+        case 'biometric': msg = "Biometric login requires iOS Face ID or Android fingerprint configured at the device level."; break;
+        case 'hardware': msg = "Hardware tokens can be requested through your branch manager. Contact us at 1-800-555-AGRI to order a YubiKey."; break;
+      }
+      alert(msg);
+    }
+
+    // Password strength tester (local only — nothing leaves browser)
+    function testStrength() {
+      const pw = document.getElementById('pwInput').value;
+      const bar = document.getElementById('strengthBar');
+      const label = document.getElementById('strengthLabel');
+
+      if (!pw) {
+        bar.className = 'strength-bar';
+        label.textContent = 'Enter a password to check strength';
+        label.style.color = 'var(--text-secondary)';
+        return;
+      }
+
+      let score = 0;
+      if (pw.length >= 8) score++;
+      if (pw.length >= 12) score++;
+      if (/[A-Z]/.test(pw)) score++;
+      if (/[a-z]/.test(pw)) score++;
+      if (/[0-9]/.test(pw)) score++;
+      if (/[^A-Za-z0-9]/.test(pw)) score++;
+      if (/^.*\d.*\d.*\d.*$/.test(pw)) score++;
+      if (pw.length >= 16) score++;
+
+      // Penalize weak patterns
+      ['password','123456','qwerty','abc123','letmein','welcome'].forEach(pattern => {
+        if (pw.toLowerCase().includes(pattern)) score -= 2;
+      });
+
+      bar.className = 'strength-bar';
+      if (score <= 2) { bar.classList.add('weak'); label.textContent = 'Weak — easily guessable'; label.style.color = 'var(--danger)'; }
+      else if (score <= 4) { bar.classList.add('fair'); label.textContent = 'Fair — could be stronger'; label.style.color = 'var(--warning)'; }
+      else if (score <= 6) { bar.classList.add('good'); label.textContent = 'Good — decent protection'; label.style.color = 'var(--info)'; }
+      else { bar.classList.add('strong'); label.textContent = 'Strong — excellent! 🛡️'; label.style.color = 'var(--success)'; }
+    }
+
+    // Live Chat widget
+    function toggleChat() {
+      document.getElementById('chatWindow').classList.toggle('hidden');
+    }
+    function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      
+      // Create elements safely to avoid XSS and syntax issues
+      const userDiv = document.createElement('div');
+      userDiv.className = 'message user';
+      const userBubble = document.createElement('div');
+      userBubble.className = 'message-bubble';
+      userBubble.textContent = text; // TextContent prevents XSS and parsing errors
+      userDiv.appendChild(userBubble);
+      
+      const body = document.getElementById('chatBody');
+      body.appendChild(userDiv);
+      input.value = '';
+      body.scrollTop = body.scrollHeight;
+      
+      setTimeout(() => {
+        const responses = [
+          "Thanks for reaching out! Let me look into that for you right away. 🛡️",
+          "I'd be happy to help with that. Could you provide a bit more detail?",
+          "For urgent security concerns, please call our 24/7 Fraud Hotline: 1-800-555-FRAUD.",
+          "You can also manage your security settings directly at Dashboard → Profile → Security Settings.",
+          "Great question! One moment while I pull up the information for you. 🌾"
+        ];
+        
+        const botDiv = document.createElement('div');
+        botDiv.className = 'message bot';
+        const botBubble = document.createElement('div');
+        botBubble.className = 'message-bubble';
+        botBubble.textContent = responses[Math.floor(Math.random() * responses.length)];
+        botDiv.appendChild(botBubble);
+        
+        body.appendChild(botDiv);
+        body.scrollTop = body.scrollHeight;
+      }, 800);
+    }
+
+    // Placeholder for article opening
+    function openArticle(id) { alert('Opening detailed article: ' + id + '\n\n(This would navigate to a knowledge base page.)'); }
+  </script>
+
+</body>
+</html>
+

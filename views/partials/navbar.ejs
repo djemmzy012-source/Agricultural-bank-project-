@@ -1,39 +1,30 @@
-<nav class="navbar">
-  <div class="container navbar-content">
-    <a href="/" class="logo">
-      <div class="logo-icon">🌾</div>
-      <div class="logo-text">
-        <span class="logo-name">AgriBank</span>
-        <span class="logo-tagline">Texas</span>
-      </div>
+<nav class="nav-container" style="background: #fff; padding: 1rem 0; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100;">
+  <div class="container nav">
+    <a href="/" class="logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #000; font-weight: 800; font-size: 1.2rem;">
+      <div style="background: #144a25; color: white; width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center;">A</div>
+      AgriBank Texas
     </a>
     
-    <!-- Mobile Menu Toggle -->
-    <div class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    
-    <div class="nav-links">
-      <% if (user) { %>
-        <a href="/dashboard" class="<%= req.path === '/dashboard' ? 'active' : '' %>">Dashboard</a>
-        <a href="/accounts" class="<%= req.path === '/accounts' ? 'active' : '' %>">Accounts</a>
-        <a href="/transfer" class="<%= req.path === '/transfer' ? 'active' : '' %>">Transfer</a>
-        <a href="/billpay" class="<%= req.path === '/billpay' ? 'active' : '' %>">Bill Pay</a>
-        <a href="/profile" class="<%= req.path === '/profile' ? 'active' : '' %>">Profile</a>
-        <a href="/logout">Logout</a>
+    <ul style="list-style: none; display: flex; gap: 24px; align-items: center; margin: 0; padding: 0;">
+      
+      <!-- LOGGED IN USER LINKS -->
+      <% if (user && user.username) { %>
+        <li><a href="/dashboard" style="text-decoration: none; color: #374151; font-weight: 700;">Dashboard</a></li>
+        <li><a href="/accounts" style="text-decoration: none; color: #374151; font-weight: 500;">Accounts</a></li>
+        <li><a href="/transfer" style="text-decoration: none; color: #374151; font-weight: 500;">Transfer</a></li>
+        <li><a href="/loans" style="text-decoration: none; color: #374151; font-weight: 500;">Loans</a></li>
+        <li><a href="/login" class="btn btn-outline" style="font-size: 0.9rem;">Help Center</a></li>
+        <li><a href="/logout" class="btn btn-primary" style="font-size: 0.9rem;">Logout</a></li>
+      
+      <!-- GUEST LINKS -->
       <% } else { %>
-        <a href="/login">Sign In</a>
-        <a href="/register">Open Account</a>
+        <li><a href="/" style="text-decoration: none; color: #374151; font-weight: 600;">Home</a></li>
+        <li><a href="/small-business" style="text-decoration: none; color: #374151; font-weight: 500;">Business</a></li>
+        <li><a href="/about" style="text-decoration: none; color: #374151; font-weight: 500;">About Us</a></li>
+        <li><a href="/login" class="btn btn-outline" style="font-size: 0.9rem; margin-left: 10px;">Login</a></li>
+        <li><a href="/register" class="btn btn-primary" style="font-size: 0.9rem; margin-left: 10px;">Open Account</a></li>
       <% } %>
-    </div>
-    
-    <div class="nav-right">
-      <% if (user) { %>
-        <span class="welcome-text">Welcome, <%= user.firstName %></span>
-        <a href="/logout" class="btn-logout">Logout</a>
-      <% } %>
-    </div>
+      
+    </ul>
   </div>
 </nav>

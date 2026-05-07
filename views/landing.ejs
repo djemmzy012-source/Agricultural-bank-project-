@@ -1,377 +1,763 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agricultural Bank | Growing Your Future</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
+  <%- include('partials/head', { title: 'AgriBank Texas | Grow Your Future' }) %>
   <style>
-    .landing-hero {
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-main) 50%, var(--brown-dark) 100%);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
+    :root {
+      --navy: #0a1c14;
+      --green-dark: #0f2b1f;
+      --green-main: #144a25;
+      --green-mid: #1a5c30;
+      --green-light: #22753d;
+      --gold: #c8a045;
+      --gold-light: #d4af52;
+      --bg-white: #ffffff;
+      --bg-offwhite: #f8faf9;
+      --bg-gray: #f1f5f3;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.08);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    
-    .landing-hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-white);
+      color: var(--text-primary);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; transition: var(--transition); }
+    ul { list-style: none; }
+
+    /* ==================== UTILITIES ==================== */
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
+    .section { padding: 5rem 0; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
+    .section-tag {
+      display: inline-block; font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--navy); margin-bottom: 0.75rem; line-height: 1.2;
+    }
+    .section-desc { font-size: 1.05rem; color: var(--text-secondary); max-width: 580px; margin: 0 auto; }
+
+    /* ==================== BUTTONS ==================== */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; border-radius: var(--radius-sm);
+      font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none;
+      transition: var(--transition); font-family: inherit;
+    }
+    .btn-primary { background: var(--gold); color: var(--navy); }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(200,160,69,0.35); }
+    .btn-outline { background: transparent; border: 2px solid var(--green-main); color: var(--green-main); }
+    .btn-outline:hover { background: var(--green-main); color: white; }
+    .btn-white { background: white; color: var(--navy); }
+    .btn-white:hover { background: var(--bg-offwhite); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); }
+    .btn-ghost:hover { color: var(--navy); background: var(--bg-offwhite); }
+
+    /* ==================== TOP BAR & UTIL BAR ==================== */
+    .top-promo {
+      background: var(--green-dark); color: white; text-align: center;
+      padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 500;
+    }
+    .top-promo a { color: var(--gold-light); font-weight: 700; margin-left: 0.5rem; }
+
+    .utility-bar {
+      background: var(--bg-offwhite); border-bottom: 1px solid var(--border);
+      padding: 0.5rem 0; font-size: 0.78rem;
+    }
+    .utility-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    .util-tabs { display: flex; gap: 1.5rem; }
+    .util-tabs a { color: var(--text-muted); font-weight: 600; }
+    .util-tabs a:hover { color: var(--navy); }
+    .util-tabs a.active { color: var(--green-main); border-bottom: 2px solid var(--green-main); padding-bottom: 1px; pointer-events: none; }
+    .util-auth a { color: var(--green-main); font-weight: 700; margin-left: 1rem; }
+    .util-auth a:hover { color: var(--navy); }
+
+    /* ==================== NAVIGATION ==================== */
+    .top-nav {
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .logo { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--navy); }
+    .logo span { color: var(--gold); }
+    .main-nav { display: flex; align-items: center; gap: 0.25rem; }
+    .nav-link {
+      padding: 0.5rem 0.85rem; font-size: 0.88rem; font-weight: 600;
+      color: var(--text-secondary); border-radius: var(--radius-sm);
+    }
+    .nav-link:hover { background: var(--bg-offwhite); color: var(--green-main); }
+    .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.25rem; }
+
+    /* ==================== HERO ==================== */
+    .hero {
+      background: linear-gradient(165deg, var(--navy) 0%, var(--green-dark) 40%, var(--green-main) 100%);
+      color: white; padding: 5rem 0 4.5rem; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
       pointer-events: none;
     }
-    
-    .landing-nav {
-      padding: 24px 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 1;
+    .hero-inner {
+      display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center;
+      position: relative; z-index: 2;
     }
-    
-    .landing-nav .logo-icon {
-      background: rgba(255,255,255,0.15);
-      box-shadow: none;
+    .hero-label {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(200,160,69,0.15); border: 1px solid rgba(200,160,69,0.3);
+      padding: 0.35rem 1rem; border-radius: 50px; font-size: 0.7rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--gold-light); margin-bottom: 1.5rem;
     }
-    
-    .landing-nav .logo-name {
-      color: white;
-    }
-    
-    .landing-nav .logo-tagline {
-      color: rgba(255,255,255,0.7);
-    }
-    
-    .landing-nav-links {
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-    
-    .landing-nav-links a {
-      color: rgba(255,255,255,0.85);
-      font-weight: 500;
-      font-size: 15px;
-    }
-    
-    .landing-nav-links a:hover {
-      color: white;
-    }
-    
-    .landing-nav-links .btn {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: white;
-      padding: 10px 24px;
-    }
-    
-    .landing-nav-links .btn:hover {
-      background: white;
-      color: var(--green-dark);
-    }
-    
-    .landing-content {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: 0 48px 80px;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .landing-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      align-items: center;
-    }
-    
-    .landing-text h1 {
+    .hero-title {
       font-family: 'DM Serif Display', serif;
-      font-size: 56px;
-      color: white;
-      line-height: 1.15;
-      margin-bottom: 24px;
+      font-size: clamp(2.4rem, 4.5vw, 3.5rem); line-height: 1.15;
+      margin-bottom: 1.25rem; font-weight: 400;
     }
-    
-    .landing-text p {
-      font-size: 18px;
-      color: rgba(255,255,255,0.85);
-      line-height: 1.7;
-      margin-bottom: 40px;
-      max-width: 480px;
+    .hero-title .highlight { color: var(--gold-light); }
+    .hero-sub {
+      font-size: 1.1rem; color: rgba(255,255,255,0.75); margin-bottom: 2rem;
+      max-width: 520px; line-height: 1.7;
     }
-    
-    .landing-buttons {
-      display: flex;
-      gap: 16px;
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 1.5rem;
+      font-size: 0.8rem; color: rgba(255,255,255,0.5);
     }
-    
-    .btn-landing-primary {
-      background: var(--gold);
-      color: var(--text-dark);
-      padding: 16px 32px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      font-size: 16px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 16px rgba(249, 168, 37, 0.3);
+    .hero-meta span { display: flex; align-items: center; gap: 0.4rem; }
+
+    .hero-visual { position: relative; height: 400px; }
+    .float-card {
+      background: rgba(255,255,255,0.08); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-lg);
+      padding: 1.5rem; color: white; position: absolute;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      animation: float 6s ease-in-out infinite;
     }
-    
-    .btn-landing-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(249, 168, 37, 0.4);
-      color: var(--text-dark);
+    .fc-balance { width: 310px; top: 30px; left: 0; z-index: 2; }
+    .fc-rate { width: 230px; bottom: 60px; right: 0; z-index: 1; border-color: rgba(200,160,69,0.35); background: rgba(200,160,69,0.1); animation-delay: -2s; }
+    .fc-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.7; margin-bottom: 0.4rem; }
+    .fc-val { font-family: 'DM Serif Display', serif; font-size: 1.9rem; font-weight: 700; }
+    .fc-badge { background: var(--gold); color: var(--navy); padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; display: inline-block; margin-top: 0.5rem; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    /* ==================== STATS ==================== */
+    .stats-bar {
+      background: var(--bg-white); border-bottom: 1px solid var(--border);
+      padding: 2.5rem 0; position: relative; z-index: 10;
     }
-    
-    .btn-landing-secondary {
-      background: rgba(255,255,255,0.1);
-      color: white;
-      padding: 16px 32px;
-      border-radius: var(--radius-sm);
-      font-weight: 600;
-      font-size: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      transition: all 0.3s;
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; text-align: center;
     }
-    
-    .btn-landing-secondary:hover {
-      background: rgba(255,255,255,0.2);
-      border-color: white;
-      color: white;
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.9rem; color: var(--green-main); font-weight: 700; }
+    .stat-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ==================== QUICK ACTIONS ==================== */
+    .quick-strip { margin-top: -40px; position: relative; z-index: 10; padding: 0 1rem; }
+    .quick-box {
+      background: var(--bg-white); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg); padding: 2rem;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;
     }
-    
-    .landing-visual {
-      position: relative;
+    .q-item {
+      text-align: center; padding: 0.75rem; border-radius: var(--radius-sm);
+      min-width: 110px; transition: var(--transition);
     }
-    
-    .landing-card-stack {
-      position: relative;
-      height: 400px;
+    .q-item:hover { background: var(--bg-offwhite); transform: translateY(-3px); }
+    .q-icon {
+      width: 46px; height: 46px; margin: 0 auto 0.5rem;
+      background: #ecfdf5; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; color: var(--green-main);
     }
-    
-    .landing-float-card {
-      background: rgba(255,255,255,0.12);
-      backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 16px;
-      padding: 28px;
-      color: white;
-      position: absolute;
-      transition: transform 0.3s;
+    .q-text { font-weight: 700; font-size: 0.82rem; color: var(--navy); }
+
+    /* ==================== PRODUCT CARDS ==================== */
+    .prod-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
     }
-    
-    .landing-float-card:hover {
-      transform: translateY(-4px);
+    .prod-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); overflow: hidden; transition: var(--transition);
     }
-    
-    .float-card-1 {
-      top: 0;
-      left: 0;
-      width: 320px;
+    .prod-card:hover { border-color: var(--gold); box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .prod-icon-area {
+      height: 140px; background: linear-gradient(135deg, #ecfdf5, #e2e8f0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.2rem; color: var(--green-main);
     }
-    
-    .float-card-2 {
-      top: 120px;
-      right: 0;
-      width: 280px;
+    .prod-body { padding: 1.5rem; }
+    .prod-tag { display: inline-block; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 0.4rem; }
+    .prod-body h3 { font-family: 'DM Serif Display', serif; font-size: 1.15rem; margin-bottom: 0.5rem; color: var(--navy); }
+    .prod-body p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; }
+    .prod-link { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; font-weight: 700; color: var(--green-main); }
+    .prod-link:hover { gap: 0.7rem; }
+
+    /* ==================== TRUST / FEATURES ==================== */
+    .trust-section { background: var(--bg-offwhite); }
+    .trust-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem;
     }
-    
-    .float-card-3 {
-      bottom: 20px;
-      left: 40px;
-      width: 300px;
+    .trust-card {
+      background: var(--bg-white); border-radius: var(--radius-md);
+      padding: 2rem; text-align: center; border: 1px solid var(--border);
+      transition: var(--transition);
     }
-    
-    .float-card-label {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      opacity: 0.7;
-      margin-bottom: 8px;
+    .trust-card:hover { box-shadow: var(--shadow-sm); transform: translateY(-3px); }
+    .trust-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+    .trust-card h4 { font-size: 0.95rem; margin-bottom: 0.35rem; color: var(--navy); }
+    .trust-card p { font-size: 0.85rem; color: var(--text-secondary); }
+
+    /* ==================== TESTIMONIALS ==================== */
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;
     }
-    
-    .float-card-value {
-      font-family: 'DM Serif Display', serif;
-      font-size: 32px;
-      margin-bottom: 4px;
+    .testi-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 2rem; transition: var(--transition);
     }
-    
-    .float-card-sub {
-      font-size: 14px;
-      opacity: 0.8;
+    .testi-card:hover { box-shadow: var(--shadow-sm); }
+    .stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testi-quote { font-size: 0.92rem; color: var(--text-secondary); font-style: italic; line-height: 1.7; margin-bottom: 1.25rem; }
+    .testi-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testi-avatar { width: 42px; height: 42px; border-radius: 50%; background: #ecfdf5; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .testi-name { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
+    .testi-role { font-size: 0.72rem; color: var(--text-muted); }
+
+    /* ==================== APP PROMO ==================== */
+    .app-section { background: var(--navy); color: white; padding: 5.5rem 0; }
+    .app-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
     }
-    
-    .landing-features {
-      background: white;
-      padding: 80px 48px;
+    .app-text h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); margin-bottom: 1rem; }
+    .app-text p { color: rgba(255,255,255,0.7); margin-bottom: 2rem; font-size: 1.05rem; line-height: 1.7; }
+    .app-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem; }
+    .app-item { display: flex; align-items: center; gap: 0.75rem; font-weight: 500; }
+    .app-check { color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+    .phone-mockup {
+      background: linear-gradient(145deg, #1a5c30, #2ea55a);
+      border-radius: 28px; height: 400px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 4.5rem; box-shadow: 0 25px 60px rgba(0,0,0,0.35);
     }
-    
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-      max-width: 1200px;
-      margin: 0 auto;
+
+    /* ==================== RESOURCES ==================== */
+    .resource-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;
     }
-    
-    .feature-card {
-      text-align: center;
-      padding: 40px 24px;
+    .res-card {
+      background: var(--bg-white); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 1.5rem;
+      transition: var(--transition); display: block;
     }
-    
-    .feature-icon {
-      width: 72px;
-      height: 72px;
-      background: var(--green-pale);
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      margin: 0 auto 20px;
+    .res-card:hover { border-color: var(--green-main); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
+    .res-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .res-card h4 { font-size: 0.95rem; margin-bottom: 0.25rem; color: var(--navy); }
+    .res-card p { font-size: 0.82rem; color: var(--text-secondary); }
+
+    /* ==================== CTA ==================== */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--gold), #b8862d);
+      text-align: center; padding: 5rem 1.5rem; position: relative; overflow: hidden;
     }
-    
-    .feature-card h3 {
-      font-family: 'DM Serif Display', serif;
-      font-size: 22px;
-      margin-bottom: 12px;
-      color: var(--text-dark);
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    
-    .feature-card p {
-      font-size: 15px;
-      color: var(--text-mid);
-      line-height: 1.7;
+    .cta-inner { position: relative; z-index: 2; max-width: 650px; margin: 0 auto; }
+    .cta-banner h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.4rem); color: var(--navy); margin-bottom: 0.75rem; }
+    .cta-banner p { color: #78350f; font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.7; }
+
+    /* ==================== FOOTER ==================== */
+    .site-footer {
+      background: var(--navy); color: rgba(255,255,255,0.6); padding: 3.5rem 0 1.5rem;
+      font-size: 0.85rem;
     }
-    
-    .landing-footer {
-      background: var(--brown-dark);
-      padding: 32px 48px;
-      color: rgba(255,255,255,0.6);
-      font-size: 13px;
-      display: flex;
-      justify-content: space-between;
+    .footer-inner {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2.5rem;
+      padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-    
-    .landing-footer a {
-      color: rgba(255,255,255,0.8);
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: white; margin-bottom: 0.75rem; }
+    .footer-brand span { color: var(--gold); }
+    .footer-desc { font-size: 0.85rem; line-height: 1.7; max-width: 300px; }
+    .footer-col h5 {
+      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.9); font-weight: 700; margin-bottom: 1rem;
     }
-    
-    @media (max-width: 900px) {
-      .landing-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      
-      .landing-text h1 {
-        font-size: 40px;
-      }
-      
-      .landing-visual {
-        display: none;
-      }
-      
-      .features-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .landing-nav {
-        padding: 16px 24px;
-      }
-      
-      .landing-content {
-        padding: 0 24px 48px;
-      }
+    .footer-col ul li { margin-bottom: 0.5rem; }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      padding-top: 1.5rem; text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.4);
+    }
+
+    /* ==================== MOBILE MENU ==================== */
+    .mobile-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+      z-index: 99; opacity: 0; transition: opacity 0.3s;
+    }
+    .mobile-overlay.show { display: block; opacity: 1; }
+    .mobile-sheet {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 280px;
+      background: var(--bg-white); z-index: 101; padding: 1.5rem;
+      overflow-y: auto; transform: translateX(-100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    }
+    .mobile-sheet.open { transform: translateX(0); }
+    .mobile-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem 0; margin-bottom: 1.5rem; }
+    .mob-links { display: flex; flex-direction: column; gap: 0.25rem; margin-bottom: 1.5rem; }
+    .mob-link { padding: 0.75rem 0.5rem; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.95rem; }
+    .mob-link:hover { background: var(--bg-offwhite); }
+    .mob-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    /* ==================== ANIMATIONS ==================== */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-sub { margin: 0 auto 2rem; }
+      .hero-actions { justify-content: center; }
+      .hero-meta { justify-content: center; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+      .app-grid { grid-template-columns: 1fr; text-align: center; }
+      .app-list { align-items: center; }
+      .phone-mockup { height: 300px; margin: 0 auto; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 3.5rem 0; }
+      .utility-inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .util-tabs { gap: 1rem; }
+      .util-auth { margin-left: 0; }
+      .nav-inner { padding: 0 1rem; }
+      .main-nav { display: none; }
+      .hamburger { display: block; }
+      .nav-actions { display: none; }
+      .quick-box { padding: 1.5rem; gap: 1rem; }
+      .prod-grid { grid-template-columns: 1fr; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .trust-grid { grid-template-columns: 1fr; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .cta-banner { padding: 3.5rem 1.5rem; }
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 3.5rem 0 3rem; }
+      .hero-title { font-size: 2rem; }
+      .hero-actions { flex-direction: column; width: 100%; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .stat-num { font-size: 1.5rem; }
+      .quick-strip { margin-top: -25px; }
+      .quick-box { gap: 0.75rem; padding: 1.25rem; }
+      .q-item { min-width: 80px; }
+      .q-text { font-size: 0.75rem; }
     }
   </style>
 </head>
 <body>
-  <div class="landing-hero">
-    <nav class="landing-nav">
-      <a href="/" class="logo">
-        <div class="logo-icon">AB</div>
-        <div class="logo-text">
-          <span class="logo-name">Agricultural Bank</span>
-          <span class="logo-tagline">AgricBank</span>
-        </div>
-      </a>
-      <div class="landing-nav-links">
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Locations</a>
-        <a href="/login" class="btn">Sign In</a>
+
+  <!-- TOP PROMO -->
+  <div class="top-promo">
+    🌱 New Customers: Earn a $500 bonus when you open an AgriBusiness Checking account.
+    <a href="/promo-checking">Learn More →</a>
+  </div>
+
+  <!-- UTILITY BAR -->
+  <div class="utility-bar">
+    <div class="container utility-inner">
+      <div class="util-tabs">
+        <a href="/" class="active">Personal</a>
+        <a href="/small-business">Small Business</a>
+        <a href="/commercial-farming">Commercial Farming</a>
       </div>
-    </nav>
-    
-    <div class="landing-content">
-      <div class="landing-grid">
-        <div class="landing-text">
-          <h1>Growing Your Future, Together</h1>
-          <p>Trusted by farmers and rural communities since 1923. Agricultural Bank provides the financial roots you need to grow your dreams.</p>
-          <div class="landing-buttons">
-            <a href="/register" class="btn-landing-primary">Open an Account</a>
-            <a href="/login" class="btn-landing-secondary">Sign In</a>
-          </div>
-        </div>
-        
-        <div class="landing-visual">
-          <div class="landing-card-stack">
-            <div class="landing-float-card float-card-1">
-              <div class="float-card-label">Total Savings</div>
-              <div class="float-card-value">$45,280.00</div>
-              <div class="float-card-sub">🌱 Growing steadily</div>
-            </div>
-            <div class="landing-float-card float-card-2">
-              <div class="float-card-label">Monthly Growth</div>
-              <div class="float-card-value">+4.2%</div>
-              <div class="float-card-sub">▲ $1,840 this month</div>
-            </div>
-            <div class="landing-float-card float-card-3">
-              <div class="float-card-label">Farm Loan APR</div>
-              <div class="float-card-value">3.75%</div>
-              <div class="float-card-sub">🌾 Best rate for farmers</div>
-            </div>
-          </div>
-        </div>
+      <div class="util-auth">
+        <% if (typeof user !== 'undefined' && user) { %>
+          <a href="/dashboard">Dashboard</a>
+          <a href="/logout">Sign Out</a>
+        <% } else { %>
+          <a href="/login">Secure Login</a>
+          <a href="/register">Open Account</a>
+        <% } %>
       </div>
     </div>
   </div>
-  
-  <section class="landing-features">
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🌾</div>
-        <h3>Agricultural Loans</h3>
-        <p>Special rates for farming equipment, land purchases, and seasonal operating needs.</p>
+
+  <!-- MAIN NAVIGATION -->
+  <nav class="top-nav">
+    <div class="container nav-inner">
+      <div style="display:flex; align-items:center; gap:1rem;">
+        <button class="hamburger" id="menuToggle">☰</button>
+        <a href="/" class="logo">Agri<span>Bank</span></a>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📱</div>
-        <h3>Mobile Banking</h3>
-        <p>Bank from your field. Deposit checks, transfer funds, and pay bills from anywhere.</p>
+      <div class="main-nav">
+        <a href="#products" class="nav-link">Products</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="/about" class="nav-link">About Us</a>
+        <a href="/security" class="nav-link">Security</a>
+        <a href="/help" class="nav-link">Help</a>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🤝</div>
-        <h3>Community First</h3>
-        <p>Local decisions, local people. We invest back into the communities we serve.</p>
+      <div class="nav-actions">
+        <a href="/login" class="btn btn-ghost">Log In</a>
+        <a href="/register" class="btn btn-primary">Open Account</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <aside class="mobile-sheet" id="mobileSheet">
+    <button class="mobile-close" id="menuClose">✕</button>
+    <a href="/" class="logo" style="margin-bottom:1.5rem; display:block;">Agri<span>Bank</span></a>
+    <div class="mob-links">
+      <a href="/" class="mob-link">🏠 Home</a>
+      <a href="#products" class="mob-link">💼 Products</a>
+      <a href="#services" class="mob-link">⚙️ Services</a>
+      <a href="/about" class="mob-link">ℹ️ About Us</a>
+      <a href="/security" class="mob-link">🛡️ Security</a>
+      <a href="/help" class="mob-link">❓ Help Center</a>
+    </div>
+    <div class="mob-actions">
+      <a href="/login" class="btn btn-outline" style="width:100%;">Log In</a>
+      <a href="/register" class="btn btn-primary" style="width:100%;">Open Account</a>
+    </div>
+  </aside>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <div class="hero-label fade-up">🌾 Agricultural Banking</div>
+        <h1 class="hero-title fade-up delay-1">Banking built for<br>those who <span class="highlight">grow</span>.</h1>
+        <p class="hero-sub fade-up delay-2">From personal savings to commercial lending — get financial tools designed specifically for Texas farmers, ranchers, and small businesses.</p>
+        <div class="hero-actions fade-up delay-3">
+          <a href="/register" class="btn btn-primary" style="padding:0.85rem 2rem;">Open Free Account</a>
+          <a href="/loans" class="btn btn-white" style="padding:0.85rem 2rem;">Explore Loans</a>
+        </div>
+        <div class="hero-meta fade-up delay-4">
+          <span>🔒 FDIC Insured</span>
+          <span>📞 24/7 Support</span>
+          <span>⭐ 4.9/5 Rating</span>
+        </div>
+      </div>
+      <div class="hero-visual fade-up delay-2">
+        <div class="float-card fc-balance">
+          <div class="fc-label">Total Assets</div>
+          <div class="fc-val">$2,845,280</div>
+          <div class="fc-badge">FDIC Insured up to $250k</div>
+        </div>
+        <div class="float-card fc-rate">
+          <div class="fc-label">Yield Reserve APY</div>
+          <div class="fc-val">4.85%</div>
+          <div style="font-size:0.75rem;opacity:0.8;margin-top:4px;">No minimum balance</div>
+        </div>
       </div>
     </div>
   </section>
-  
-  <footer class="landing-footer">
-    <span>© 2025 Agricultural Bank. Member FDIC. Equal Housing Lender.</span>
-    <div>
-      <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Accessibility</a>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="container stats-grid">
+      <div><div class="stat-num">38+</div><div class="stat-desc">Years Serving Texas</div></div>
+      <div><div class="stat-num">$2.4B</div><div class="stat-desc">Assets Managed</div></div>
+      <div><div class="stat-num">15K+</div><div class="stat-desc">Families Served</div></div>
+      <div><div class="stat-num">42</div><div class="stat-desc">Branch Locations</div></div>
+    </div>
+  </div>
+
+  <!-- QUICK ACTIONS -->
+  <div class="container quick-strip">
+    <div class="quick-box">
+      <a href="/register" class="q-item"><div class="q-icon">💼</div><div class="q-text">Open Account</div></a>
+      <a href="/credit-cards" class="q-item"><div class="q-icon">💳</div><div class="q-text">Credit Cards</div></a>
+      <a href="/loans" class="q-item"><div class="q-icon">🚜</div><div class="q-text">Farm Loans</div></a>
+      <a href="/register" class="q-item"><div class="q-icon">📈</div><div class="q-text">High Yield</div></a>
+      <a href="/billpay" class="q-item"><div class="q-icon">💸</div><div class="q-text">Pay Bills</div></a>
+      <a href="/deposits" class="q-item"><div class="q-icon">📱</div><div class="q-text">Deposit</div></a>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag fade-up">Financial Products</div>
+        <h2 class="section-title fade-up">Built for the way you work</h2>
+        <p class="section-desc fade-up">Competitive rates, flexible terms, and solutions tailored to agricultural cycles.</p>
+      </div>
+      <div class="prod-grid">
+        <div class="prod-card fade-up">
+          <div class="prod-icon-area">💳</div>
+          <div class="prod-body">
+            <div class="prod-tag">Credit Cards</div>
+            <h3>AgriRewards Card</h3>
+            <p>Earn 3% cash back on feed, seed, and agricultural supplies. No annual fee for year one.</p>
+            <a href="/credit-cards" class="prod-link">Apply Now →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-1">
+          <div class="prod-icon-area">📈</div>
+          <div class="prod-body">
+            <div class="prod-tag">Savings</div>
+            <h3>Harvest Yield Reserve</h3>
+            <p>Make money grow between harvest seasons. Earn 4.85% APY — no minimum required.</p>
+            <a href="/register" class="prod-link">Open Account →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-2">
+          <div class="prod-icon-area">🏦</div>
+          <div class="prod-body">
+            <div class="prod-tag">Lending</div>
+            <h3>Equipment Financing</h3>
+            <p>Upgrade your fleet fast. Flexible term loans with approvals in as little as 24 hours.</p>
+            <a href="/loans" class="prod-link">View Rates →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services" style="background:var(--bg-offwhite);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag fade-up">Digital Services</div>
+        <h2 class="section-title fade-up">Bank from anywhere</h2>
+        <p class="section-desc fade-up">Full control over your accounts, secure and accessible 24/7.</p>
+      </div>
+      <div class="prod-grid">
+        <div class="prod-card fade-up">
+          <div class="prod-icon-area">📱</div>
+          <div class="prod-body">
+            <div class="prod-tag">Mobile Banking</div>
+            <h3>Remote Check Deposit</h3>
+            <p>Deposit checks in seconds using your phone camera. No branch visits needed.</p>
+            <a href="/register" class="prod-link">Start Here →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-1">
+          <div class="prod-icon-area">💸</div>
+          <div class="prod-body">
+            <div class="prod-tag">Bill Pay</div>
+            <h3>Automated Payments</h3>
+            <p>Schedule recurring bills, set reminders, and never miss a deadline.</p>
+            <a href="/billpay" class="prod-link">Get Started →</a>
+          </div>
+        </div>
+        <div class="prod-card fade-up delay-2">
+          <div class="prod-icon-area">⇄</div>
+          <div class="prod-body">
+            <div class="prod-tag">Transfers</div>
+            <h3>Instant Transfers</h3>
+            <p>Move money between accounts instantly, or send wires domestically and internationally.</p>
+            <a href="/transfer" class="prod-link">Transfer Money →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="section trust-section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag fade-up">Why AgriBank</div>
+        <h2 class="section-title fade-up">Rooted in Texas agriculture</h2>
+        <p class="section-desc fade-up">We're not just a bank — we're your neighbors and long-term partners.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-card fade-up"><div class="trust-icon">🏛️</div><h4>Member FDIC</h4><p>Deposits insured up to $250,000 per account category.</p></div>
+        <div class="trust-card fade-up delay-1"><div class="trust-icon">🔒</div><h4>256-Bit Encryption</h4><p>Bank-grade security protecting every transaction and data point.</p></div>
+        <div class="trust-card fade-up delay-2"><div class="trust-icon">🌾</div><h4>Ag Experts</h4><p>Loan officers who understand crop cycles and equipment needs.</p></div>
+        <div class="trust-card fade-up delay-3"><div class="trust-icon">📞</div><h4>24/7 Support</h4><p>Real people answering calls day or night, even during harvest.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag fade-up">Community Stories</div>
+        <h2 class="section-title fade-up">Trusted by operators across Texas</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card fade-up">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"When my corn crop failed, every big bank called to collect. AgriBank sat me down and restructured my loan. They saved my family farm."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">🧑‍</div>
+            <div><div class="testi-name">Billy R. Henderson</div><div class="testi-role">Henderson Family Farm · Gaines County</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-up delay-1">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"The Harvest-First Loan changed everything. No more mid-season payment crunches. My banker actually visits the fields sometimes!"</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👩‍</div>
+            <div><div class="testi-name">Lisa N. Brown</div><div class="testi-role">NB Organics · Castro County</div></div>
+          </div>
+        </div>
+        <div class="testi-card fade-up delay-2">
+          <div class="stars">★★★★★</div>
+          <p class="testi-quote">"They funded our new milking parlor when three other banks laughed us out of the office. Real support, real results."</p>
+          <div class="testi-author">
+            <div class="testi-avatar">👨‍🌾</div>
+            <div><div class="testi-name">Carlos & Ana Delgado</div><div class="testi-role">Delgado Dairy · Upton County</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APP PROMO -->
+  <section class="app-section">
+    <div class="container app-grid">
+      <div class="app-text">
+        <h2>Bank from the tractor.</h2>
+        <p>Deposit checks, manage cash flow, approve wires, and monitor balances securely from your smartphone. Full control, wherever you are.</p>
+        <div class="app-list">
+          <div class="app-item"><span class="app-check">✓</span> Remote Check Deposit</div>
+          <div class="app-item"><span class="app-check">✓</span> Real-time Cash Flow Alerts</div>
+          <div class="app-item"><span class="app-check">✓</span> Biometric Face ID & Fingerprint</div>
+          <div class="app-item"><span class="app-check">✓</span> Instant Wire & ACH Transfers</div>
+        </div>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content: inherit;">
+          <a href="#" class="btn btn-primary">🍎 App Store</a>
+          <a href="#" class="btn btn-white" style="color:var(--navy);">▶ Google Play</a>
+        </div>
+      </div>
+      <div class="phone-mockup fade-up delay-1">📱</div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section class="section" style="background:var(--bg-offwhite);">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag fade-up">Resources</div>
+        <h2 class="section-title fade-up">Tools to help you succeed</h2>
+      </div>
+      <div class="resource-grid">
+        <a href="/about" class="res-card fade-up"><div class="res-icon">ℹ️</div><h4>About AgriBank</h4><p>Our story, mission, and commitment to Texas agriculture.</p></a>
+        <a href="/security" class="res-card fade-up delay-1"><div class="res-icon">🛡️</div><h4>Security Center</h4><p>MFA setup, fraud prevention, and safety resources.</p></a>
+        <a href="/help" class="res-card fade-up delay-2"><div class="res-icon">❓</div><h4>Help Center</h4><p>FAQs, video tutorials, and how-to guides.</p></a>
+        <a href="/terms" class="res-card fade-up delay-3"><div class="res-icon">📄</div><h4>Terms & Privacy</h4><p>Fee schedules, privacy policy, and legal disclosures.</p></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="cta-inner">
+      <h2>Ready to grow your business?</h2>
+      <p>Join 15,000+ Texas farm families who trust AgriBank with their financial future. Opening takes less than 5 minutes.</p>
+      <a href="/register" class="btn btn-dark" style="font-size:1rem; padding:0.9rem 2.5rem;">Open Your Free Account →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">Agri<span>Bank</span></div>
+        <p class="footer-desc">Serving Texas farmers, ranchers, and small businesses since 1987. Member FDIC. Equal Housing Lender.</p>
+      </div>
+      <div class="footer-col"><h5>Products</h5><ul><li><a href="/credit-cards">Credit Cards</a></li><li><a href="/register">Savings Accounts</a></li><li><a href="/loans">Farm Loans</a></li><li><a href="/register">Equipment Financing</a></li></ul></div>
+      <div class="footer-col"><h5>Services</h5><ul><li><a href="/register">Mobile Banking</a></li><li><a href="/billpay">Bill Pay</a></li><li><a href="/transfer">Wire Transfers</a></li><li><a href="/deposits">Online Deposits</a></li></ul></div>
+      <div class="footer-col"><h5>Company</h5><ul><li><a href="/about">About Us</a></li><li><a href="/security">Security</a></li><li><a href="/help">Help Center</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/terms">Terms of Service</a></li></ul></div>
+    </div>
+    <div class="container footer-bottom">
+      © <%= new Date().getFullYear() ? new Date().getFullYear() : 2025 %> AgriBank Texas Regional. All rights reserved. NMLS# 482910 · Routing # 111900659
     </div>
   </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const menuClose = document.getElementById('menuClose');
+    const mobileSheet = document.getElementById('mobileSheet');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+
+    function openMenu() {
+      mobileSheet.classList.add('open');
+      mobileOverlay.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+      mobileSheet.classList.remove('open');
+      mobileOverlay.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    mobileOverlay.addEventListener('click', closeMenu);
+
+    // Smooth Scroll & Close Menu
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          closeMenu();
+        }
+      });
+    });
+
+    // Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-up').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(16px)';
+      el.style.transition = 'opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+      observer.observe(el);
+    });
+  </script>
+
 </body>
 </html>
+

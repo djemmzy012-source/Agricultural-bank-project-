@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>$500 Checking Bonus | AgriBank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles inherited from your main theme */
+    :root {
+      --green-dark: #0a1f15;
+      --green-main: #144a25;
+      --green-pale: #e8f4ec;
+      --gold: #d8a441;
+      --gold-hover: #f0bc56;
+      --text-dark: #0f1712;
+      --text-mid: #526056;
+      --bg-gray: #f4f6f5;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: #fff; color: var(--text-dark); }
+
+    /* Simple Header (You can replace this with your navbar partial) */
+    .simple-nav { padding: 20px 5%; border-bottom: 1px solid #eaeaea; display: flex; justify-content: space-between; align-items: center; }
+    .logo-badge { background: var(--gold); color: var(--green-dark); padding: 8px 12px; border-radius: 8px; font-weight: 800; text-decoration: none; display: inline-block; font-size: 1.2rem; }
+
+    /* Promo Hero */
+    .promo-hero { background: var(--green-dark); color: white; padding: 80px 5%; text-align: center; border-bottom: 8px solid var(--gold); }
+    .promo-hero h1 { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 20px; }
+    .promo-hero h1 span { color: var(--gold); }
+    .promo-hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px; color: rgba(255,255,255,0.9); }
+    
+    .btn-apply { background: var(--gold); color: var(--green-dark); padding: 16px 40px; border-radius: 8px; font-weight: 800; font-size: 1.1rem; text-decoration: none; display: inline-block; transition: 0.2s; }
+    .btn-apply:hover { background: var(--gold-hover); transform: translateY(-2px); }
+
+    /* How it works */
+    .steps-section { padding: 80px 5%; max-width: 1200px; margin: 0 auto; }
+    .section-title { text-align: center; font-family: 'DM Serif Display', serif; font-size: 2.5rem; color: var(--green-dark); margin-bottom: 50px; }
+    
+    .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+    .step-card { background: var(--bg-gray); padding: 40px; border-radius: 16px; position: relative; }
+    .step-number { background: var(--green-main); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; position: absolute; top: -20px; left: 40px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .step-card h3 { font-size: 1.3rem; margin-bottom: 15px; color: var(--green-dark); }
+    .step-card p { color: var(--text-mid); line-height: 1.6; }
+
+    /* Account Benefits */
+    .benefits-section { background: var(--green-pale); padding: 80px 5%; }
+    .benefits-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1000px; margin: 0 auto; }
+    .benefit-item { display: flex; gap: 20px; }
+    .benefit-icon { font-size: 2rem; }
+    .benefit-text h4 { font-size: 1.1rem; margin-bottom: 8px; color: var(--green-dark); }
+    .benefit-text p { color: var(--text-mid); font-size: 0.95rem; line-height: 1.5; }
+
+    /* Legal Fine Print (Crucial for Bank Look) */
+    .legal-disclaimer { max-width: 1200px; margin: 60px auto; padding: 0 5%; font-size: 0.75rem; color: #666; line-height: 1.6; }
+    .legal-disclaimer h5 { font-size: 0.85rem; color: var(--text-dark); margin-bottom: 10px; text-transform: uppercase; }
+    .legal-disclaimer p { margin-bottom: 12px; }
+
+    @media (max-width: 768px) {
+      .benefits-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="simple-nav">
+    <a href="/" class="logo-badge">AB AgriBank</a>
+    <a href="/login" style="color: var(--green-dark); font-weight: 700; text-decoration: none;">Client Login</a>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="promo-hero">
+    <h1>Earn a <span>$500</span> Cash Bonus</h1>
+    <p>Open a new AgriBusiness Checking account and complete qualifying activities. It's our way of investing in your next harvest.</p>
+    <a href="/register?promo=AGRI500" class="btn-apply">Open Account Now</a>
+    <div style="margin-top: 20px; font-size: 0.85rem; color: rgba(255,255,255,0.6);">Offer expires December 31, 2026.</div>
+  </header>
+
+  <!-- Steps -->
+  <section class="steps-section">
+    <h2 class="section-title">How to get your $500 bonus:</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Open your account</h3>
+        <p>Open a new AgriBusiness Checking account online or at a local branch using the promotional code <strong>AGRI500</strong> by December 31, 2026.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Fund your operations</h3>
+        <p>Deposit a total of $15,000 or more in new money into your new checking account within 30 days of account opening.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Maintain your balance</h3>
+        <p>Maintain at least a $15,000 balance for 60 consecutive days from the date your deposit requirement is met. Your $500 will be deposited within 15 days.</p>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 50px;">
+      <a href="/register?promo=AGRI500" class="btn-apply" style="background: var(--green-main); color: white;">Start Application</a>
+    </div>
+  </section>
+
+  <!-- Benefits -->
+  <section class="benefits-section">
+    <h2 class="section-title" style="font-size: 2rem; margin-bottom: 40px;">Why AgriBusiness Checking?</h2>
+    <div class="benefits-grid">
+      <div class="benefit-item">
+        <div class="benefit-icon">💸</div>
+        <div class="benefit-text">
+          <h4>No Monthly Maintenance Fee</h4>
+          <p>Keep your account free when you maintain a minimum daily balance of $5,000 or link an AgriBank equipment loan.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">📱</div>
+        <div class="benefit-text">
+          <h4>Advanced Mobile Banking</h4>
+          <p>Deposit high-value checks directly from the field using our enterprise-grade mobile capture limits.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🌐</div>
+        <div class="benefit-text">
+          <h4>Free Incoming Wires</h4>
+          <p>Receive domestic and international wire transfers from commodity buyers with zero incoming wire fees.</p>
+        </div>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon">🛡️</div>
+        <div class="benefit-text">
+          <h4>Fraud Protection Services</h4>
+          <p>Includes Positive Pay and ACH block services to protect your farm's operating capital from unauthorized withdrawals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Heavy Bank Legal Print -->
+  <section class="legal-disclaimer">
+    <h5>IMPORTANT OFFER DETAILS AND DISCLOSURES</h5>
+    <p><strong>Checking offer is not available to existing AgriBank checking customers</strong>, or those whose accounts have been closed within 90 days or closed with a negative balance within the last 3 years. You can receive only one new checking account opening related bonus every two years from the last enrollment date and only one bonus per enterprise entity or Tax ID.</p>
+    <p><strong>Bonus/Account Information:</strong> To receive the $500 checking bonus: 1) Open a new AgriBusiness Checking account, which is subject to approval; 2) Deposit a total of $15,000 or more in new money into your new checking account within 30 days of account opening; and 3) Maintain at least a $15,000 balance for 60 consecutive days from the date the deposit requirement is met. "New money" is money not currently held in any AgriBank account.</p>
+    <p>After you have completed all the above checking requirements, we'll deposit the bonus in your new account within 15 days. To receive this bonus, the enrolled account must not be closed or restricted at the time of payout. Eligibility may be limited based on account ownership. Bonus is considered interest and will be reported on IRS Form 1099-INT (or Form 1042-S, if applicable).</p>
+    <p><strong>Account Fees:</strong> AgriBusiness Checking has a $25 Monthly Service Fee. This fee is waived if you maintain a $5,000 minimum daily balance or have a linked AgriBank Commercial Loan.</p>
+    <p>© 2026 AgriBank Financial Corporation. Member FDIC.</p>
+  </section>
+
+</body>
+</html>

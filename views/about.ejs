@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | AgriBank Texas Regional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --navy: #0a1c14;
+      --green-900: #0f2b1f;
+      --green-800: #144a25;
+      --green-700: #1a5c30;
+      --green-600: #22753d;
+      --gold: #d4a047;
+      --gold-light: #e8b85e;
+      --bg: #f8faf8;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-secondary: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ==========================================
+       NAVIGATION BAR
+       ========================================== */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      z-index: 200;
+      padding: 0 2rem;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--green-900);
+      text-decoration: none;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2rem; align-items: center; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green-700); }
+    .nav-cta {
+      background: var(--green-800) !important;
+      color: white !important;
+      padding: 0.5rem 1.25rem;
+      border-radius: 8px;
+    }
+    .nav-cta:hover { background: var(--green-700) !important; }
+
+    /* ==========================================
+       HERO SECTION — The Big Moment
+       ========================================== */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(170deg, var(--green-900) 0%, #1a5c30 40%, #2ea55a 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2rem 3rem;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      max-width: 900px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50px;
+      padding: 0.5rem 1.25rem;
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 2rem;
+      animation: fadeInDown 0.8s ease;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+    .hero h1 .highlight {
+      color: var(--gold);
+      position: relative;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+    .btn-hero {
+      padding: 0.85rem 2rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-hero.primary {
+      background: var(--gold);
+      color: var(--green-900);
+    }
+    .btn-hero.primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212,160,71,0.4); }
+    .btn-hero.secondary {
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+    .btn-hero.secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+    /* Floating decorative elements */
+    .hero-deco {
+      position: absolute;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-deco:nth-child(1) { top: 10%; left: 5%; font-size: 4rem; animation-delay: 0s; }
+    .hero-deco:nth-child(2) { top: 20%; right: 8%; font-size: 3rem; animation-delay: 1s; }
+    .hero-deco:nth-child(3) { bottom: 15%; left: 10%; font-size: 3.5rem; animation-delay: 2s; }
+    .hero-deco:nth-child(4) { bottom: 25%; right: 5%; font-size: 2.5rem; animation-delay: 3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================
+       STATS TICKER
+       ========================================== */
+    .stats-ticker {
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2rem;
+    }
+    .stats-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-number {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--green-800);
+      line-height: 1;
+    }
+    .stat-number .plus { color: var(--gold); }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    /* ==========================================
+       OUR STORY SECTION
+       ========================================== */
+    .section {
+      padding: 5rem 2rem;
+    }
+    .section-dark {
+      background: var(--green-900);
+      color: white;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .section-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-tag::before {
+      content: '';
+      width: 30px; height: 2px;
+      background: var(--gold);
+    }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+    .section-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+    .section-dark .section-text { color: rgba(255,255,255,0.7); }
+
+    .story-visual {
+      position: relative;
+    }
+    .story-image-card {
+      background: linear-gradient(135deg, var(--green-800), var(--green-600));
+      border-radius: 20px;
+      padding: 3rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+    .story-image-card::before {
+      content: '🌾';
+      position: absolute;
+      font-size: 8rem;
+      opacity: 0.1;
+      right: -1rem;
+      bottom: -1rem;
+    }
+    .year-mark {
+      font-family: 'DM Serif Display', serif;
+      font-size: 4rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .story-quote {
+      font-size: 1.2rem;
+      font-style: italic;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1rem;
+    }
+    .story-author {
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+
+    /* ==========================================
+       MISSION / VISION / VALUES — Cards
+       ========================================== */
+    .mvv-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .mvv-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .mvv-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+    .mvv-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+    .mvv-card:nth-child(1)::before { background: var(--green-600); }
+    .mvv-card:nth-child(2)::before { background: var(--gold); }
+    .mvv-card:nth-child(3)::before { background: #3b82f6; }
+    .mvv-icon {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+    .mvv-card:nth-child(1) .mvv-icon { background: #ecfdf5; }
+    .mvv-card:nth-child(2) .mvv-icon { background: #fefce8; }
+    .mvv-card:nth-child(3) .mvv-icon { background: #eff6ff; }
+    .mvv-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .mvv-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ==========================================
+       TIMELINE — Our Journey
+       ========================================== */
+    .timeline-section {
+      background: #f0fdf4;
+    }
+    .timeline {
+      position: relative;
+      padding: 2rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--green-600), var(--gold));
+      border-radius: 3px;
+    }
+    .timeline-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .timeline-item:nth-child(odd) { flex-direction: row; }
+    .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+    .timeline-content {
+      width: 45%;
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+      position: relative;
+      transition: all 0.3s;
+    }
+    .timeline-content:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    .timeline-dot {
+      width: 18px; height: 18px;
+      background: var(--green-600);
+      border: 4px solid white;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      box-shadow: 0 0 0 4px #ecfdf5;
+    }
+    .timeline-year {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-content h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .timeline-content p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       VALUES MARQUEE
+       ========================================== */
+    .values-marquee {
+      padding: 3rem 0;
+      overflow: hidden;
+      background: white;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .marquee-track {
+      display: flex;
+      gap: 3rem;
+      animation: marquee 25s linear infinite;
+      width: max-content;
+    }
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      white-space: nowrap;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .marquee-item .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ==========================================
+       FUN FACTS GRID
+       ========================================== */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .fact-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .fact-card:hover {
+      transform: translateY(-4px) rotate(-1deg);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+    .fact-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .fact-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .fact-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ==========================================
+       TEAM SECTION
+       ========================================== */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .team-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+      text-align: center;
+    }
+    .team-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    }
+    .team-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      margin: 1.5rem auto 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    .team-card:nth-child(1) .team-avatar { background: linear-gradient(135deg, #ecfdf5, #d1fae5); }
+    .team-card:nth-child(2) .team-avatar { background: linear-gradient(135deg, #fefce8, #fef3c7); }
+    .team-card:nth-child(3) .team-avatar { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .team-card:nth-child(4) .team-avatar { background: linear-gradient(135deg, #f3e8ff, #e9d5ff); }
+    .team-name { font-weight: 700; font-size: 0.95rem; padding: 0 1.5rem 0.25rem; }
+    .team-role { font-size: 0.75rem; color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; padding: 0 1.5rem 1rem; }
+    .team-bio { font-size: 0.8rem; color: var(--text-secondary); padding: 0 1.5rem 1.5rem; line-height: 1.5; }
+
+    /* ==========================================
+       TESTIMONIALS
+       ========================================== */
+    .testimonial-slider {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .testimonial-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+    .testimonial-card:hover { background: rgba(255,255,255,0.12); transform: translateY(-3px); }
+    .testimonial-stars { color: var(--gold); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testimonial-text {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+    .testimonial-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .testimonial-name { font-weight: 600; font-size: 0.85rem; color: white; }
+    .testimonial-farm { font-size: 0.7rem; color: var(--gold-light); }
+
+    /* ==========================================
+       CTA SECTION
+       ========================================== */
+    .cta-section {
+      background: linear-gradient(135deg, var(--green-800), var(--green-600));
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '🌻';
+      position: absolute;
+      font-size: 15rem;
+      opacity: 0.05;
+      right: -2rem;
+      bottom: -3rem;
+    }
+    .cta-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: white;
+      margin-bottom: 1rem;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.8);
+      max-width: 550px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ==========================================
+       FOOTER
+       ========================================== */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.6);
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: white;
+      margin-bottom: 0.5rem;
+    }
+    .footer-brand span { color: var(--gold); }
+    .footer-subtitle { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-bottom: 1.5rem; }
+
+    /* ==========================================
+       RESPONSIVE
+       ========================================== */
+    @media (max-width: 1024px) {
+      .mvv-grid, .facts-grid, .testimonial-slider { grid-template-columns: repeat(2, 1fr); }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .timeline::before { left: 20px; }
+      .timeline-item, .timeline-item:nth-child(even) { flex-direction: row; }
+      .timeline-content { width: calc(100% - 60px); margin-left: auto; }
+      .timeline-dot { left: 20px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .mvv-grid, .facts-grid, .testimonial-slider { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 6rem 1.5rem 3rem; }
+      .hero h1 { font-size: 2.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/loans">Loans</a>
+      <a href="#" class="nav-cta">Open Account</a>
+    </div>
+  </nav>
+
+  <!-- ==========================================
+       HERO
+       ========================================== -->
+  <section class="hero">
+    <div class="hero-deco">🌱</div>
+    <div class="hero-deco">🚜</div>
+    <div class="hero-deco">🌾</div>
+    <div class="hero-deco">☀️</div>
+    <div class="hero-content">
+      <div class="hero-badge">🏆 Voted #1 Agricultural Bank in Texas 2025</div>
+      <h1>We Grow With <br><span class="highlight">Every Farmer</span></h1>
+      <p>Since 1987, AgriBank Texas Regional has been more than just a bank — we're your neighbors, partners, and the backbone of the agricultural communities that feed America.</p>
+      <div class="hero-buttons">
+        <a href="/register" class="btn-hero primary">Open an Account Today</a>
+        <a href="#our-story" class="btn-hero secondary">▶ Watch Our Story</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       STATS TICKER
+       ========================================== -->
+  <section class="stats-ticker">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number" data-target="38">0<span class="plus">+</span></div>
+        <div class="stat-label">Years in Business</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">$<span data-target="2.4">0</span>B<span class="plus">+</span></div>
+        <div class="stat-label">Assets Under Management</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="15000">0<span class="plus">+</span></div>
+        <div class="stat-label">Farm Families Served</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number" data-target="42">0<span class="plus"></span></div>
+        <div class="stat-label">Texas Branches</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       OUR STORY
+       ========================================== -->
+  <section class="section" id="our-story">
+    <div class="container">
+      <div class="story-grid">
+        <div>
+          <div class="section-tag">Our Story</div>
+          <h2 class="section-title">Born From Dirt, Built on Trust</h2>
+          <p class="section-text">
+            It started with a handshake over a fence line. In 1987, three ranchers from Lubbock looked across the Texas Panhandle and saw a problem: local banks didn't understand seasonal cash flows, equipment financing cycles, or why you'd need a loan in spring for fall harvest.
+          </p>
+          <p class="section-text">
+            So they built their own. <strong>AgriBank Texas Regional</strong> was founded on one simple belief: <em>agriculture isn't just a job — it's a way of life.</em> Every product, every rate, every service decision goes through the question: "Will this help a farmer sleep better at night?"
+          </p>
+          <p class="section-text">
+            What began in a converted hardware store in Lubbock has grown into Texas's most trusted agricultural banking institution — serving over 15,000 farm families across 42 branches and counting.
+          </p>
+        </div>
+        <div class="story-visual">
+          <div class="story-image-card">
+            <div class="year-mark">1987</div>
+            <p class="story-quote">"We didn't start a bank to make money. We started it because farmers deserved a bank that spoke their language."</p>
+            <p class="story-author">— James R. McAllister, Co-Founder</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       MISSION / VISION / VALUES
+       ========================================== -->
+  <section class="section" style="background: #f0fdf4;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-tag" style="justify-content:center;">What Drives Us</div>
+        <h2 class="section-title">Purpose Over Profit, Always</h2>
+      </div>
+      <div class="mvv-grid">
+        <div class="mvv-card">
+          <div class="mvv-icon">🎯</div>
+          <h3>Our Mission</h3>
+          <p>To empower Texas farmers, ranchers, and agribusinesses with financial solutions designed specifically for the rhythm of agriculture — not Wall Street spreadsheets.</p>
+        </div>
+        <div class="mvv-card">
+          <div class="mvv-icon">🔭</div>
+          <h3>Our Vision</h3>
+          <p>A future where every agricultural operation, no matter how small or large, has access to the financial tools and expert guidance needed to thrive for generations.</p>
+        </div>
+        <div class="mvv-card">
+          <div class="mvv-icon">💛</div>
+          <h3>Our Values</h3>
+          <p>Integrity in every transaction. Innovation that serves the land. Community that extends beyond the branch. And relationships built to outlast the seasons.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       VALUES MARQUEE
+       ========================================== -->
+  <div class="values-marquee">
+    <div class="marquee-track">
+      <div class="marquee-item"><span class="dot"></span>🌾 Sustainable Farming</div>
+      <div class="marquee-item"><span class="dot"></span>🤝 Community First</div>
+      <div class="marquee-item"><span class="dot"></span> Data-Driven Lending</div>
+      <div class="marquee-item"><span class="dot"></span>🌍 Environmental Stewardship</div>
+      <div class="marquee-item"><span class="dot"></span>👨‍🌾 Young Farmer Programs</div>
+      <div class="marquee-item"><span class="dot"></span>🚜 Equipment Finance Experts</div>
+      <div class="marquee-item"><span class="dot"></span>💰 Fair Rates, Real Partnerships</div>
+      <div class="marquee-item"><span class="dot"></span>🏡 Rural Development</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><span class="dot"></span>🌾 Sustainable Farming</div>
+      <div class="marquee-item"><span class="dot"></span>🤝 Community First</div>
+      <div class="marquee-item"><span class="dot"></span>📊 Data-Driven Lending</div>
+      <div class="marquee-item"><span class="dot"></span>🌍 Environmental Stewardship</div>
+      <div class="marquee-item"><span class="dot"></span>👨‍🌾 Young Farmer Programs</div>
+      <div class="marquee-item"><span class="dot"></span>🚜 Equipment Finance Experts</div>
+      <div class="marquee-item"><span class="dot"></span>💰 Fair Rates, Real Partnerships</div>
+      <div class="marquee-item"><span class="dot"></span>🏡 Rural Development</div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       TIMELINE
+       ========================================== -->
+  <section class="section timeline-section">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-tag" style="justify-content:center;">Our Journey</div>
+        <h2 class="section-title">From One Fence Line to 42 Branches</h2>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-year">1987</div>
+            <h4>The Handshake That Started It All</h4>
+            <p>Three Lubbock ranchers open AgriBank in a converted hardware store with $2 million in deposits and a dream to serve farmers who were underserved by traditional banks.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-year">1995</div>
+            <h4>The Harvest Loan Breakthrough</h4>
+            <p>Invented our signature "Harvest-First" loan — payments timed to crop cycles instead of arbitrary monthly schedules. Game changer for Texas farmers.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-year">2008</div>
+            <h4>Rising Through the Crisis</h4>
+            <p>While big banks foreclosed on farms, AgriBank restructured 300+ loans and kept families on their land. Became known as "the bank that never abandons its own."</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-year">2018</div>
+            <h4>Digital Revolution</h4>
+            <p>Launched mobile check deposit, online bill pay, and real-time account monitoring. Proved that a rural bank could be cutting-edge tech without losing the personal touch.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-year">2025</div>
+            <h4>Today — $2.4 Billion Strong</h4>
+            <p>Now serving 15,000+ farm families across 42 branches. Still family-owned. Still obsessed with helping those who feed the world grow bigger and stronger.</p>
+          </div>
+          <div class="timeline-dot"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FUN FACTS
+       ========================================== -->
+  <section class="section">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-tag" style="justify-content:center;">Did You Know?</div>
+        <h2 class="section-title">More Than Just Banking 🤠</h2>
+      </div>
+      <div class="facts-grid">
+        <div class="fact-card">
+          <span class="fact-emoji">🐄</span>
+          <h4>We Sponsor 23 Fairs & Rodeos</h4>
+          <p>From county fairs to the Houston Livestock Show, we're proud to support the traditions that bring Texas communities together.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fact-emoji">🎓</span>
+          <h4>$1.2M in Scholarships Yearly</h4>
+          <p>Our Future Farmers Scholarship program has helped over 800 young Texans pursue agricultural education.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fact-emoji">🌳</span>
+          <h4>10,000 Trees Planted in 2024</h4>
+          <p>Through our "Rooted in Texas" initiative, we've planted over 45,000 trees supporting soil conservation projects statewide.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fact-emoji"></span>
+          <h4>Drone-Assisted Crop Loans</h4>
+          <p>We use satellite and drone imagery to assess crop health — making loan approvals faster and more accurate than ever.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fact-emoji"></span>
+          <h4>Zero Farms Lost to Foreclosure Since 2010</h4>
+          <p>Through restructuring programs and community partnerships, we've protected more farms than any other regional lender in Texas.</p>
+        </div>
+        <div class="fact-card">
+          <span class="fact-emoji">🎸</span>
+          <h4>Country Music & Coffee Fridays</h4>
+          <p>Every Friday morning, each branch plays live country music and serves free coffee. Because farming is serious work — but we don't take ourselves too seriously.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TEAM
+       ========================================== -->
+  <section class="section" style="background: #f0fdf4;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-tag" style="justify-content:center;">Meet the Family</div>
+        <h2 class="section-title">The People Behind Your Accounts 👋</h2>
+      </div>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">👩‍💼</div>
+          <div class="team-name">Sarah McCullough</div>
+          <div class="team-role">CEO & Co-Founder</div>
+          <p class="team-bio">Third-generation rancher turned banker. She's seen droughts, floods, and everything in between — which means she knows exactly what farmers need.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👨‍💻</div>
+          <div class="team-name">David Tran</div>
+          <div class="team-role">Chief Technology Officer</div>
+          <p class="team-bio">Former Silicon Valley engineer who left Big Tech to build banking systems for Texas dirt. Calls his iPhone "an ugly thing that shouldn't cost $1,200."</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">👩‍️</div>
+          <div class="team-name">Maria Elena Vasquez</div>
+          <div class="team-role">Head of Community Impact</div>
+          <p class="team-bio">Oversees scholarships, sponsorships, and our environmental programs. Has personally walked over 5,000 miles visiting every branch in Texas.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar"></div>
+          <div class="team-name">Jake Morrison</div>
+          <div class="team-role">VP of Agricultural Lending</div>
+          <p class="team-bio">Grew up milking cows before school. He evaluates farmland by walking it first, spreadsheet second. Known for remembering clients' dog names.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TESTIMONIALS
+       ========================================== -->
+  <section class="section section-dark">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: 3rem;">
+        <div class="section-tag" style="justify-content:center;">Stories From the Field</div>
+        <h2 class="section-title" style="color:white;">Don't Take Our Word — Take Theirs</h2>
+      </div>
+      <div class="testimonial-slider">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"When my corn crop failed in '19, every bank called to collect. AgriBank sat me down, had a cup of coffee, and restructured my entire loan. They literally saved my family's 80-acre farm."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">🧑🌾</div>
+            <div>
+              <div class="testimonial-name">Billy Ray Henderson</div>
+              <div class="testimonial-farm">Henderson Family Farm • Gaines County</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"The Harvest-First loan changed everything for my operation. No more awkward mid-season payment crunches. My banker actually visits the fields sometimes!"</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">👩‍🌾</div>
+            <div>
+              <div class="testimonial-name">Lisa Nakamura-Brown</div>
+              <div class="testimonial-farm">NB Organics • Castro County</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"They funded our new milking parlor when three other banks laughed us out of the office. Jake Morrison himself came on a Saturday to sign paperwork. That's the kind of partner you need."</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">👨‍🌾</div>
+            <div>
+              <div class="testimonial-name">Carlos & Ana Delgado</div>
+              <div class="testimonial-farm">Delgado Dairy • Upton County</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       CTA
+       ========================================== -->
+  <section class="cta-section">
+    <h2>Ready to Partner With<br>a Bank That Gets Agriculture?</h2>
+    <p>Join 15,000+ Texas farm families who trust AgriBank to fuel their fields, fund their dreams, and stand with them through every season.</p>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="/register" class="btn-hero primary" style="font-size:1.1rem; padding: 1rem 2.5rem;">Open an Account →</a>
+      <a href="/contact" class="btn-hero secondary" style="font-size:1.1rem; padding: 1rem 2.5rem;">Talk to a Human ☕</a>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="footer">
+    <div class="footer-brand">Agri<span>Bank</span> Texas Regional</div>
+    <div class="footer-subtitle">Where Roots Run Deep & Relationships Run Deeper</div>
+    <p>© <%= Date.now() ? new Date().getFullYear() : 2025 %> AgriBank Texas Regional Bank. All rights reserved. Member FDIC. Equal Housing Lender.<br>
+    NMLS# 482910 | Routing # 111900659</p>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Animated Counter
+    document.addEventListener('DOMContentLoaded', () => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const target = parseFloat(el.getAttribute('data-target'));
+            if (!target) return;
+
+            const isDecimal = target % 1 !== 0;
+            let current = 0;
+            const increment = target / 60;
+            const duration = 2000;
+            const stepTime = duration / 60;
+
+            const timer = setInterval(() => {
+              current += increment;
+              if (current >= target) {
+                current = target;
+                clearInterval(timer);
+              }
+              if (target >= 1000) {
+                el.textContent = Math.floor(current).toLocaleString();
+              } else if (isDecimal) {
+                el.textContent = current.toFixed(1);
+              } else {
+                el.textContent = Math.floor(current);
+              }
+            }, stepTime);
+
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('.stat-number [data-target]').forEach(el => observer.observe(el));
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          const target = document.querySelector(a.getAttribute('href'));
+          if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
+
