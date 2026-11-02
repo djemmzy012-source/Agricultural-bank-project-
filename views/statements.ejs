@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Statements &amp; Documents | AgriBank Texas</title>
+
+  <style>
+    :root {
+      --green: #0c3f24;
+      --green-dark: #072a18;
+      --gold: #c7a45b;
+      --bg: #f4f6f4;
+      --text: #26352d;
+      --muted: #738078;
+      --border: #e0e6e1;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* Compact green header */
+    header {
+      background: var(--green);
+      color: white;
+      padding: 0 20px;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .header-inner {
+      max-width: 1120px;
+      min-height: 56px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .brand-logo {
+      display: block;
+      height: 34px;
+      width: auto;
+      max-width: 190px;
+      object-fit: contain;
+      object-position: left center;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      mix-blend-mode: normal;
+    }
+
+    .sub {
+      font-size: 12px;
+      color: #d9e4dc;
+      text-align: right;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .eyebrow {
+      color: #927333;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0;
+      color: var(--green-dark);
+      font-size: 30px;
+    }
+
+    .intro {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .nav a,
+    .button {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: 11px 15px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .nav a {
+      background: white;
+      color: var(--green);
+      border: 1px solid var(--border);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav a:hover {
+      background: #edf3ee;
+    }
+
+    .nav a.active,
+    .button {
+      background: var(--green);
+      color: white;
+      border: 1px solid var(--green);
+    }
+
+    .button {
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .button:hover {
+      background: var(--green-dark);
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 3px 12px #163c2b08;
+    }
+
+    .panel h2 {
+      margin: 0 0 18px;
+      font-size: 18px;
+      color: var(--green-dark);
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 14px;
+    }
+
+    .field {
+      flex: 1 1 160px;
+      min-width: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 43px;
+      padding: 10px;
+      border: 1px solid #d5ddd7;
+      border-radius: 6px;
+      background: white;
+      color: var(--text);
+      font: inherit;
+    }
+
+    input:focus,
+    select:focus {
+      outline: 2px solid #c6a45b80;
+      outline-offset: 1px;
+      border-color: var(--gold);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 17px;
+      min-width: 0;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 9px;
+    }
+
+    .stat strong {
+      font-size: 21px;
+      color: var(--green);
+      overflow-wrap: anywhere;
+    }
+
+    .positive {
+      color: #187448 !important;
+    }
+
+    .negative {
+      color: #b34236 !important;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 14px 12px;
+      border-bottom: 1px solid #edf0ed;
+      font-size: 13px;
+    }
+
+    th {
+      color: #64736a;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    tbody tr:hover {
+      background: #f8faf8;
+    }
+
+    .empty {
+      padding: 28px 10px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .account-note {
+      margin-top: 18px;
+      overflow-wrap: anywhere;
+    }
+
+    .table-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .table-heading h2 {
+      margin-bottom: 14px;
+    }
+
+    footer {
+      max-width: 1120px;
+      margin: 35px auto 0;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 760px) {
+      .brand-logo {
+        height: 31px;
+        max-width: 165px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      main {
+        margin-top: 22px;
+        padding: 0 13px;
+      }
+
+      h1 {
+        font-size: 25px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 16px;
+      }
+
+      .stat strong {
+        font-size: 19px;
+      }
+
+      header {
+        padding: 0 13px;
+      }
+
+      .header-inner {
+        min-height: 50px;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        height: 28px;
+        max-width: 145px;
+      }
+
+      .sub {
+        max-width: 190px;
+        font-size: 11px;
+      }
+
+      .nav {
+        gap: 8px;
+      }
+
+      .nav a {
+        padding: 10px 12px;
+      }
+    }
+
+    @media print {
+      header,
+      .nav,
+      .filters,
+      .no-print,
+      footer {
+        display: none !important;
+      }
+
+      body {
+        background: white;
+      }
+
+      main {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .panel {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+
+      .table-wrap {
+        overflow: visible;
+      }
+
+      table {
+        min-width: 0;
+      }
+
+      th,
+      td {
+        padding: 8px 5px;
+        font-size: 10px;
+      }
+
+      .stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+
+<%
+  const statementAccounts =
+    (typeof accounts !== 'undefined' && Array.isArray(accounts))
+      ? accounts
+      : [];
+
+  const statementTransactions =
+    (typeof transactions !== 'undefined' && Array.isArray(transactions))
+      ? transactions
+      : [];
+
+  const activeAccount =
+    (typeof selectedAccount !== 'undefined' && selectedAccount)
+      ? selectedAccount
+      : null;
+
+  // Keep the route's existing date-filter variable names.
+  const statementFrom =
+    typeof from !== 'undefined' && from
+      ? from
+      : (typeof startDate !== 'undefined' ? startDate : '');
+
+  const statementTo =
+    typeof to !== 'undefined' && to
+      ? to
+      : (typeof endDate !== 'undefined' ? endDate : '');
+
+  const statementMoneyIn =
+    Number(typeof moneyIn !== 'undefined' ? moneyIn : 0) || 0;
+
+  const statementMoneyOut =
+    Number(typeof moneyOut !== 'undefined' ? moneyOut : 0) || 0;
+
+  function formatMoney(value) {
+    return '$' + Number(value || 0).toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
+  function displayTransactionDate(tx) {
+    if (tx.dateFormatted) return tx.dateFormatted;
+
+    const raw = tx.date || tx.createdAt || tx.created_at || tx.timestamp;
+
+    if (!raw) return 'Date unavailable';
+
+    const date = new Date(raw);
+
+    return Number.isNaN(date.getTime())
+      ? String(raw)
+      : date.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
+  }
+
+  function displayTransactionType(tx) {
+    return tx.type || tx.transaction_type || 'Transaction';
+  }
+
+  function displayTransactionDescription(tx) {
+    return tx.description || tx.memo || 'Account activity';
+  }
+
+  function displayTransactionAccount(tx) {
+    return tx.accountName || tx.account_name || 'Account';
+  }
+%>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <a
+        href="/dashboard"
+        class="brand"
+        aria-label="AgriBank Texas Overview"
+      >
+        <img
+          src="/images/agribank-logo.png"
+          alt="AgriBank Texas"
+          class="brand-logo"
+        >
+      </a>
+
+      <div class="sub">Banking built around your future.</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="eyebrow">Account services</div>
+
+    <h1>Statements &amp; Documents</h1>
+
+    <p class="intro">
+      Review account activity for a selected period and print a copy for your
+      personal records.
+    </p>
+
+    <nav class="nav" aria-label="Account services navigation">
+      <a
+        class="active"
+        href="/statements"
+        aria-current="page"
+      >Statements</a>
+
+      <a href="/statements/documents">Account Documents</a>
+      <a href="/accounts">Accounts</a>
+
+      <!-- Label changed; destination deliberately remains /dashboard. -->
+      <a href="/dashboard">Overview</a>
+    </nav>
+
+    <section class="panel filters">
+      <h2>Find account activity</h2>
+
+      <form method="GET" action="/statements">
+        <div class="field">
+          <label for="accountId">Account</label>
+
+          <select id="accountId" name="accountId">
+            <option value="">All my accounts</option>
+
+            <% statementAccounts.forEach(function(account) {
+              const accountIdValue = String(account.id);
+              const isSelected = activeAccount &&
+                String(activeAccount.id) === accountIdValue;
+            %>
+              <option
+                value="<%= account.id %>"
+                <%= isSelected ? 'selected' : '' %>
+              >
+                <%= account.name || 'Account' %> —
+                <%= account.number || account.account_number || 'Number unavailable' %>
+              </option>
+            <% }); %>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="startDate">From</label>
+
+          <input
+            type="date"
+            id="startDate"
+            name="from"
+            value="<%= statementFrom || '' %>"
+          >
+        </div>
+
+        <div class="field">
+          <label for="endDate">To</label>
+
+          <input
+            type="date"
+            id="endDate"
+            name="to"
+            value="<%= statementTo || '' %>"
+          >
+        </div>
+
+        <button class="button" type="submit">Apply filters</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Activity summary</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <span>Money in during selected period</span>
+          <strong class="positive">
+            <%= formatMoney(statementMoneyIn) %>
+          </strong>
+        </div>
+
+        <div class="stat">
+          <span>Money out during selected period</span>
+          <strong class="negative">
+            <%= formatMoney(statementMoneyOut) %>
+          </strong>
+        </div>
+
+        <div class="stat">
+          <span>Transactions</span>
+          <strong><%= statementTransactions.length %></strong>
+        </div>
+      </div>
+
+      <% if (activeAccount) { %>
+        <p class="note account-note">
+          Selected account:
+          <strong><%= activeAccount.name || 'Account' %></strong>
+          · <%= activeAccount.number || activeAccount.account_number || 'Number unavailable' %>
+          · Current recorded balance:
+          <strong><%= formatMoney(activeAccount.balance) %></strong>
+        </p>
+      <% } %>
+    </section>
+
+    <section class="panel">
+      <div class="table-heading">
+        <h2>Transaction activity</h2>
+
+        <button
+          class="button no-print"
+          type="button"
+          onclick="window.print()"
+        >
+          Print / Save PDF
+        </button>
+      </div>
+
+      <p class="note">
+        This activity summary is generated from the transactions currently
+        stored in your application. It is not an official bank-issued statement.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Date</th>
+              <th scope="col">Description</th>
+              <th scope="col">Account</th>
+              <th scope="col">Type</th>
+              <th scope="col">Amount</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% if (!statementTransactions.length) { %>
+              <tr>
+                <td colspan="5" class="empty">
+                  No transactions match your selected filters.
+                </td>
+              </tr>
+            <% } else { %>
+              <% statementTransactions.forEach(function(tx) {
+                const amount = Number(tx.amount) || 0;
+                const isIncoming = amount >= 0;
+              %>
+                <tr>
+                  <td><%= displayTransactionDate(tx) %></td>
+                  <td><%= displayTransactionDescription(tx) %></td>
+                  <td><%= displayTransactionAccount(tx) %></td>
+                  <td><%= displayTransactionType(tx) %></td>
+
+                  <td class="<%= isIncoming ? 'positive' : 'negative' %>">
+                    <%= isIncoming ? '+' : '−' %><%= formatMoney(Math.abs(amount)) %>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    AgriBank Texas · Banking built around your future.
+  </footer>
+</body>
+</html>

@@ -1,328 +1,931 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Transactions | AgriBank Texas' }) %>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
-      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
-      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
-      --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444; --info: #3b82f6;
-      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+      --green: #0c3f24; --green-dark: #072a18; --green-mid: #145c35;
+      --green-soft: #e8f0ea; --bg: #f4f6f4; --white: #fff;
+      --ink: #1a1a1a; --muted: #626b65; --border: #e0e6e1;
+      --line: #edf0ed; --success: #16804a; --danger: #b42318;
+      --blue: #2563a6; --gold: #d4a047;
+      --shadow: 0 2px 8px rgba(16, 36, 24, .05);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; transition: 0.2s; }
 
-    /* SIDEBAR */
-    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
-    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
-    .sidebar-brand span { color: var(--gold); }
-    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
-    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
-    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
-    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
-    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
-    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
-    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
-    .user-info .name { font-size: 0.85rem; font-weight: 600; }
-    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
+    body {
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+    }
 
-    /* MAIN */
-    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
-    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
-    .topbar-left { display: flex; align-items: center; gap: 1rem; }
-    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
-    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
-    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button, a, select { -webkit-tap-highlight-color: transparent; }
 
-    /* FILTER BAR */
-    .filter-bar { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: flex-end; }
-    .filter-group { flex: 1; min-width: 180px; }
-    .filter-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.4rem; }
-    .filter-group select, .filter-group input { width: 100%; padding: 0.6rem 0.8rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.85rem; background: #fafbfc; color: var(--text); transition: 0.2s; }
-    .filter-group select:focus, .filter-group input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
-    .filter-actions { display: flex; gap: 0.5rem; }
-    .btn { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.6rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); transition: 0.2s; text-align: center; }
-    .btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .btn-primary { background: var(--green-800); color: white; border-color: var(--green-800); }
-    .btn-primary:hover { background: var(--green-700); }
-    .btn-ghost { background: transparent; border-color: transparent; padding: 0.5rem; }
+    /* Shared AgriBank navigation */
+    .topbar {
+      background: var(--green);
+      color: #fff;
+      min-height: 54px;
+      padding: 0 22px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-    /* SUMMARY STRIP */
-    .summary-strip { display: flex; gap: 1rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
-    .summary-chip { background: var(--surface); padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); flex: 1; min-width: 140px; display: flex; flex-direction: column; gap: 0.25rem; }
-    .chip-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: var(--text-secondary); }
-    .chip-value { font-size: 1.35rem; font-weight: 800; font-family: 'DM Serif Display', serif; }
-    .chip-value.in { color: var(--success); }
-    .chip-value.out { color: var(--danger); }
+    .topbar-inner {
+      max-width: 1320px;
+      min-height: 54px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
 
-    /* TRANSACTION LIST */
-    .tx-widget { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
-    .tx-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
-    .tx-header h3 { font-size: 1rem; font-weight: 700; }
-    .tx-count { font-size: 0.75rem; color: var(--text-secondary); background: #f1f5f9; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
+    /* Complete AgriBank logo */
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      white-space: nowrap;
+      text-decoration: none;
+    }
 
-    .tx-list { display: flex; flex-direction: column; }
-    .tx-row { display: flex; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #f1f5f9; transition: background 0.15s; gap: 1rem; }
-    .tx-row:last-child { border-bottom: none; }
-    .tx-row:hover { background: #fafbfc; }
+    .brand-logo {
+      display: block;
+      height: 34px;
+      width: auto;
+      max-width: 190px;
+      object-fit: contain;
+    }
 
-    .tx-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-    .tx-icon.in { background: #ecfdf5; color: var(--success); }
-    .tx-icon.out { background: #fef2f2; color: var(--danger); }
-    .tx-icon.tr { background: #f0f9ff; color: var(--info); }
-    .tx-icon.fee { background: #fefce8; color: #ca8a04; }
+    .top-nav, .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-    .tx-details { flex: 1; min-width: 0; }
-    .tx-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .tx-meta { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem; display: flex; gap: 0.5rem; align-items: center; }
-    .tx-meta .badge { background: #f1f5f9; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.6rem; font-weight: 600; }
+    .top-nav a, .top-actions a {
+      color: rgba(255,255,255,.91);
+      padding: 8px 11px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
 
-    .tx-right { text-align: right; flex-shrink: 0; min-width: 100px; }
-    .tx-amount { font-weight: 700; font-size: 0.95rem; }
+    .top-nav a:hover, .top-nav a.active, .top-actions a:hover {
+      background: rgba(255,255,255,.13);
+      color: #fff;
+    }
+
+    .subnav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 0 22px;
+    }
+
+    .subnav-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: flex;
+      align-items: stretch;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .subnav a {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 14px 10px;
+      font-size: 13.5px;
+      font-weight: 650;
+      color: #444d46;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+    .subnav a:hover, .subnav a.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+    }
+
+    .main {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 27px 22px 54px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 21px;
+    }
+
+    .eyebrow {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: 3px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 30px);
+      line-height: 1.2;
+      letter-spacing: -.025em;
+    }
+
+    .page-subtitle {
+      color: var(--muted);
+      margin: 7px 0 0;
+      font-size: 14px;
+    }
+
+    .btn {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 650;
+      transition: background .15s, border-color .15s;
+    }
+
+    .btn:hover {
+      background: #f8faf8;
+      border-color: #b8c8bc;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-dark);
+      border-color: var(--green-dark);
+    }
+
+    .btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(20,92,53,.25);
+      outline-offset: 2px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .summary-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 17px 19px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+    }
+
+    .summary-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .summary-value {
+      margin-top: 5px;
+      font-size: clamp(21px, 2.4vw, 27px);
+      font-weight: 750;
+      letter-spacing: -.025em;
+      overflow-wrap: anywhere;
+    }
+
+    .summary-value.in { color: var(--success); }
+    .summary-value.out { color: var(--danger); }
+
+    .summary-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    .panel {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      box-shadow: var(--shadow);
+      overflow: visible;
+      margin-bottom: 19px;
+    }
+
+    .panel-heading {
+      padding: 16px 19px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .panel-heading p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .count-pill {
+      background: #f1f5f1;
+      color: #48544b;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .filter-form {
+      padding: 17px 19px;
+      display: grid;
+      grid-template-columns: minmax(160px,1fr) minmax(145px,.85fr) minmax(200px,1.4fr) minmax(145px,.8fr) auto;
+      align-items: end;
+      gap: 12px;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #505b53;
+    }
+
+    .filter-group input, .filter-group select {
+      width: 100%;
+      min-height: 39px;
+      border: 1px solid #d8e0d9;
+      border-radius: 6px;
+      padding: 8px 10px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 13.5px;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 7px;
+    }
+
+    .filter-actions .btn { min-height: 39px; }
+
+    .activity-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .activity-tools label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .activity-tools select {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: white;
+      padding: 6px 8px;
+      font-size: 13px;
+      color: var(--ink);
+    }
+
+    .tx-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tx-row {
+      display: grid;
+      grid-template-columns: 42px minmax(0,1fr) minmax(115px,auto);
+      align-items: center;
+      gap: 13px;
+      padding: 14px 19px;
+      border-bottom: 1px solid var(--line);
+      transition: background .15s;
+    }
+
+    .tx-row:last-child { border-bottom: 0; }
+    .tx-row:hover { background: #fafcfb; }
+
+    .tx-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 19px;
+      font-weight: 700;
+    }
+
+    .tx-icon.in { color: var(--success); background: #e9f6ee; }
+    .tx-icon.out { color: var(--danger); background: #fcebea; }
+    .tx-icon.neutral { color: var(--muted); background: #f0f2f1; }
+    .tx-icon.tr { color: var(--blue); background: #edf5ff; }
+    .tx-icon.fee { color: #986b09; background: #fff6db; }
+
+    .tx-details { min-width: 0; }
+
+    .tx-name {
+      font-size: 14px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .tx-meta {
+      margin-top: 3px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px 9px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #f0f3f0;
+      color: #48534b;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #8b9690;
+    }
+
+    .status-badge.completed::before,
+    .status-badge.complete::before,
+    .status-badge.success::before {
+      background: var(--success);
+    }
+
+    .status-badge.pending::before,
+    .status-badge.processing::before {
+      background: #c28a14;
+    }
+
+    .status-badge.failed::before,
+    .status-badge.declined::before {
+      background: var(--danger);
+    }
+    .status-badge.rejected::before { background: var(--danger); }
+
+    .tx-right {
+      text-align: right;
+      min-width: 0;
+    }
+
+    .tx-amount {
+      font-size: 14px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
     .tx-amount.in { color: var(--success); }
-    .tx-amount.out { color: var(--text); }
-    .tx-date { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.15rem; }
+    .tx-amount.out { color: var(--danger); }
+    .tx-amount.neutral { color: var(--muted); }
 
-    .empty-state { text-align: center; padding: 3rem 1.5rem; color: var(--text-secondary); }
-    .empty-state .icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.5; }
-    .empty-state p { font-size: 0.9rem; }
-
-    /* MOBILE */
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
-    .sidebar-overlay.show { display: block; opacity: 1; }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
-    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
-    .mob-nav-item.active { color: var(--green-700); }
-    .mob-nav-item .mob-icon { font-size: 1.25rem; }
-
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; }
-      .hamburger { display: flex; }
-      .content { padding: 1.25rem; padding-bottom: 5rem; }
-      .topbar { padding: 0 1.25rem; }
-      .mobile-nav { display: block; }
-      .filter-bar { flex-direction: column; gap: 0.75rem; }
-      .filter-group { min-width: 100%; }
-      .tx-row { padding: 0.75rem 1rem; }
-      .tx-right { min-width: 80px; }
-    }
-    @media (max-width: 500px) {
-      .tx-meta .badge { display: none; }
-      .tx-right .tx-date { display: none; }
+    .tx-date {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    /* UTILS */
-    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; }
-    .btn-text:hover { color: var(--green-900); }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .animate { animation: fadeInUp 0.4s ease both; }
+    .empty-state {
+      text-align: center;
+      padding: 45px 18px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      color: var(--green);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 5px;
+      color: var(--ink);
+      font-size: 17px;
+    }
+
+    .empty-state p {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 12px;
+    }
+
+    .animate { animation: fadeInUp .32s ease both; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 1050px) {
+      .top-nav a {
+        padding: 8px 7px;
+        font-size: 13px;
+      }
+
+      .filter-form {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .filter-actions { align-self: end; }
+    }
+
+    @media (max-width: 760px) {
+      .topbar { padding: 0 14px; }
+
+      .topbar-inner {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 9px 0;
+      }
+
+      .brand-logo {
+        height: 31px;
+        max-width: 165px;
+      }
+
+      .top-nav {
+        order: 3;
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .top-nav a { padding: 7px 9px; }
+
+      .top-actions { margin-left: auto; }
+
+      .top-actions a {
+        font-size: 12px;
+        padding: 7px;
+      }
+
+      .subnav { padding: 0 12px; }
+
+      .subnav a { padding: 11px 10px 9px; }
+
+      .main { padding: 22px 13px 35px; }
+
+      .page-heading { align-items: flex-start; }
+
+      .summary-grid { gap: 9px; }
+
+      .summary-card { padding: 13px 12px; }
+
+      .summary-label { font-size: 11px; }
+      .summary-note { font-size: 11px; }
+
+      .filter-form {
+        padding: 14px;
+        gap: 10px;
+      }
+
+      .panel-heading { padding: 14px; }
+
+      .tx-row {
+        padding: 13px 14px;
+        grid-template-columns: 38px minmax(0,1fr) auto;
+        gap: 10px;
+      }
+
+      .tx-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 17px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-logo {
+        height: 28px;
+        max-width: 145px;
+      }
+
+      .top-actions a:first-child { display: none; }
+
+      .page-heading { flex-direction: column; }
+
+      .page-heading > .btn { align-self: stretch; }
+
+      .summary-grid { grid-template-columns: 1fr; }
+
+      .summary-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .summary-value {
+        font-size: 19px;
+        margin: 0;
+      }
+
+      .summary-note { display: none; }
+
+      .filter-form { grid-template-columns: 1fr; }
+
+      .filter-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tx-row { grid-template-columns: 34px minmax(0,1fr); }
+
+      .tx-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+      }
+
+      .tx-right {
+        grid-column: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+        gap: 10px;
+      }
+
+      .tx-date { margin-top: 0; }
+      .tx-amount { font-size: 13px; }
+      .tx-meta { font-size: 11px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
   </style>
 </head>
 <body>
   <%
-    const safeUser = user || { firstName: 'Customer', lastName: '' };
-    const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
-    const isAdmin = safeUser.isAdmin === 1;
-    const txs = transactions || [];
+    const safeUser = (typeof user !== 'undefined' && user) ? user : { firstName: 'Customer', lastName: '', isAdmin: 0 };
+    const initials = (((safeUser.firstName || 'C')[0]) + ((safeUser.lastName || 'U')[0])).toUpperCase();
+    const isAdmin = safeUser.isAdmin === 1 || safeUser.isAdmin === true;
+    const txs = (typeof transactions !== 'undefined' && Array.isArray(transactions)) ? transactions : [];
+    const accountList = (typeof accounts !== 'undefined' && Array.isArray(accounts)) ? accounts : [];
 
-    // Calculate summaries
     let totalIn = 0, totalOut = 0;
-    txs.forEach(t => { const a = Number(t.amount || 0); if(a > 0) totalIn += a; else totalOut += Math.abs(a); });
+
+    txs.forEach(t => {
+      if (t.isDepositRequest) return;
+      const a = Number(t.amount || 0);
+      if (a > 0) totalIn += a;
+      else if (a < 0) totalOut += Math.abs(a);
+    });
+
     const txCount = txs.length;
 
-    function money(v) { return '$' + Number(v || 0).toLocaleString('en-US', { minimumFractionDigits: 2 }); }
-    function txIcon(t) {
-      const d = (t.description || t.type || '').toLowerCase();
-      if(d.includes('deposit')||d.includes('payroll')||d.includes('salary')) return '↓';
-      if(d.includes('transfer')) return '⇄';
-      if(d.includes('fee')) return '⚙️';
-      if(d.includes('bill')||d.includes('payment')) return '📄';
-      if(d.includes('loan')) return '🏦';
-      return '•';
+    function money(v) {
+      return '$' + Number(v || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
     }
-    function txClass(t) { const a = Number(t.amount||0); return a > 0 ? 'in' : (t.type === 'Transfer' ? 'tr' : (t.type === 'Fee' ? 'fee' : 'out')); }
-    function txAmountStr(t) { const n = Number(t.amount||0); return (n >= 0 ? '+' : '-') + money(Math.abs(n)); }
-    function formatDate(d) { if(!d) return ''; try { return new Date(d).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' }); } catch { return d; } }
+
+    function txIcon(t) {
+      const d = String(t.description || t.type || '').toLowerCase();
+      if (d.includes('deposit') || d.includes('payroll') || d.includes('salary')) return '\u2193';
+      if (d.includes('transfer')) return '\u21C4';
+      if (d.includes('fee')) return '$';
+      if (d.includes('bill') || d.includes('payment')) return '\u25A4';
+      if (d.includes('loan')) return '\u2302';
+      return Number(t.amount || 0) >= 0 ? '\u2193' : '\u2191';
+    }
+
+    function txDisplayLabel(t) {
+      const type = String(t.type || '').toLowerCase();
+      const description = String(t.description || '').toLowerCase();
+      const amount = Number(t.amount || 0);
+
+      if (t.isDepositRequest) return 'Deposit Request - Rejected';
+      if (type.includes('transfer')) return amount >= 0 ? 'Transfer Credit' : 'Transfer Debit';
+      if (type.includes('deposit')) return 'Deposit Credit';
+      if (type.includes('loan') || description.includes('loan disbursement')) return 'Loan Credit';
+      if (type.includes('fee') || description.includes('fee')) return 'Fee Debit';
+      if (type.includes('bill') || type.includes('payment')) return 'Bill Payment Debit';
+      if (amount > 0) return 'Credit';
+      if (amount < 0) return 'Debit';
+      return 'Account Activity';
+    }
+
+    function txClass(t) {
+      if (t.isDepositRequest) return 'neutral';
+      const a = Number(t.amount || 0);
+      return a > 0 ? 'in' : 'out';
+    }
+
+    function txAmountStr(t) {
+      const n = Number(t.amount || 0);
+      if (t.isDepositRequest) return money(Math.abs(n));
+      return (n >= 0 ? '+' : '-') + money(Math.abs(n));
+    }
+
+    function formatDate(d) {
+      if (!d) return 'Date unavailable';
+
+      const parsed = new Date(d);
+
+      return Number.isNaN(parsed.getTime())
+        ? String(d)
+        : parsed.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+    }
+
     const filterQ = (typeof filters !== 'undefined' && filters && filters.q) ? filters.q : '';
     const filterAcc = (typeof filters !== 'undefined' && filters && filters.accountId) ? filters.accountId : '';
     const filterType = (typeof filters !== 'undefined' && filters && filters.type) ? filters.type : '';
+    const filterStatus = (typeof filters !== 'undefined' && filters && filters.status) ? filters.status : '';
   %>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
-      <a href="/transactions" class="nav-item active"><span class="icon">📋</span> Transactions</a>
-      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
-      <div class="nav-section">Services</div>
-      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
-      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
-      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
-      <div class="nav-section">Account</div>
-      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
-      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
-      <% if(isAdmin) { %><a href="/admin" class="nav-item"><span class="icon">⚙️</span> Admin</a><% } %>
-    </nav>
-    <div class="sidebar-footer">
-      <a href="/logout" class="sidebar-user">
-        <div class="avatar"><%= initials %></div>
-        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/dashboard" class="brand" aria-label="AgriBank dashboard">
+        <img
+          src="/images/agribank-logo.png"
+          alt="AgriBank"
+          class="brand-logo"
+        >
       </a>
-    </div>
-  </aside>
 
-  <div class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1>Transaction History</h1></div>
-      </div>
-      <div class="topbar-right">
-        <a href="/transactions/export" class="btn btn-sm" style="font-size:0.75rem; padding:0.4rem 0.8rem;">⬇️ Export CSV</a>
-        <a href="/notifications" class="topbar-btn">🔔</a>
-      </div>
-    </header>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="/dashboard">Accounts</a>
+        <a href="/transfer">Pay &amp; transfer</a>
+        <a href="/deposits">Collect &amp; deposit</a>
+        <a href="/security">Access &amp; security</a>
+      </nav>
 
-    <div class="content">
-      
-      <!-- BACK & FILTER -->
-      <div style="margin-bottom:1rem;">
-        <a href="/accounts" class="btn-text">← Back to Accounts</a>
-      </div>
-
-      <!-- SUMMARY CHIPS -->
-      <div class="summary-strip animate">
-        <div class="summary-chip">
-          <div class="chip-label">Total Transactions</div>
-          <div class="chip-value"><%= txCount %></div>
-        </div>
-        <div class="summary-chip">
-          <div class="chip-label">Money In</div>
-          <div class="chip-value in"><%= money(totalIn) %></div>
-        </div>
-        <div class="summary-chip">
-          <div class="chip-label">Money Out</div>
-          <div class="chip-value out"><%= money(totalOut) %></div>
-        </div>
-      </div>
-
-      <!-- FILTER BAR -->
-      <form method="get" action="/transactions" class="filter-bar animate">
-        <div class="filter-group">
-          <label>Account</label>
-          <select name="accountId">
-            <option value="">All Accounts</option>
-            <% if (accounts) { accounts.forEach(a => { %>
-              <option value="<%= a.id %>" <%= filterAcc == a.id ? 'selected' : '' %>><%= a.name %> (****<%= a.number %>)</option>
-            <% }) } %>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label>Type</label>
-          <select name="type">
-            <option value="">All Types</option>
-            <option value="deposit" <%= filterType === 'deposit' ? 'selected' : '' %>>Deposit</option>
-            <option value="withdrawal" <%= filterType === 'withdrawal' ? 'selected' : '' %>>Withdrawal</option>
-            <option value="transfer" <%= filterType === 'transfer' ? 'selected' : '' %>>Transfer</option>
-            <option value="bill" <%= filterType === 'bill' ? 'selected' : '' %>>Bill Pay</option>
-            <option value="fee" <%= filterType === 'fee' ? 'selected' : '' %>>Fee</option>
-          </select>
-        </div>
-        <div class="filter-group" style="flex:2;">
-          <label>Search Description</label>
-          <input type="text" name="q" placeholder="e.g. Fuel, Payroll..." value="<%= filterQ %>">
-        </div>
-        <div class="filter-actions">
-          <button type="submit" class="btn btn-primary">Search</button>
-          <a href="/transactions" class="btn">Clear</a>
-        </div>
-      </form>
-
-      <!-- TRANSACTION LIST -->
-      <div class="tx-widget animate">
-        <div class="tx-header">
-          <h3>
-            <% if (filterAcc && accounts) {
-                 const acc = accounts.find(a => a.id == filterAcc);
-                 if(acc) { %>Transactions for <strong><%= acc.name %></strong><% } 
-               } else { %>All Transactions<% } %>
-          </h3>
-          <span class="tx-count"><%= txCount %> records</span>
-        </div>
-        
-        <% if (txs.length > 0) { %>
-          <div class="tx-list">
-            <% txs.forEach(tx => { %>
-              <div class="tx-row">
-                <div class="tx-icon <%= txClass(tx) %>"><%= txIcon(tx) %></div>
-                <div class="tx-details">
-                  <div class="tx-name"><%= tx.description || tx.type %></div>
-                  <div class="tx-meta">
-                    <span class="badge"><%= tx.type %></span>
-                    <% if (tx.accountName) { %><span><%= tx.accountName %></span><% } %>
-                  </div>
-                </div>
-                <div class="tx-right">
-                  <div class="tx-amount <%= txClass(tx) %>"><%= txAmountStr(tx) %></div>
-                  <div class="tx-date"><%= formatDate(tx.date) %></div>
-                </div>
-              </div>
-            <% }) %>
-          </div>
-        <% } else { %>
-          <div class="empty-state">
-            <div class="icon">🔍</div>
-            <h3>No transactions found</h3>
-            <p>Try adjusting your filters or search terms.</p>
-          </div>
-        <% } %>
+      <div class="top-actions">
+        <a href="/help">Help</a>
+        <a href="/profile">Profile</a>
+        <a href="/logout">Sign out</a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <nav class="mobile-nav">
-    <div class="mobile-nav-grid">
-      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
-      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
-      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
-      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
-      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+  <nav class="subnav" aria-label="Account navigation">
+    <div class="subnav-inner">
+      <a href="/dashboard">Overview</a>
+      <a href="/transactions" class="active" aria-current="page">Activity</a>
+      <a href="/accounts">Statements &amp; documents</a>
+      <a href="/profile">Profile &amp; settings</a>
     </div>
   </nav>
 
-  <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('show');
-    }
-    // Highlight active transaction type based on icon class
-    document.querySelectorAll('.tx-row').forEach(row => {
-      row.addEventListener('click', function() {
-        this.style.background = this.style.background === 'rgb(241, 245, 249)' ? '' : '#f1f5f9';
-        setTimeout(() => { this.style.background = ''; }, 2000);
-      });
-    });
-  </script>
+  <main class="main">
+    <section class="page-heading animate">
+      <div>
+        <div class="eyebrow">Accounts / Activity</div>
+        <h1>Transaction activity</h1>
+        <p class="page-subtitle">Review your account activity, search transactions, and export records.</p>
+      </div>
+
+      <a href="/transactions/export" class="btn btn-primary">â†“ <span>Export CSV</span></a>
+    </section>
+
+    <section class="summary-grid animate" aria-label="Transaction summary">
+      <div class="summary-card">
+        <div>
+          <div class="summary-label">Transactions shown</div>
+          <div class="summary-note">Based on current filters</div>
+        </div>
+        <div class="summary-value"><%= txCount %></div>
+      </div>
+
+      <div class="summary-card">
+        <div>
+          <div class="summary-label">Money in</div>
+          <div class="summary-note">Positive transaction amounts</div>
+        </div>
+        <div class="summary-value in"><%= money(totalIn) %></div>
+      </div>
+
+      <div class="summary-card">
+        <div>
+          <div class="summary-label">Money out</div>
+          <div class="summary-note">Outgoing transaction amounts</div>
+        </div>
+        <div class="summary-value out"><%= money(totalOut) %></div>
+      </div>
+    </section>
+
+    <section class="panel animate" aria-labelledby="filter-heading">
+      <div class="panel-heading">
+        <div>
+          <h2 id="filter-heading">Find a transaction</h2>
+          <p>Filter the activity list by account, type, date, or description.</p>
+        </div>
+      </div>
+
+      <form method="get" action="/transactions" class="filter-form">
+        <div class="filter-group">
+          <label for="accountId">Account</label>
+          <select id="accountId" name="accountId">
+            <option value="">All accounts</option>
+            <% accountList.forEach(a => { %>
+              <option
+                value="<%= a.id %>"
+                <%= String(filterAcc) === String(a.id) ? 'selected' : '' %>
+              >
+                <%= a.name %> (â€¢â€¢â€¢â€¢<%= String(a.number || '').slice(-4) %>)
+              </option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="type">Transaction type</label>
+          <select id="type" name="type">
+            <option value="">All types</option>
+            <option value="deposit" <%= filterType === 'deposit' ? 'selected' : '' %>>Deposit</option>
+            <option value="withdrawal" <%= filterType === 'withdrawal' ? 'selected' : '' %>>Withdrawal</option>
+            <option value="transfer" <%= filterType === 'transfer' ? 'selected' : '' %>>Transfer</option>
+            <option value="bill" <%= filterType === 'bill' ? 'selected' : '' %>>Bill pay</option>
+            <option value="fee" <%= filterType === 'fee' ? 'selected' : '' %>>Fee</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="q">Search description</label>
+          <input
+            id="q"
+            type="search"
+            name="q"
+            placeholder="Merchant, transfer, or description"
+            value="<%= filterQ %>"
+          >
+        </div>
+
+        <div class="filter-group">
+          <label for="status">Status</label>
+          <select id="status" name="status">
+            <option value="">All statuses</option>
+            <option value="completed" <%= filterStatus === 'completed' ? 'selected' : '' %>>Completed</option>
+            <option value="pending" <%= filterStatus === 'pending' ? 'selected' : '' %>>Pending</option>
+            <option value="failed" <%= filterStatus === 'failed' ? 'selected' : '' %>>Failed</option>
+          </select>
+        </div>
+
+        <div class="filter-actions">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="/transactions" class="btn">Reset</a>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel animate" aria-labelledby="activity-heading">
+      <div class="panel-heading">
+        <div>
+          <h2 id="activity-heading">
+            <% if (filterAcc) {
+              const selectedAcc = accountList.find(a => String(a.id) === String(filterAcc)); %>
+              <%= selectedAcc ? selectedAcc.name : 'Filtered activity' %>
+            <% } else { %>
+              Recent activity
+            <% } %>
+          </h2>
+          <p>Transaction details are shown as provided by your account records.</p>
+        </div>
+
+        <span class="count-pill">
+          <%= txCount %>
+          <%= txCount === 1 ? 'transaction' : 'transactions' %>
+        </span>
+      </div>
+
+      <% if (txs.length > 0) { %>
+        <div class="tx-list">
+          <% txs.forEach(tx => {
+            const cls = txClass(tx);
+            const status = String(tx.status || '').toLowerCase();
+          %>
+            <article class="tx-row">
+              <div class="tx-icon <%= cls %>" aria-hidden="true"><%= txIcon(tx) %></div>
+
+              <div class="tx-details">
+                <div class="tx-name"><%= txDisplayLabel(tx) %></div>
+
+                <div class="tx-meta">
+                  <% if (tx.type) { %>
+                    <span class="badge"><%= tx.type %></span>
+                  <% } %>
+
+                  <% if (tx.accountName) { %>
+                    <span><%= tx.accountName %></span>
+                  <% } %>
+
+                  <% if (status) { %>
+                    <span class="status-badge <%= status.replace(/[^a-z0-9_-]/g, '') %>">
+                      <%= tx.status %>
+                    </span>
+                  <% } %>
+
+                  <% if (tx.reference || tx.referenceNumber) { %>
+                    <span>Ref: <%= tx.reference || tx.referenceNumber %></span>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="tx-right">
+                <div class="tx-amount <%= tx.isDepositRequest ? 'neutral' : (Number(tx.amount || 0) > 0 ? 'in' : 'out') %>">
+                  <%= txAmountStr(tx) %>
+                </div>
+                <div class="tx-date"><%= formatDate(tx.date || tx.createdAt) %></div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="empty-state">
+          <div class="empty-icon" aria-hidden="true">âŒ•</div>
+          <h3>No transactions found</h3>
+          <p>Try another account, transaction type, or search term.</p>
+          <div style="margin-top:15px">
+            <a href="/transactions" class="btn">Clear filters</a>
+          </div>
+        </div>
+      <% } %>
+    </section>
+
+    <p class="footer-note">
+      For your security, account details are partially masked. Contact support if you notice activity you don't recognize.
+    </p>
+  </main>
 </body>
 </html>
-

@@ -1,0 +1,227 @@
+﻿<%- include('partials/head', { title: 'Deposit Confirmation | AgriBank Texas' }) %>
+
+<style>
+  :root {
+    --green: #123f32;
+    --gold: #c5a45b;
+    --text: #26352f;
+    --muted: #718078;
+    --border: #e5ebe7;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: #f3f6f4;
+    color: var(--text);
+    font-family: Arial, sans-serif;
+  }
+
+  .confirmation-wrap {
+    width: min(680px, calc(100% - 32px));
+    margin: 55px auto;
+  }
+
+  .confirmation-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 38px;
+    box-shadow: 0 12px 35px rgba(20, 55, 42, .07);
+  }
+
+  .success-icon {
+    width: 66px;
+    height: 66px;
+    margin: 0 auto 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #e8f4ed;
+    color: #207548;
+    font-size: 34px;
+    font-weight: bold;
+  }
+
+  .heading { text-align: center; }
+
+  .heading h1 {
+    margin: 0 0 10px;
+    color: var(--green);
+    font-size: 27px;
+  }
+
+  .heading p {
+    color: var(--muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .status {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 15px;
+    border-radius: 30px;
+    background: #fff4d9;
+    color: #8b6415;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .details {
+    margin-top: 30px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-row:last-child { border-bottom: 0; }
+
+  .detail-label {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .detail-value {
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .amount {
+    color: var(--green);
+    font-size: 19px;
+  }
+
+  .notice {
+    margin-top: 22px;
+    padding: 16px;
+    border-left: 4px solid var(--gold);
+    background: #fbf8f0;
+    color: #625638;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 27px;
+  }
+
+  .actions a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .primary {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .secondary {
+    border: 1px solid var(--green);
+    color: var(--green);
+  }
+
+  .training-note {
+    margin: 20px 0 0;
+    color: #87928c;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 520px) {
+    .confirmation-wrap { margin: 25px auto; }
+    .confirmation-card { padding: 25px 18px; }
+    .heading h1 { font-size: 23px; }
+    .detail-row { padding: 14px; }
+    .actions { flex-direction: column; }
+  }
+</style>
+
+<main class="confirmation-wrap">
+  <section class="confirmation-card">
+    <div class="heading">
+      <div class="success-icon">✓</div>
+      <h1>Deposit Request Submitted</h1>
+      <p>
+        Your mobile cheque deposit request has been recorded
+        and is awaiting review.
+      </p>
+
+      <div class="status">
+        <%= deposit.status === 'pending' ? 'Pending Review' :
+            deposit.status.charAt(0).toUpperCase() + deposit.status.slice(1) %>
+      </div>
+    </div>
+
+    <div class="details">
+      <div class="detail-row">
+        <span class="detail-label">Deposit reference</span>
+        <span class="detail-value"><%= deposit.reference %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Deposit amount</span>
+        <span class="detail-value amount">
+          $<%= Number(deposit.amount).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }) %>
+        </span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Selected account</span>
+        <span class="detail-value"><%= deposit.accountName %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Account ending</span>
+        <span class="detail-value">•••• <%= String(deposit.accountNumber).slice(-4) %></span>
+      </div>
+
+      <div class="detail-row">
+        <span class="detail-label">Submitted</span>
+        <span class="detail-value">
+          <%= new Date(deposit.created_at).toLocaleString() %>
+        </span>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>What happens next?</strong><br>
+      This request must be reviewed by an administrator.
+      The simulated account balance will only be updated if
+      the request is approved.
+    </div>
+
+    <div class="actions">
+      <a href="/dashboard" class="primary">Return to Dashboard</a>
+      <a href="/deposits" class="secondary">Make Another Deposit</a>
+    </div>
+
+    <p class="training-note">
+      AgriBank Texas is a simulated training application.
+      All account balances and transactions are demonstration data,
+      not real banking funds or payment processing.
+    </p>
+  </section>
+</main>

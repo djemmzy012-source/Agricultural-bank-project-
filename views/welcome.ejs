@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#082d1b">
+  <title>Welcome | AgriBank Texas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Source Sans 3", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: #fff;
+      background:
+        radial-gradient(ellipse at 50% 35%, rgba(37,112,67,.45), transparent 48%),
+        linear-gradient(145deg, #061e13, #0c3f24 55%, #061d12);
+    }
+
+    .welcome-screen {
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding: 35px 22px;
+      text-align: center;
+      animation: screenIn 1s ease both;
+    }
+
+    .welcome-screen::before,
+    .welcome-screen::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: min(75vw, 560px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(222,194,126,.12);
+      border-radius: 50%;
+      animation: orbit 18s linear infinite;
+    }
+
+    .welcome-screen::after {
+      width: min(95vw, 720px);
+      animation-direction: reverse;
+      border-color: rgba(255,255,255,.055);
+    }
+
+    .logo {
+      width: min(230px, 65vw);
+      max-height: 76px;
+      object-fit: contain;
+      margin-bottom: 42px;
+      opacity: 0;
+      animation: riseIn 1s .2s ease forwards;
+    }
+
+    .gold-line {
+      width: 54px;
+      height: 2px;
+      background: #d9bd78;
+      margin-bottom: 26px;
+      transform: scaleX(0);
+      animation: lineIn .8s .55s ease forwards;
+    }
+
+    .eyebrow {
+      color: #e1ca91;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: riseIn .8s .65s ease forwards;
+    }
+
+    h1 {
+      margin: 12px 0 4px;
+      font-size: clamp(34px, 6vw, 57px);
+      line-height: 1.12;
+      font-weight: 600;
+      letter-spacing: -.035em;
+      opacity: 0;
+      animation: riseIn 1s .85s ease forwards;
+    }
+
+    .customer-name {
+      color: #e4ca88;
+      font-size: clamp(25px, 4vw, 36px);
+      font-weight: 500;
+      opacity: 0;
+      animation: riseIn 1s 1.05s ease forwards;
+    }
+
+    .subtitle {
+      max-width: 440px;
+      margin: 18px 0 0;
+      color: rgba(255,255,255,.76);
+      font-size: 16px;
+      line-height: 1.7;
+      opacity: 0;
+      animation: riseIn 1s 1.25s ease forwards;
+    }
+
+    .progress {
+      width: min(190px, 65vw);
+      height: 2px;
+      margin-top: 43px;
+      overflow: hidden;
+      background: rgba(255,255,255,.17);
+      opacity: 0;
+      animation: riseIn .7s 1.4s ease forwards;
+    }
+
+    .progress span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #a88a4b, #f1dfa9, #a88a4b);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: progress 3.2s 1.6s ease-in-out forwards;
+    }
+
+    .loading-text {
+      margin-top: 12px;
+      color: rgba(255,255,255,.58);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: riseIn .7s 1.5s ease forwards;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: max(22px, env(safe-area-inset-bottom));
+      color: rgba(255,255,255,.43);
+      font-size: 11px;
+      letter-spacing: .08em;
+    }
+
+    @keyframes screenIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(17px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes lineIn {
+      to { transform: scaleX(1); }
+    }
+
+    @keyframes orbit {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes progress {
+      to { transform: scaleX(1); }
+    }
+
+    @media (max-width: 480px) {
+      .logo { margin-bottom: 34px; }
+      .subtitle { font-size: 14px; max-width: 300px; }
+      .footer { font-size: 10px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-delay: 0ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="welcome-screen">
+    <img class="logo" src="/images/agribank-logo.png" alt="AgriBank Texas">
+
+    <div class="gold-line"></div>
+    <div class="eyebrow">A better banking experience</div>
+
+    <h1>Welcome Back</h1>
+    <div class="customer-name"><%= firstName %></div>
+
+    <p class="subtitle">
+      It's a pleasure to have you with us.
+      Your AgriBank experience is ready.
+    </p>
+
+    <div class="progress" aria-hidden="true"><span></span></div>
+    <div class="loading-text">Preparing your account</div>
+
+    <div class="footer">AGRIBANK TEXAS &nbsp;·&nbsp; YOUR FINANCIAL JOURNEY</div>
+  </main>
+
+  <script>
+    const destination = '/dashboard';
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 1000
+      : 5000;
+
+    window.setTimeout(() => {
+      window.location.replace(destination);
+    }, delay);
+  </script>
+</body>
+</html>

@@ -1,951 +1,1634 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Help & Support | AgriBank Texas Regional</title>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Help &amp; Support | AgriBank Texas Regional</title>
+  <meta name="description" content="Find help with account access, payments, cards, online banking, and agricultural financial services.">
+  <meta name="theme-color" content="#103c28">
+
   <style>
     :root {
-      --navy: #0a1c14;
-      --green-900: #0f2b1f;
-      --green-800: #144a25;
-      --green-700: #1a5c30;
-      --green-600: #22753d;
-      --green-500: #2ea55a;
-      --gold: #d4a047;
-      --gold-light: #e8b85e;
-      --bg: #f0f2f5;
-      --surface: #ffffff;
-      --text: #0f172a;
-      --text-secondary: #64748b;
-      --border: #e2e8f0;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --info: #3b82f6;
-      --sidebar-w: 260px;
+      --green-950:#09291b;
+      --green-900:#103c28;
+      --green-800:#174d32;
+      --green-700:#216640;
+      --green-600:#2b8050;
+      --green-100:#e8f3eb;
+      --green-50:#f4f8f4;
+      --gold:#d7b45a;
+      --gold-light:#f4e8bd;
+      --white:#fff;
+      --background:#f5f7f5;
+      --text:#17251c;
+      --muted:#66746a;
+      --border:#e1e8e2;
+      --danger:#b42318;
+      --shadow-sm:0 3px 12px rgba(14,47,29,.06);
+      --shadow-md:0 12px 30px rgba(14,47,29,.09);
+      --radius:16px;
+      --container:1200px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    html {
+      scroll-behavior:smooth;
+      scroll-padding-top:105px;
+    }
 
     body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      overflow-x: hidden;
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      background:var(--background);
+      color:var(--text);
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
     }
 
-    a { text-decoration: none; color: inherit; transition: 0.2s; }
+    button,input,select,textarea { font:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    a { color:inherit; text-decoration:none; }
+    img { max-width:100%; display:block; }
+    [hidden] { display:none !important; }
 
-    /* ==========================================
-       NAVIGATION
-       ========================================== */
-    .navbar {
-      position: fixed; top: 0; left: 0; right: 0;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-      z-index: 200;
-      height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 2rem;
-    }
-    .nav-brand { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--green-900); }
-    .nav-brand span { color: var(--gold); }
-    .nav-links { display: flex; gap: 2rem; align-items: center; }
-    .nav-links a { color: var(--text-secondary); font-weight: 600; font-size: 0.9rem; }
-    .nav-links a:hover { color: var(--green-700); }
-    .btn-nav { background: var(--green-800) !important; color: white !important; padding: 0.5rem 1.25rem; border-radius: 8px; }
-    .btn-nav:hover { background: var(--green-700) !important; }
-
-    /* ==========================================
-       HERO
-       ========================================== */
-    .page-hero {
-      background: linear-gradient(170deg, var(--navy) 0%, var(--green-900) 40%, var(--green-700) 100%);
-      color: white;
-      padding: 7.5rem 2rem 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .page-hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-    .hero-deco {
-      position: absolute; opacity: 0.06; font-size: 5rem;
-      animation: float 6s ease-in-out infinite;
-    }
-    .hero-deco:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
-    .hero-deco:nth-child(2) { top: 50%; right: 8%; animation-delay: 2s; }
-    .hero-deco:nth-child(3) { bottom: 15%; left: 15%; animation-delay: 4s; }
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(5deg); }
-    }
-    .page-hero h1 {
-      font-family: 'DM Serif Display', serif;
-      font-size: clamp(2.2rem, 5vw, 3.2rem);
-      line-height: 1.15;
-      margin-bottom: 1rem; position: relative;
-    }
-    .page-hero p {
-      max-width: 580px; margin: 0 auto;
-      color: rgba(255,255,255,0.75);
-      font-size: 1.05rem; position: relative;
+    :focus-visible {
+      outline:3px solid rgba(215,180,90,.85);
+      outline-offset:3px;
     }
 
-    /* ==========================================
-       SEARCH BAR
-       ========================================== */
-    .search-wrapper {
-      max-width: 650px;
-      margin: -1.5rem auto 2.5rem;
-      position: relative;
-      z-index: 10;
-      padding: 0 2rem;
-    }
-    .search-bar {
-      display: flex; align-items: center;
-      background: var(--surface);
-      border-radius: 14px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.1);
-      overflow: hidden;
-      border: 2px solid transparent;
-      transition: border-color 0.2s;
-    }
-    .search-bar:focus-within { border-color: var(--green-600); }
-    .search-icon { padding: 0 1rem; font-size: 1.3rem; opacity: 0.4; }
-    .search-input {
-      flex: 1; padding: 1rem 0.5rem;
-      border: none; outline: none;
-      font-size: 1rem; font-family: inherit;
-      background: transparent; color: var(--text);
-    }
-    .search-btn {
-      padding: 0.65rem 1.5rem; margin-right: 0.25rem;
-      background: var(--green-700); color: white;
-      border: none; border-radius: 10px;
-      font-size: 0.85rem; font-weight: 600; cursor: pointer;
-      transition: background 0.2s;
-    }
-    .search-suggestions { display: flex; justify-content: center; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
-    .suggestion-tag {
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.9);
-      padding: 0.3rem 0.9rem;
-      border-radius: 50px; font-size: 0.75rem;
-      font-weight: 600; cursor: pointer;
-      transition: all 0.2s;
-    }
-    .suggestion-tag:hover { background: rgba(255,255,255,0.25); }
-
-    /* ==========================================
-       CONTENT LAYOUT
-       ========================================== */
-    .content-layout {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 2.5rem;
-      padding: 1rem 2rem 4rem;
+    .container {
+      width:min(var(--container),calc(100% - 40px));
+      margin-inline:auto;
     }
 
-    /* SIDEBAR TOC */
-    .toc-sidebar {
-      position: sticky; top: 80px;
-      align-self: start;
-      background: var(--surface);
-      border-radius: 14px;
-      padding: 1.25rem;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
-      max-height: calc(100vh - 100px);
-      overflow-y: auto;
+    .skip-link {
+      position:absolute;
+      top:-100px;
+      left:16px;
+      z-index:9999;
+      padding:12px 18px;
+      border-radius:8px;
+      background:white;
+      color:var(--green-900);
     }
-    .toc-title {
-      font-size: 0.65rem; text-transform: uppercase;
-      letter-spacing: 1.5px; color: var(--text-secondary);
-      font-weight: 700; margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
-    }
-    .toc-list { list-style: none; }
-    .toc-list li { margin-bottom: 0.15rem; }
-    .toc-list a {
-      display: flex; align-items: center; gap: 0.5rem;
-      padding: 0.45rem 0.65rem; border-radius: 6px;
-      font-size: 0.78rem; color: var(--text-secondary);
-      font-weight: 500; transition: all 0.2s; line-height: 1.4;
-    }
-    .toc-list a:hover { background: #f0fdf4; color: var(--green-700); }
-    .toc-list a.active { background: #ecfdf5; color: var(--green-700); font-weight: 700; }
 
-    /* MAIN CONTENT */
-    .main-content { min-width: 0; }
+    .skip-link:focus { top:16px; }
 
-    /* QUICK ACTION CARDS — FIXED WITH REAL LINKS */
-    .quick-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2.5rem;
+    /* Header */
+    .site-header {
+      position:sticky;
+      top:0;
+      z-index:1000;
+      background:var(--green-900);
+      color:white;
+      box-shadow:0 2px 7px rgba(7,42,24,.18);
     }
+
+    .header-main {
+      min-height:56px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:7px 24px;
+      border-bottom:1px solid rgba(255,255,255,.14);
+    }
+
+    .brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.brand-logo {
+  display: block;
+  width: 180px;
+  max-width: 35vw;
+  max-height: 42px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+
+@media (max-width: 760px) {
+  .brand-logo {
+    width: 145px;
+    max-width: 42vw;
+    max-height: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-logo {
+    width: 130px;
+    max-width: 42vw;
+    max-height: 32px;
+  }
+}
+
+    .header-actions {
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .header-link {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:#fff;
+      font-size:12px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .header-link:hover { color:var(--gold-light); }
+
+    .header-link.gold-button {
+      padding:9px 14px;
+      border-radius:7px;
+      background:var(--gold);
+      color:var(--green-950);
+    }
+
+    .header-link.gold-button:hover { background:#e7c96e; }
+
+    .primary-nav {
+      display:flex;
+      align-items:center;
+      gap:5px;
+      min-height:46px;
+      overflow-x:auto;
+      scrollbar-width:thin;
+      scrollbar-color:var(--gold) var(--green-900);
+    }
+
+    .primary-nav a {
+      display:inline-flex;
+      align-items:center;
+      flex-shrink:0;
+      min-height:46px;
+      padding:0 14px;
+      border-bottom:3px solid transparent;
+      color:#e1ebe4;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .primary-nav a:hover,
+    .primary-nav a.active {
+      color:white;
+      border-bottom-color:var(--gold);
+    }
+
+    .menu-toggle {
+      display:none;
+      width:40px;
+      height:40px;
+      border:1px solid rgba(255,255,255,.3);
+      border-radius:8px;
+      background:transparent;
+      color:white;
+      font-size:22px;
+    }
+
+    /* Hero */
+    .hero {
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      padding:62px 0 70px;
+      background:
+        radial-gradient(circle at 85% 20%,rgba(215,180,90,.18),transparent 28%),
+        linear-gradient(120deg,#0b3020 0%,#18583a 58%,#226b45 100%);
+      color:white;
+    }
+
+    .hero::before {
+      content:"";
+      position:absolute;
+      z-index:-1;
+      inset:0;
+      opacity:.12;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90' viewBox='0 0 90 90'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='.4'%3E%3Cpath d='M0 45h90M45 0v90M0 0l90 90M90 0L0 90'/%3E%3C/g%3E%3C/svg%3E");
+      pointer-events:none;
+    }
+
+    .hero-content { max-width:820px; }
+
+    .eyebrow {
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      margin-bottom:17px;
+      color:var(--gold-light);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:1.7px;
+      text-transform:uppercase;
+    }
+
+    .eyebrow::before {
+      content:"";
+      width:25px;
+      height:2px;
+      background:var(--gold);
+    }
+
+    .hero h1 {
+      margin-bottom:17px;
+      font-size:clamp(36px,5vw,58px);
+      font-weight:800;
+      line-height:1.08;
+      letter-spacing:-1.7px;
+    }
+
+    .hero p {
+      max-width:720px;
+      color:#e3eee6;
+      font-size:clamp(15px,2vw,18px);
+      line-height:1.8;
+    }
+
+    .hero-trust {
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px 22px;
+      margin-top:27px;
+      color:#f1f6f2;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    /* Search */
+    .search-wrap { position:relative; z-index:5; margin-top:-27px; }
+
+    .search-panel {
+      padding:22px;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:white;
+      box-shadow:var(--shadow-md);
+    }
+
+    .search-box {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-height:56px;
+      padding:0 17px;
+      border:1px solid #d4dfd6;
+      border-radius:11px;
+      background:#fbfdfb;
+    }
+
+    .search-box:focus-within {
+      border-color:var(--green-600);
+      box-shadow:0 0 0 4px rgba(43,128,80,.1);
+    }
+
+    .search-icon { color:var(--green-700); font-size:21px; }
+    .search-box input { width:100%; min-width:0; border:0; outline:0; background:transparent; font-size:14px; }
+    .search-box button { border:0; background:transparent; color:var(--muted); font-size:20px; padding:5px; }
+
+    .suggestions {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:9px;
+      margin-top:15px;
+      font-size:12px;
+    }
+
+    .suggestions-label { color:var(--muted); font-weight:700; }
+
+    .suggestion {
+      padding:6px 11px;
+      border:1px solid var(--border);
+      border-radius:30px;
+      background:white;
+      color:var(--green-800);
+      font-size:12px;
+    }
+
+    .suggestion:hover { border-color:var(--green-600); background:var(--green-50); }
+
+    /* Main layout */
+    .page-layout {
+      display:grid;
+      grid-template-columns:245px minmax(0,1fr);
+      align-items:start;
+      gap:32px;
+      padding-top:38px;
+      padding-bottom:65px;
+    }
+
+    .toc {
+      position:sticky;
+      top:125px;
+      padding:22px 16px;
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:white;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .toc h2 { padding:0 10px 14px; color:var(--green-900); font-size:14px; font-weight:800; }
+
+    .toc a {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin:3px 0;
+      padding:10px;
+      border-radius:8px;
+      color:#526156;
+      font-size:12px;
+      font-weight:600;
+    }
+
+    .toc a:hover,.toc a.active { color:var(--green-900); background:var(--green-100); }
+    .toc-icon { width:22px; flex-shrink:0; text-align:center; font-size:16px; }
+
+    .toc-help { margin-top:18px; padding:14px; border-radius:10px; background:var(--green-50); }
+    .toc-help strong { display:block; color:var(--green-900); font-size:12px; }
+    .toc-help p { margin:5px 0 10px; color:var(--muted); font-size:11px; }
+    .toc-help a { display:inline-flex; margin:0; padding:0; color:var(--green-700); background:transparent; }
+
+    .content { min-width:0; }
+    .sec-section { margin-bottom:42px; scroll-margin-top:125px; }
+
+    .section-heading {
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:20px;
+    }
+
+    .section-heading h2 {
+      color:var(--green-900);
+      font-size:clamp(23px,3vw,29px);
+      font-weight:800;
+      line-height:1.2;
+      letter-spacing:-.7px;
+    }
+
+    .section-heading p { margin-top:7px; color:var(--muted); font-size:14px; }
+    .section-count { flex-shrink:0; color:var(--green-700); font-size:12px; font-weight:700; }
+
+    /* Shared cards and buttons */
+    .quick-grid,.contact-grid,.video-grid,.resource-grid {
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:15px;
+    }
+
     .quick-card {
-      background: var(--surface);
-      border-radius: 14px;
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      cursor: pointer;
-      transition: all 0.3s;
-      text-align: center;
-      /* 👇 MADE IT A REAL LINK */
-      display: block;
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      gap:15px;
+      min-height:135px;
+      padding:20px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:13px;
+      background:white;
+      box-shadow:var(--shadow-sm);
+      transition:transform .2s,border-color .2s,box-shadow .2s;
     }
-    .quick-card:hover {
-      border-color: var(--green-600);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    .quick-card a.inner-link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-    }
-    .quick-card-icon {
-      width: 56px; height: 56px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; margin: 0 auto 0.75rem;
-    }
-    .quick-card-icon.green { background: #ecfdf5; }
-    .quick-card-icon.blue { background: #eff6ff; }
-    .quick-card-icon.gold { background: #fefce8; }
-    .quick-card-icon.purple { background: #faf5ff; }
-    .quick-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .quick-card p { font-size: 0.78rem; color: var(--text-secondary); }
 
-    /* FAQ SECTION */
-    .faq-section { margin-bottom: 2.5rem; scroll-margin-top: 80px; }
-    .faq-category-title {
-      font-family: 'DM Serif Display', serif;
-      font-size: 1.5rem; color: var(--green-900);
-      margin-bottom: 1rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--gold);
-      display: inline-block;
+    .quick-card:hover,.resource-link:hover { transform:translateY(-3px); border-color:#b7d3bf; box-shadow:var(--shadow-md); }
+    .quick-icon,.contact-card-icon,.resource-icon {
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+      border-radius:11px;
+      background:var(--green-100);
+      color:var(--green-800);
     }
-    .faq-item {
-      background: var(--surface);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      margin-bottom: 0.5rem;
-      overflow: hidden;
-      transition: all 0.3s;
-    }
-    .faq-item:hover { border-color: #cbd5e1; }
+
+    .quick-icon { width:47px; height:47px; font-size:22px; }
+    .quick-icon.gold { background:#fbf2d9; color:#7e621d; }
+    .quick-icon.red { background:#fdebea; color:var(--danger); }
+    .quick-card h3 { margin-bottom:5px; color:var(--green-900); font-size:15px; font-weight:800; }
+    .quick-card p { color:var(--muted); font-size:12px; line-height:1.65; }
+    .quick-arrow { position:absolute; top:18px; right:17px; color:#91a196; font-size:18px; }
+
+    .faq-list { display:flex; flex-direction:column; gap:10px; }
+    .faq-item { overflow:hidden; border:1px solid var(--border); border-radius:12px; background:white; }
+    .faq-item.open { border-color:#b9d2bf; }
+
     .faq-question {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 1.25rem;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text);
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
-      font-family: inherit;
-      transition: background 0.2s;
-    }
-    .faq-question:hover { background: #f8fafc; }
-    .faq-arrow {
-      font-size: 0.8rem;
-      transition: transform 0.3s;
-      color: var(--text-secondary);
-    }
-    .faq-item.open .faq-arrow { transform: rotate(180deg); color: var(--green-700); }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s ease;
-      padding: 0 1.25rem;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 500px;
-      padding: 0 1.25rem 1.25rem;
-    }
-    .faq-answer p {
-      color: var(--text-secondary);
-      font-size: 0.88rem;
-      line-height: 1.7;
-      margin-bottom: 0.5rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      width:100%;
+      min-height:62px;
+      padding:17px 19px;
+      border:0;
+      background:transparent;
+      color:var(--green-900);
+      text-align:left;
+      font-size:14px;
+      font-weight:750;
     }
 
-    /* INFO GRID */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.75rem;
-      margin: 1rem 0;
-    }
-    .info-item {
-      background: #f8fafc;
-      border-radius: 10px;
-      padding: 1rem 1.25rem;
-      border: 1px solid var(--border);
-      display: flex; align-items: center; gap: 0.75rem;
-    }
-    .info-item-icon { font-size: 1.3rem; flex-shrink: 0; }
-    .info-item-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); font-weight: 600; }
-    .info-item-value { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+    .faq-question:hover { background:#fbfdfb; }
+    .faq-chevron { display:grid; place-items:center; width:27px; height:27px; flex-shrink:0; border-radius:50%; background:var(--green-100); color:var(--green-800); transition:transform .2s; }
+    .faq-item.open .faq-chevron { transform:rotate(180deg); }
+    .faq-answer { display:none; padding:0 19px 20px; color:#59685d; font-size:13px; line-height:1.85; }
+    .faq-item.open .faq-answer { display:block; }
+    .faq-answer a { color:var(--green-700); font-weight:700; text-decoration:underline; text-underline-offset:3px; }
 
-    /* CONTACT CARDS */
-    .contact-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-      margin: 1rem 0;
-    }
     .contact-card {
-      background: var(--surface);
-      border-radius: 14px;
-      padding: 1.5rem;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      transition: all 0.3s;
+      padding:22px;
+      border:1px solid var(--border);
+      border-radius:13px;
+      background:white;
+      box-shadow:var(--shadow-sm);
     }
-    .contact-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-    }
-    .contact-card-header {
-      display: flex; align-items: center; gap: 0.75rem;
-      margin-bottom: 0.75rem;
-    }
-    .contact-card-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-    }
-    .contact-card-icon.green { background: #ecfdf5; }
-    .contact-card-icon.blue { background: #eff6ff; }
-    .contact-card-icon.gold { background: #fefce8; }
-    .contact-card h3 { font-size: 1rem; font-weight: 700; }
-    .contact-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
-    .contact-card .highlight { font-size: 1.1rem; font-weight: 700; color: var(--green-700); font-family: 'DM Serif Display', serif; }
 
-    /* TICKET FORM */
-    .ticket-form {
-      background: var(--surface);
-      border-radius: 16px;
-      padding: 2rem;
-      border: 1px solid var(--border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      margin-top: 1.5rem;
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    .form-group { margin-bottom: 1rem; }
-    .form-label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    .form-input, .form-select, .form-textarea {
-      width: 100%; padding: 0.7rem 0.9rem;
-      border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.9rem; font-family: inherit; outline: none;
-      transition: border-color 0.2s;
-    }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--green-600); }
-    .form-textarea { resize: vertical; min-height: 120px; }
-    .btn-submit {
-      padding: 0.85rem 2rem;
-      background: var(--green-700);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-submit:hover { background: var(--green-600); transform: translateY(-1px); }
+    .contact-card-top { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+    .contact-card-icon { width:42px; height:42px; font-size:20px; }
+    .contact-card h3 { color:var(--green-900); font-size:15px; }
+    .contact-card p { color:var(--muted); font-size:12px; line-height:1.8; overflow-wrap:anywhere; }
+    .contact-card .button { margin-top:15px; }
 
-    /* ARTICLE LIST */
-    .article-list { margin: 1rem 0; }
-    .article-item {
-      display: flex; align-items: center; gap: 1rem;
-      padding: 0.85rem 1rem;
-      border-radius: 10px;
-      background: #f8fafc;
-      border: 1px solid transparent;
-      margin-bottom: 0.4rem;
-      cursor: pointer;
-      transition: all 0.2s;
+    .contact-note {
+      margin-top:14px;
+      padding:14px 16px;
+      border:1px solid #e1e9e3;
+      border-left:4px solid var(--green-700);
+      border-radius:9px;
+      background:#f0f7f1;
+      color:#344a39;
+      font-size:12px;
     }
-    .article-item:hover { background: #f0fdf4; border-color: #bbf7d0; }
-    .article-icon { font-size: 1.1rem; flex-shrink: 0; }
-    .article-info { flex: 1; }
-    .article-title { font-size: 0.88rem; font-weight: 600; color: var(--text); }
-    .article-meta { font-size: 0.72rem; color: var(--text-secondary); margin-top: 0.15rem; }
-    .article-arrow { color: var(--text-secondary); font-size: 0.8rem; }
 
-    /* ALERT BOXES */
-    .alert-box {
-      border-radius: 12px; padding: 1.25rem 1.5rem;
-      margin: 1.25rem 0;
-      display: flex; align-items: flex-start; gap: 0.75rem;
+    .button {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      min-height:42px;
+      padding:10px 15px;
+      border:1px solid transparent;
+      border-radius:8px;
+      font-size:12px;
+      font-weight:750;
+      transition:background .2s,border-color .2s;
     }
-    .alert-box .icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
-    .alert-box.info { background: #eff6ff; border: 1px solid #bfdbfe; }
-    .alert-box.success { background: #ecfdf5; border: 1px solid #a7f3d0; }
-    .alert-box.warning { background: #fffbeb; border: 1px solid #fde68a; }
 
-    /* BACK TO TOP */
-    .btn-back-top {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--green-800); color: white;
-      padding: 0.75rem 1.5rem; border-radius: 10px;
-      font-size: 0.85rem; font-weight: 600;
-      transition: all 0.2s; cursor: pointer; border: none;
-      margin-top: 1.5rem;
-    }
-    .btn-back-top:hover { background: var(--green-700); transform: translateY(-2px); }
+    .button-primary { background:var(--green-800); color:white; }
+    .button-primary:hover { background:var(--green-950); }
+    .button-outline { border-color:#b9cdbf; background:white; color:var(--green-800); }
+    .button-outline:hover { background:var(--green-50); }
+    .button-gold { background:var(--gold); color:var(--green-950); }
+    .button-gold:hover { background:#e9c96a; }
 
-    /* FOOTER */
-    .footer {
-      background: var(--navy);
-      color: rgba(255,255,255,0.5);
-      padding: 3rem 2rem;
-      text-align: center;
-      font-size: 0.85rem;
-    }
-    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: white; margin-bottom: 0.25rem; }
-    .footer-brand span { color: var(--gold); }
-    .footer-subtitle { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-bottom: 1.5rem; }
-    .footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-    .footer-links a { color: rgba(255,255,255,0.6); font-weight: 600; }
-    .footer-links a:hover { color: var(--gold); }
+    /* Tutorials */
+    .video-card { overflow:hidden; border:1px solid var(--border); border-radius:13px; background:white; box-shadow:var(--shadow-sm); }
+    .video-cover { display:grid; place-items:center; min-height:145px; background:radial-gradient(circle at 75% 20%,rgba(215,180,90,.25),transparent 32%),linear-gradient(135deg,#123f2a,#2b8050); color:white; }
+    .play-button { display:grid; place-items:center; width:54px; height:54px; border:1px solid rgba(255,255,255,.55); border-radius:50%; background:rgba(255,255,255,.13); color:white; font-size:21px; }
+    .video-card:hover .play-button { background:rgba(255,255,255,.24); }
+    .video-info { padding:17px; }
+    .video-info h3 { margin-bottom:7px; color:var(--green-900); font-size:14px; }
+    .video-info p { margin-bottom:12px; color:var(--muted); font-size:12px; }
+    .video-meta { display:flex; justify-content:space-between; gap:10px; color:#758278; font-size:11px; }
 
-    /* MOBILE NAV */
-    .mobile-nav {
-      display: none; position: fixed; bottom: 0; left: 0; right: 0;
-      background: white; border-top: 1px solid var(--border);
-      z-index: 100; padding: 0.5rem 0;
-      padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
-    }
-    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .mob-nav-item {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 0.2rem; padding: 0.5rem 0;
-      font-size: 0.6rem; font-weight: 600;
-      color: var(--text-secondary); cursor: pointer;
-    }
-    .mob-nav-item.active { color: var(--green-700); }
-    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+    /* Ticket form */
+    .ticket-panel { padding:25px; border:1px solid var(--border); border-radius:14px; background:white; box-shadow:var(--shadow-sm); }
+    .ticket-intro { margin-bottom:22px; color:var(--muted); font-size:13px; line-height:1.8; }
 
-    /* LIVE CHAT WIDGET */
-    .chat-widget-container {
-      position: fixed; bottom: 30px; right: 30px;
-      z-index: 1000;
+    .form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:17px; }
+    .form-group { min-width:0; }
+    .form-group.full-width { grid-column:1/-1; }
+    .form-group label { display:block; margin-bottom:7px; color:#35473a; font-size:12px; font-weight:750; }
+
+    .form-control {
+      width:100%;
+      min-height:46px;
+      padding:11px 12px;
+      outline:none;
+      border:1px solid #d7e1d9;
+      border-radius:8px;
+      background:#fcfdfc;
+      color:var(--text);
+      font-size:13px;
     }
-    .chat-button {
-      width: 64px; height: 64px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--green-800), var(--green-700));
-      color: white;
-      border: none;
-      box-shadow: 0 8px 20px rgba(20,74,37,0.4);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.75rem;
-      transition: transform 0.2s;
-      position: relative;
+
+    .form-control:focus { border-color:var(--green-600); box-shadow:0 0 0 3px rgba(43,128,80,.1); }
+    textarea.form-control { min-height:140px; resize:vertical; }
+    .form-help { margin-top:6px; color:var(--muted); font-size:11px; }
+
+    .form-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; margin-top:20px; }
+    .privacy-note { max-width:470px; color:var(--muted); font-size:11px; }
+
+    .form-notice {
+      display:none;
+      margin:0 0 20px;
+      padding:16px;
+      border:1px solid #c5dfca;
+      border-left:4px solid var(--green-700);
+      border-radius:9px;
+      background:#f0f8f1;
+      color:#254b30;
+      font-size:13px;
     }
-    .chat-button:hover { transform: scale(1.1); }
-    .chat-tooltip {
-      position: absolute; right: 75px;
-      background: #1e293b; color: white;
-      padding: 6px 12px; border-radius: 8px;
-      font-size: 0.75rem; font-weight: 600;
-      white-space: nowrap; opacity: 0;
-      pointer-events: none; transition: opacity 0.2s;
+
+    .form-notice.visible { display:block; }
+    .form-notice strong { display:block; margin-bottom:4px; font-size:14px; }
+
+    /* Farming and resources */
+    .farming-panel {
+      overflow:hidden;
+      padding:28px;
+      border-radius:14px;
+      background:radial-gradient(circle at 90% 10%,rgba(215,180,90,.2),transparent 30%),linear-gradient(120deg,#103c28,#246b43);
+      color:white;
     }
-    .chat-button:hover .chat-tooltip { opacity: 1; }
+
+    .farming-panel h3 { margin-bottom:10px; font-size:21px; }
+    .farming-panel p { max-width:650px; margin-bottom:19px; color:#e0ece3; font-size:13px; line-height:1.85; }
+    .farming-actions { display:flex; flex-wrap:wrap; gap:10px; }
+
+    .resource-link {
+      display:flex;
+      align-items:center;
+      gap:13px;
+      padding:17px;
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:white;
+      transition:all .2s;
+    }
+
+    .resource-link>span:first-child { display:grid; place-items:center; width:39px; height:39px; flex-shrink:0; border-radius:9px; background:var(--green-100); color:var(--green-800); font-size:18px; }
+    .resource-link strong { display:block; color:var(--green-900); font-size:13px; }
+    .resource-link small { display:block; margin-top:3px; color:var(--muted); font-size:11px; }
+    .resource-arrow { margin-left:auto; color:var(--green-700); }
+
+    .no-results { display:none; padding:28px; text-align:center; border:1px dashed #c8d7cc; border-radius:12px; background:white; }
+    .no-results h3 { margin-bottom:7px; color:var(--green-900); font-size:17px; }
+    .no-results p { color:var(--muted); font-size:13px; }
+    .search-hidden { display:none !important; }
+
+    /* Footer */
+    .site-footer { background:var(--green-950); color:#dce7df; }
+    .footer-main { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; padding-top:43px; padding-bottom:35px; }
+    .footer-brand { max-width:360px; }
+    .footer-brand .brand { margin-bottom:15px; }
+    .footer-brand p { color:#b9cbbd; font-size:12px; line-height:1.9; }
+    .footer-column h3 { margin-bottom:15px; color:var(--gold-light); font-size:13px; }
+    .footer-column a { display:block; width:fit-content; margin:9px 0; color:#c8d8cc; font-size:12px; }
+    .footer-column a:hover { color:white; text-decoration:underline; }
+    .footer-bottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:15px; padding-top:20px; padding-bottom:22px; border-top:1px solid rgba(255,255,255,.14); color:#aebfb3; font-size:11px; }
+    .footer-legal { display:flex; flex-wrap:wrap; gap:17px; }
+    .footer-legal a:hover { color:white; }
+
+    /* Live chat */
+    .chat-launcher {
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      z-index:1200;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height:54px;
+      padding:0 20px;
+      border:0;
+      border-radius:30px;
+      background:var(--gold);
+      color:var(--green-950);
+      box-shadow:0 8px 24px rgba(0,0,0,.2);
+      font-size:13px;
+      font-weight:800;
+    }
+
     .chat-window {
-      position: absolute; bottom: 80px; right: 0;
-      width: 340px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      border: 1px solid var(--border);
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .hidden { display: none !important; }
-    .chat-header {
-      background: linear-gradient(135deg, var(--green-900), var(--green-800));
-      color: white; padding: 1rem;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
-    .agent-avatar { width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .agent-name { font-weight: 700; font-size: 0.9rem; }
-    .agent-status { font-size: 0.7rem; opacity: 0.8; }
-    .close-chat { background: none; border: none; color: rgba(255,255,255,0.7); font-size: 1.2rem; cursor: pointer; }
-    .chat-body {
-      height: 280px; background: #f8fafc;
-      padding: 1rem; overflow-y: auto;
-      display: flex; flex-direction: column; gap: 0.75rem;
-    }
-    .message { display: flex; flex-direction: column; max-width: 85%; }
-    .message.bot { align-self: flex-start; }
-    .message.user { align-self: flex-end; }
-    .message-bubble {
-      padding: 0.7rem 1rem; border-radius: 12px;
-      font-size: 0.85rem; line-height: 1.4;
-    }
-    .message.bot .message-bubble { background: white; border-bottom-left-radius: 2px; border: 1px solid var(--border); }
-    .message.user .message-bubble { background: var(--green-800); color: white; border-bottom-right-radius: 2px; }
-    .chat-footer {
-      padding: 0.75rem; background: white;
-      border-top: 1px solid var(--border);
-      display: flex; gap: 0.5rem;
-    }
-    #chat-input {
-      flex: 1; padding: 0.6rem;
-      border: 1px solid var(--border);
-      border-radius: 8px; font-size: 0.85rem; outline: none;
-    }
-    .send-btn {
-      width: 36px; height: 36px;
-      background: var(--green-800); color: white;
-      border: none; border-radius: 8px;
-      cursor: pointer; display: flex;
-      align-items: center; justify-content: center;
+      position:fixed;
+      right:24px;
+      bottom:91px;
+      z-index:1200;
+      display:none;
+      flex-direction:column;
+      width:min(365px,calc(100vw - 30px));
+      height:min(510px,calc(100dvh - 125px));
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:white;
+      box-shadow:0 18px 60px rgba(0,0,0,.2);
     }
 
-    /* ANIMATIONS */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .animate { animation: fadeInUp 0.5s ease both; }
+    .chat-window.open { display:flex; }
+    .chat-header { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:17px; background:var(--green-900); color:white; }
+    .chat-header h3 { font-size:14px; }
+    .chat-header p { margin-top:3px; color:#d6e5da; font-size:11px; }
+    .chat-close { width:34px; height:34px; border:0; border-radius:8px; background:rgba(255,255,255,.12); color:white; font-size:20px; }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      .content-layout { grid-template-columns: 1fr; }
-      .toc-sidebar {
-        position: static;
-        display: flex; gap: 0.75rem; flex-wrap: wrap;
-        padding: 1rem;
+    .chat-status {
+      display:flex;
+      align-items:flex-start;
+      gap:9px;
+      padding:11px 14px;
+      border-bottom:1px solid var(--border);
+      background:#fff9e9;
+      color:#6c5520;
+      font-size:11px;
+      line-height:1.5;
+    }
+
+    .status-dot { width:8px; height:8px; flex-shrink:0; margin-top:5px; border-radius:50%; background:#d39d24; }
+    .chat-messages { display:flex; flex:1; flex-direction:column; align-items:flex-start; gap:10px; overflow-y:auto; padding:16px; background:#f8faf8; }
+    .chat-message { max-width:90%; padding:10px 12px; border-radius:12px; background:#e8efe9; color:#263b2c; font-size:12px; line-height:1.7; overflow-wrap:anywhere; white-space:pre-wrap; }
+    .chat-message.user { align-self:flex-end; background:var(--green-800); color:white; }
+    .chat-form { display:flex; gap:8px; padding:12px; border-top:1px solid var(--border); background:white; }
+    .chat-form input { flex:1; min-width:0; padding:10px 11px; outline:none; border:1px solid var(--border); border-radius:8px; font-size:12px; }
+    .chat-form button { width:43px; border:0; border-radius:8px; background:var(--green-800); color:white; font-size:17px; }
+    .chat-disclaimer { padding:0 13px 11px; background:white; color:var(--muted); font-size:10px; text-align:center; }
+
+    /* Tutorial dialog */
+    .tutorial-dialog {
+      width:min(560px,calc(100% - 30px));
+      max-height:85vh;
+      margin:auto;
+      padding:0;
+      overflow:auto;
+      border:1px solid var(--border);
+      border-radius:16px;
+      background:white;
+      color:var(--text);
+      box-shadow:0 20px 70px rgba(0,0,0,.3);
+    }
+
+    .tutorial-dialog::backdrop { background:rgba(5,25,15,.68); }
+    .tutorial-dialog-header { display:flex; justify-content:space-between; gap:15px; padding:20px; background:var(--green-900); color:white; }
+    .tutorial-dialog-header h2 { font-size:18px; }
+    .tutorial-dialog-header button { width:34px; height:34px; border:0; border-radius:7px; background:rgba(255,255,255,.14); color:white; font-size:20px; }
+    .tutorial-dialog-body { padding:22px; }
+    .tutorial-dialog-body h3 { margin:16px 0 7px; color:var(--green-900); font-size:14px; }
+    .tutorial-dialog-body p,.tutorial-dialog-body li { color:#526156; font-size:13px; line-height:1.8; }
+    .tutorial-dialog-body ol { padding-left:22px; }
+    .tutorial-dialog-body li { margin:7px 0; }
+
+    /* Mobile navigation */
+    .mobile-nav { display:none; }
+
+    @media(max-width:980px) {
+      .page-layout { grid-template-columns:205px minmax(0,1fr); gap:22px; }
+      .header-actions .optional-link { display:none; }
+      .footer-main { gap:25px; }
+    }
+
+    @media(max-width:760px) {
+      html { scroll-padding-top:100px; }
+      .container { width:calc(100% - 30px); }
+      .header-main { min-height:52px; padding:7px 0; gap:12px; }
+      .brand-mark { width:35px; height:35px; font-size:20px; }
+      .brand-name { font-size:14px; }
+      .header-actions { gap:12px; }
+      .header-link { font-size:11px; }
+      .menu-toggle { display:grid; place-items:center; }
+
+      .primary-nav { display:none; flex-direction:column; align-items:stretch; gap:0; padding:8px 0 12px; overflow:visible; }
+      .primary-nav.open { display:flex; }
+      .primary-nav a { min-height:43px; padding:0 8px; border-bottom:0; border-left:3px solid transparent; }
+      .primary-nav a:hover,.primary-nav a.active { border-left-color:var(--gold); background:rgba(255,255,255,.06); }
+
+      .hero { padding:45px 0 55px; }
+      .hero h1 { font-size:39px; }
+      .hero p { font-size:15px; }
+      .search-panel { padding:15px; }
+      .search-box { min-height:52px; padding-inline:12px; }
+      .search-box input { font-size:13px; }
+
+      .page-layout { display:block; padding-top:28px; padding-bottom:45px; }
+      .toc { position:static; margin-bottom:27px; padding:16px; }
+      .toc h2 { padding-bottom:10px; }
+      .toc-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:2px 7px; }
+      .toc a { font-size:11px; padding:9px 7px; }
+      .sec-section { margin-bottom:35px; scroll-margin-top:95px; }
+      .section-heading { align-items:flex-start; }
+      .section-heading h2 { font-size:24px; }
+      .section-heading p { font-size:12px; }
+
+      .quick-card { min-height:120px; padding:15px; gap:11px; }
+      .quick-icon { width:39px; height:39px; font-size:19px; }
+      .quick-card h3 { font-size:13px; }
+      .quick-card p { font-size:11px; }
+      .faq-question { min-height:58px; padding:14px; font-size:13px; }
+      .faq-answer { padding:0 14px 17px; font-size:12px; }
+      .contact-card { padding:16px; }
+      .contact-card h3 { font-size:13px; }
+      .contact-card p { font-size:11px; }
+      .video-cover { min-height:115px; }
+      .video-info { padding:13px; }
+      .video-info h3 { font-size:13px; }
+      .video-info p { font-size:11px; }
+      .ticket-panel { padding:17px; }
+      .form-grid { gap:14px; }
+      .form-control { font-size:12px; }
+      .farming-panel { padding:21px; }
+      .resource-link { padding:13px; gap:9px; }
+      .resource-link strong { font-size:12px; }
+      .resource-link small { font-size:10px; }
+
+      .footer-main { grid-template-columns:1fr 1fr; gap:28px 20px; padding-top:32px; }
+      .footer-brand { grid-column:1/-1; }
+      .footer-bottom { padding-bottom:90px; }
+
+      .chat-launcher { right:15px; bottom:82px; min-height:47px; padding-inline:15px; }
+      .chat-window { right:15px; bottom:140px; }
+
+      .mobile-nav {
+        position:fixed;
+        right:0;
+        bottom:0;
+        left:0;
+        z-index:1100;
+        display:grid;
+        grid-template-columns:repeat(5,minmax(0,1fr));
+        min-height:64px;
+        padding-bottom:env(safe-area-inset-bottom);
+        border-top:1px solid var(--border);
+        background:white;
+        box-shadow:0 -4px 18px rgba(15,44,26,.07);
       }
-      .toc-title { width: 100%; }
-      .toc-list { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-      .toc-list a { white-space: nowrap; }
+
+      .mobile-nav a { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; min-width:0; color:#6d7a70; font-size:9px; font-weight:700; }
+      .mobile-nav a span:first-child { font-size:18px; line-height:1.2; }
+      .mobile-nav a.active { color:var(--green-800); }
     }
-    @media (max-width: 768px) {
-      .navbar { padding: 0 1rem; }
-      .nav-links { display: none; }
-      .content-layout { padding: 1.5rem 1rem 5rem; }
-      .page-hero { padding: 5.5rem 1rem 2.5rem; }
-      .search-wrapper { padding: 0 1rem; }
-      .form-row { grid-template-columns: 1fr; }
-      .mobile-nav { display: block; }
-      .chat-widget-container { bottom: 80px; right: 15px; }
-      .chat-window { width: calc(100vw - 30px); right: -15px; }
+
+    @media(max-width:480px) {
+      .header-actions .header-link:not(.gold-button) { display:none; }
+      .brand { gap:8px; }
+      .brand-name { font-size:13px; }
+      .hero h1 { font-size:34px; letter-spacing:-1px; }
+      .hero-trust { font-size:11px; }
+      .suggestions { gap:7px; }
+      .suggestion { font-size:11px; }
+
+      .quick-grid,.contact-grid,.video-grid,.resource-grid { grid-template-columns:1fr; }
+      .quick-card { min-height:108px; }
+      .section-heading { gap:8px; }
+      .section-count { font-size:10px; }
+      .form-grid { grid-template-columns:1fr; }
+      .form-group.full-width { grid-column:auto; }
+      .form-bottom { align-items:stretch; }
+      .form-bottom .button { width:100%; }
+      .footer-main { grid-template-columns:1fr 1fr; }
+      .footer-bottom { flex-direction:column; align-items:flex-start; }
+      .chat-launcher { width:48px; height:48px; min-height:48px; padding:0; font-size:20px; }
+      .chat-launcher .chat-label { display:none; }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      *,*::before,*::after {
+        scroll-behavior:auto !important;
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition-duration:.01ms !important;
+      }
     }
   </style>
 </head>
-<body>
 
-  <!-- ========== NAVBAR ========== -->
-  <nav class="navbar">
-    <a href="/" class="nav-brand">Agri<span>Bank</span></a>
-    <div class="nav-links">
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+  <div class="container header-main">
+
+    <a href="/dashboard" class="brand" aria-label="AgriBank Overview">
+      <img
+        src="/images/agribank-logo.png"
+        alt="AgriBank"
+        class="brand-logo"
+      >
+    </a>
+
+    <div class="header-actions">
+      <a href="/notifications" class="header-link optional-link">
+        ♧ Notifications
+      </a>
+
+      <a href="/profile" class="header-link">
+        ♙ My Profile
+      </a>
+
+      <a href="/dashboard" class="header-link gold-button">
+        Overview ↗
+      </a>
+
+      <button
+        type="button"
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="primaryNav"
+      >☰</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <nav class="primary-nav" id="primaryNav" aria-label="Main navigation">
       <a href="/">Home</a>
-      <a href="/dashboard">Dashboard</a>
+      <a href="/dashboard">Overview</a>
       <a href="/accounts">Accounts</a>
       <a href="/loans">Loans</a>
       <a href="/about">About Us</a>
-      <a href="/register" class="btn-nav">Open Account</a>
-    </div>
-  </nav>
+      <a href="/help" class="active" aria-current="page">
+        Help &amp; Support
+      </a>
+    </nav>
+  </div>
+</header>
 
-  <!-- ========== HERO ========== -->
-  <section class="page-hero">
-    <div class="hero-deco">🤝</div>
-    <div class="hero-deco">📞</div>
-    <div class="hero-deco">💬</div>
-    <h1>Help & Support</h1>
-    <p>We're here to help you every step of the way. Find answers, contact our team, or submit a request — we respond fast.</p>
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="eyebrow">Customer Care</div>
+      <h1>Help &amp; Support</h1>
+      <p>We're here to help you every step of the way. Find answers, contact our team, or submit a request.</p>
+      <div class="hero-trust">
+        <span>✓ Account assistance</span>
+        <span>✓ Payment support</span>
+        <span>✓ Farming-specific help</span>
+      </div>
+    </div>
   </section>
 
-  <!-- ========== SEARCH ========== -->
-  <div class="search-wrapper">
-    <div class="search-bar">
-      <span class="search-icon">🔍</span>
-      <input type="text" class="search-input" id="helpSearch" placeholder="Search help articles..." oninput="filterArticles()">
-      <button class="search-btn">Search</button>
-    </div>
-    <div class="search-suggestions">
-      <span class="suggestion-tag" onclick="quickSearch('reset password')">Reset Password</span>
-      <span class="suggestion-tag" onclick="quickSearch('transfer limits')">Transfer Limits</span>
-      <span class="suggestion-tag" onclick="quickSearch('wire transfer')">Wire Transfer</span>
-      <span class="suggestion-tag" onclick="quickSearch('mobile deposit')">Mobile Deposit</span>
-      <span class="suggestion-tag" onclick="quickSearch('fraud alert')">Fraud Alert</span>
-      <span class="suggestion-tag" onclick="quickSearch('account fees')">Account Fees</span>
+  <div class="container search-wrap">
+    <div class="search-panel">
+      <div class="search-box">
+        <span class="search-icon" aria-hidden="true">⌕</span>
+        <input type="search" id="helpSearch" placeholder="Search for answers, topics, or support..." aria-label="Search help articles and frequently asked questions" autocomplete="off">
+        <button type="button" id="clearSearch" aria-label="Clear search" title="Clear search" hidden>×</button>
+      </div>
+      <div class="suggestions">
+        <span class="suggestions-label">Popular searches:</span>
+        <button class="suggestion" type="button" data-search="password">Reset password</button>
+        <button class="suggestion" type="button" data-search="transfer">Transfer delays</button>
+        <button class="suggestion" type="button" data-search="card">Lost card</button>
+        <button class="suggestion" type="button" data-search="statement">Bank statements</button>
+      </div>
     </div>
   </div>
 
-  <!-- ========== CONTENT ========== -->
-  <div class="content-layout">
-
-    <!-- SIDEBAR TOC -->
-    <aside class="toc-sidebar">
-      <div class="toc-title">Contents</div>
-      <ul class="toc-list">
-        <li><a href="#q1" class="active">⚡ Quick Actions</a></li>
-        <li><a href="#q2">❓ Frequently Asked Questions</a></li>
-        <li><a href="#q3">📧 Getting in Touch</a></li>
-        <li><a href="#q4">🎥 Video Tutorials</a></li>
-        <li><a href="#q5">📋 Submit a Ticket</a></li>
-        <li><a href="#q6">🌾 Farming-Specific Help</a></li>
-        <li><a href="#q7">📜 Resources</a></li>
-      </ul>
+  <main class="container page-layout" id="main-content">
+    <aside class="toc" aria-label="Help page sections">
+      <h2>Help Center</h2>
+      <nav class="toc-links" aria-label="On this page">
+        <a href="#quick-actions"><span class="toc-icon" aria-hidden="true">⚡</span>Quick Actions</a>
+        <a href="#faqs"><span class="toc-icon" aria-hidden="true">❔</span>FAQs</a>
+        <a href="#contact"><span class="toc-icon" aria-hidden="true">☎</span>Getting in Touch</a>
+        <a href="#videos"><span class="toc-icon" aria-hidden="true">▶</span>Video Tutorials</a>
+        <a href="#ticket"><span class="toc-icon" aria-hidden="true">✉</span>Submit a Ticket</a>
+        <a href="#farming-help"><span class="toc-icon" aria-hidden="true">🌱</span>Farming-Specific Help</a>
+        <a href="#resources"><span class="toc-icon" aria-hidden="true">▤</span>Resources</a>
+      </nav>
+      <div class="toc-help">
+        <strong>Still need assistance?</strong>
+        <p>Our support team is here to help you find the right answer.</p>
+        <a href="#contact">Contact our team →</a>
+      </div>
     </aside>
 
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
+    <div class="content">
+      <section class="sec-section" id="quick-actions">
+        <div class="section-heading">
+          <div>
+            <h2>Quick Actions</h2>
+            <p>Get help with common account tasks.</p>
+          </div>
+          <span class="section-count">4 services</span>
+        </div>
 
-      <!-- 1. QUICK ACTION CARDS — NOW ACTUALLY LINKED ✅ -->
-      <div class="sec-section animate" id="q1">
-        <div class="quick-cards">
-          <!-- ✅ FIXED: Now wraps everything in an <a> tag -->
-          <a href="/profile" class="quick-card">
-            <div class="quick-card-icon green">🔐</div>
-            <h3>Reset Password</h3>
-            <p>Forgot your login? Change it instantly from your Profile &gt; Security Settings.</p>
+        <div class="quick-grid">
+          <a href="/profile" class="quick-card searchable-item">
+            <span class="quick-icon" aria-hidden="true">🔐</span>
+            <span><h3>Reset Password</h3><p>Having trouble signing in? Review account recovery options and account access.</p></span>
+            <span class="quick-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="#" onclick="alert('To report fraud, call 1-800-555-FRAUD immediately.'); return false;" class="quick-card">
-            <div class="quick-card-icon blue">🆘</div>
-            <h3>Report Fraud</h3>
-            <p>See suspicious activity? Call our 24/7 fraud hotline now.</p>
+
+          <a href="#contact" class="quick-card searchable-item">
+            <span class="quick-icon red" aria-hidden="true">🛡</span>
+            <span><h3>Report Fraud</h3><p>For suspicious activity, contact support immediately using a verified bank channel.</p></span>
+            <span class="quick-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="/profile" class="quick-card">
-            <div class="quick-card-icon gold">💳</div>
-            <h3>Update Cards</h3>
-            <p>Change your card PIN, freeze/deactivate cards, or request replacements.</p>
+
+          <a href="/profile" class="quick-card searchable-item">
+            <span class="quick-icon gold" aria-hidden="true">💳</span>
+            <span><h3>Update Cards</h3><p>Review card-related settings through your account.</p></span>
+            <span class="quick-arrow" aria-hidden="true">↗</span>
           </a>
-          <a href="#q4" class="quick-card">
-            <div class="quick-card-icon purple">📱</div>
-            <h3>Mobile App Help</h3>
-            <p>Troubleshooting guides for iOS and Android apps below.</p>
+
+          <a href="#videos" class="quick-card searchable-item">
+            <span class="quick-icon" aria-hidden="true">📱</span>
+            <span><h3>Mobile App Help</h3><p>Find guidance for online and mobile banking features.</p></span>
+            <span class="quick-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
-      </div>
+      </section>
 
-      <!-- 2. FAQ SECTION -->
-      <div class="faq-section animate" style="animation-delay:0.1s;" id="q2">
-        <h2 class="faq-category-title">Frequently Asked Questions</h2>
-
-        <h3 style="font-size:1.1rem; font-weight:700; margin-bottom:0.75rem;">Account Management</h3>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">How do I reset my online banking password?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p>Navigate to Dashboard → Profile → Security Settings → Change Password. You must know your current password to proceed. If you've forgotten it entirely, click "Forgot Password" on the login page. A secure link will be sent to your registered email within 2 minutes.</p>
-            <p>You cannot use any of your last 5 passwords, and must meet our minimum complexity requirements (12+ characters, mixed case, numbers, symbols).</p>
-          </div>
+      <section class="sec-section" id="faqs">
+        <div class="section-heading">
+          <div><h2>Frequently Asked Questions</h2><p>Answers to common banking questions.</p></div>
         </div>
 
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">What are the daily transfer limits for my account?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p><strong>Basic Verified:</strong> $10,000/day internal, $5,000/day external wires<br>
-            <strong>Fully Verified:</strong> $50,000/day internal, $25,000/day domestic wires, $10,000/day international<br>
-            <strong>Premium (Business):</strong> Up to $500,000/day with dual-authorization setup</p>
-            <p>You can request a temporary limit increase through Dashboard → Account Settings → Limit Requests. Approval takes 2–4 business hours.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">My statement isn't showing up — where can I find it?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p>Statements are available in Dashboard → Accounts → Select Account → Statements PDF. Monthly statements are posted by the 5th of each month. We can re-send any statement from the past 7 years.</p>
-          </div>
-        </div>
-
-        <h3 style="font-size:1.1rem; font-weight:700; margin-top:2rem; margin-bottom:0.75rem;">Transfers & Payments</h3>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">Why is my wire transfer taking longer than expected?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p>Domestic wires typically arrive same-day if submitted before 4:00 PM CT. International wires usually arrive in 1–5 business days depending on the receiving country. Factors causing delays include incomplete beneficiary information, intermediary bank routing, holidays, or enhanced compliance reviews on large amounts ($10,000+).</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">Can I cancel or reverse a payment I just made?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p><strong>Internal transfers:</strong> Can be reversed instantly if within 5 minutes.<br>
-            <strong>ACH transactions:</strong> Cancellation requests within 24 hours via Dashboard → Transactions → Cancel ACH.<br>
-            <strong>Wires:</strong> Once sent, recall the receiving institution through our fraud team.<br>
-            <strong>Bill Pay:</strong> Paper checks stopped via $25 stop-payment order. Electronic payments cancelled within 48 hours.</p>
-          </div>
-        </div>
-
-        <h3 style="font-size:1.1rem; font-weight:700; margin-top:2rem; margin-bottom:0.75rem;">Security & Fraud</h3>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">I received a phishing email claiming to be from AgriBank — what do I do?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p><strong>Do NOT click any links or download attachments.</strong> Forward the email to phish@agribanktx.com then delete it. We will never ask for your password, PIN, full SSN, or one-time code via email. When in doubt, call 1-800-555-FRAUD.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFAQ(this)">
-          <button class="faq-question">My card was lost/stolen — how quickly can it be blocked?<span class="faq-arrow">▼</span></button>
-          <div class="faq-answer">
-            <p>Immediate action is available through the app under Card Controls → Freeze Card (instant). You can also call 1-800-555-AGRI for instant manual blocking. Replacement debit cards ship within 2–3 business days. Virtual card numbers can be issued instantly while waiting.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. GETTING IN TOUCH -->
-      <div class="faq-section animate" style="animation-delay:0.15s;" id="q3">
-        <h2 class="faq-category-title">Getting in Touch</h2>
-        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1.25rem;">Our support teams are available through multiple channels:</p>
-
-        <div class="contact-cards">
-          <div class="contact-card">
-            <div class="contact-card-header">
-              <div class="contact-card-icon green">📞</div>
-              <h3>Phone Support</h3>
+        <div class="faq-list">
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-1">
+              <span>How do I reset my online banking password?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-1">
+              Select the profile or sign-in assistance option and follow the available account recovery instructions. You may need to verify your identity before creating a new password. Never share your password or verification codes.
+              <br><br><a href="/profile">Visit your profile →</a>
             </div>
-            <p>Main Line</p>
-            <div class="highlight">1-800-555-AGRI</div>
-            <p style="margin-top:0.5rem;font-size:0.78rem;color:var(--text-secondary);">Mon–Fri 8AM–8PM CT<br>Sat 9AM–1PM CT<br>Emergency 24/7 Fraud Line: 1-800-555-FRAUD</p>
-          </div>
-          <div class="contact-card">
-            <div class="contact-card-header">
-              <div class="contact-card-icon blue">💬</div>
-              <h3>Live Chat</h3>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-2">
+              <span>What are my transfer limits?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-2">
+              Limits may depend on your account type, transfer method, security settings, and applicable bank policies. Review the limits shown for your account or contact the bank through a verified support channel.
             </div>
-            <p>Chat with a support agent in real-time. Average wait time: under 3 minutes.</p>
-            <button class="btn-submit" onclick="toggleChat()" style="margin-top:0.5rem;padding:0.6rem 1.25rem;font-size:0.85rem;">Start Chat Now</button>
-          </div>
-          <div class="contact-card">
-            <div class="contact-card-header">
-              <div class="contact-card-icon gold">🏢</div>
-              <h3>Visit a Branch</h3>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-3">
+              <span>How do I access my bank statements?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-3">
+              Sign in and open the relevant account section. Look for statements, documents, or account activity. If you cannot find the statement you need, contact support.
+              <br><br><a href="/accounts">View accounts →</a>
             </div>
-            <p>42 locations across Texas for in-person service, cash deposits, notary services, and consultations.</p>
-            <a href="#" style="display:inline-block;margin-top:0.5rem;font-size:0.85rem;font-weight:600;color:var(--green-700);" onclick="alert('Branch locator coming soon!'); return false;">Find Nearest Branch →</a>
-          </div>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-4">
+              <span>Why is my wire transfer delayed?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-4">
+              Transfers may be delayed because of processing schedules, bank holidays, intermediary banks, security reviews, or incorrect recipient details. Contact support with your transaction reference. Do not send a duplicate transfer until the original status has been confirmed.
+            </div>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-5">
+              <span>Can I cancel or reverse a payment?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-5">
+              This depends on the payment method and transaction status. Contact the bank as soon as possible. Completed transfers may not be reversible, and recovery is not guaranteed.
+            </div>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-6">
+              <span>How do I identify phishing messages?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-6">
+              Be alert to unsolicited messages requesting urgent action, passwords, PINs, or verification codes. Avoid clicking suspicious links or opening unexpected attachments. Always verify unusual communications through AgriBank Texas's official contact channels.
+            </div>
+          </article>
+
+          <article class="faq-item searchable-item">
+            <button type="button" class="faq-question" aria-expanded="false" aria-controls="faq-answer-7">
+              <span>What should I do if my card is lost or stolen?</span><span class="faq-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <div class="faq-answer" id="faq-answer-7">
+              Contact the bank immediately through a verified channel and ask about blocking or freezing the card. Review recent transactions and report anything you do not recognize.
+              <br><br><a href="#contact">Contact support →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="sec-section" id="contact">
+        <div class="section-heading">
+          <div><h2>Getting in Touch</h2><p>Choose the support channel that works best for you.</p></div>
         </div>
 
-        <div class="info-grid">
-          <div class="info-item"><span class="info-item-icon">✉️</span><div><div class="info-item-label">Email</div><div class="info-item-value">support@agribanktx.com</div></div></div>
-          <div class="info-item"><span class="info-item-icon">🐦</span><div><div class="info-item-label">Twitter / X</div><div class="info-item-value">@AgriBankTX</div></div></div>
-          <div class="info-item"><span class="info-item-icon">📍</span><div><div class="info-item-label">Headquarters</div><div class="info-item-value">100 Market St, Austin TX</div></div></div>
-          <div class="info-item"><span class="info-item-icon">💬</span><div><div class="info-item-label">WhatsApp Business</div><div class="info-item-value">+1 (512) 555-0199</div></div></div>
+        <div class="contact-grid">
+          <article class="contact-card searchable-item">
+            <div class="contact-card-top"><span class="contact-card-icon" aria-hidden="true">☎</span><h3>Call Us</h3></div>
+            <p>Speak with support about account questions, transactions, and available banking services.</p>
+            <!-- Replace with a verified official support number before publishing. -->
+            <a class="button button-primary" href="tel:+18005552474">Call Support</a>
+          </article>
+
+          <article class="contact-card searchable-item">
+            <div class="contact-card-top"><span class="contact-card-icon" aria-hidden="true">◉</span><h3>Live Chat</h3></div>
+            <p>Connect with an AgriBank representative for general guidance through our chat or staffed support queue.</p>
+            <button type="button" class="button button-primary" id="contactChatButton">Start Live Chat</button>
+          </article>
+
+          <article class="contact-card searchable-item">
+            <div class="contact-card-top"><span class="contact-card-icon" aria-hidden="true">✉</span><h3>Email Support</h3></div>
+            <p>Send a support request. Do not include your password, PIN, or verification codes.</p>
+            <!-- Verify that this mailbox belongs to your organization before publishing. -->
+            <a class="button button-outline" href="mailto:support@agribanktx.com">Email Support</a>
+          </article>
+
+          <article class="contact-card searchable-item">
+            <div class="contact-card-top"><span class="contact-card-icon" aria-hidden="true">⌖</span><h3>Branch Assistance</h3></div>
+            <p>Contact the bank through a verified official channel to confirm branch locations and opening hours.</p>
+            <a class="button button-outline" href="#ticket">Submit a Request</a>
+          </article>
         </div>
-      </div>
 
-      <!-- 4. VIDEO TUTORIALS -->
-      <div class="faq-section animate" style="animation-delay:0.2s;" id="q4">
-        <h2 class="faq-category-title">Video Tutorials</h2>
-        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1rem;">Watch our quick tutorials to master the platform:</p>
-
-        <div class="article-list" id="articleList">
-          <div class="article-item" onclick="openArticle('setting-up-your-account')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Setting Up Your Account for the First Time</div><div class="article-meta">Duration: 4 min • Updated April 2025</div></div><span class="article-arrow">→</span></div>
-          <div class="article-item" onclick="openArticle('making-internal-transfers')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">How to Make Internal Transfers Between Accounts</div><div class="article-meta">Duration: 3 min • Updated March 2025</div></div><span class="article-arrow">→</span></div>
-          <div class="article-item" onclick="openArticle('mobile-check-deposit')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Perfect Mobile Check Deposit Technique</div><div class="article-meta">Duration: 5 min • Updated April 2025</div></div><span class="article-arrow">→</span></div>
-          <div class="article-item" onclick="openArticle('security-best-practices')"><span class="article-icon">▶️</span><div class="article-info"><div class="article-title">Security Best Practices Every Farmer Should Know</div><div class="article-meta">Duration: 7 min • Updated January 2025</div></div><span class="article-arrow">→</span></div>
+        <div class="contact-note">
+          <strong>Important:</strong> We will never request your login credentials. Do not share your password or security codes with anyone.
         </div>
-      </div>
+      </section>
 
-      <!-- 5. SUBMIT A TICKET -->
-      <div class="faq-section animate" style="animation-delay:0.25s;" id="q5">
-        <h2 class="faq-category-title">Submit a Support Ticket</h2>
-        <p style="color:var(--text-secondary);font-size:0.92rem;margin-bottom:1rem;">Can't find what you need? Submit a ticket and our team will respond within 4 business hours during working days.</p>
+      <section class="sec-section" id="videos">
+        <div class="section-heading">
+          <div><h2>Video Tutorials</h2><p>Explore helpful guides for everyday banking tasks.</p></div>
+        </div>
 
-        <div class="ticket-form">
-          <form onsubmit="submitTicket(event)">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="Full name" required></div>
-              <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="your@email.com" required></div>
+        <div class="video-grid">
+          <article class="video-card searchable-item">
+            <div class="video-cover"><button type="button" class="play-button" data-article="online-banking" aria-label="Open online banking tutorial">▶</button></div>
+            <div class="video-info">
+              <h3>Getting Started with Online Banking</h3>
+              <p>Learn the general steps for signing in and finding account information.</p>
+              <div class="video-meta"><span>Account basics</span><span>Help guide</span></div>
             </div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Category</label><select class="form-select" required><option value="">Select category...</option><option>Account Issues</option><option>Transaction Problem</option><option>Mobile App Issue</option><option>Loan / Credit Question</option><option>Card Services</option><option>Fee Dispute</option><option>General Inquiry</option><option>Feature Request</option><option>Complaint</option></select></div>
-              <div class="form-group"><label class="form-label">Priority</label><select class="form-select"><option>Normal</option><option>High</option><option>Urgent</option></select></div>
+          </article>
+
+          <article class="video-card searchable-item">
+            <div class="video-cover"><button type="button" class="play-button" data-article="transfers" aria-label="Open transfer tutorial">▶</button></div>
+            <div class="video-info">
+              <h3>Making a Transfer</h3>
+              <p>Understand the general steps for making and reviewing a transfer.</p>
+              <div class="video-meta"><span>Payments</span><span>Help guide</span></div>
             </div>
-            <div class="form-group"><label class="form-label">Subject</label><input type="text" class="form-input" placeholder="Brief summary of your issue" required></div>
-            <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" placeholder="Describe your issue in detail. Include transaction IDs, account numbers, or error messages." required></textarea></div>
-            <button type="submit" class="btn-submit">Submit Ticket →</button>
+          </article>
+
+          <article class="video-card searchable-item">
+            <div class="video-cover"><button type="button" class="play-button" data-article="statements" aria-label="Open statements tutorial">▶</button></div>
+            <div class="video-info">
+              <h3>Finding Your Bank Statements</h3>
+              <p>Learn where to look for available statements and account activity.</p>
+              <div class="video-meta"><span>Documents</span><span>Help guide</span></div>
+            </div>
+          </article>
+
+          <article class="video-card searchable-item">
+            <div class="video-cover"><button type="button" class="play-button" data-article="security" aria-label="Open account security tutorial">▶</button></div>
+            <div class="video-info">
+              <h3>Keeping Your Account Secure</h3>
+              <p>Review practical ways to protect your account and personal information.</p>
+              <div class="video-meta"><span>Security</span><span>Help guide</span></div>
+            </div>
+          </article>
+        </div>
+        <p class="form-help" style="margin-top:12px;">These are written help guides, not recorded videos. Connect verified video URLs when they are available.</p>
+      </section>
+
+      <section class="sec-section" id="ticket">
+        <div class="section-heading">
+          <div><h2>Submit a Support Ticket</h2><p>Tell us what you need help with.</p></div>
+        </div>
+
+        <div class="ticket-panel">
+          <p class="ticket-intro">
+            Complete the form below. An AgriBank representative will respond to your ticket within 24 hours.
+          </p>
+<div class="form-notice" id="ticketNotice" role="status" aria-live="polite" tabindex="-1">
+  <strong>Your support request has been submitted successfully.</strong>
+  Thank you for contacting AgriBank Texas. Your request has been received and will be reviewed by our customer support team. We will contact you if further information is required.
+</div>
+
+          <form id="ticketForm">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="ticketName">Full Name</label>
+                <input class="form-control" type="text" id="ticketName" name="name" placeholder="Enter your full name" autocomplete="name" required maxlength="120">
+              </div>
+
+              <div class="form-group">
+                <label for="ticketEmail">Email Address</label>
+                <input class="form-control" type="email" id="ticketEmail" name="email" placeholder="you@example.com" autocomplete="email" required maxlength="254">
+              </div>
+
+              <div class="form-group">
+                <label for="ticketCategory">Issue Category</label>
+                <select class="form-control" id="ticketCategory" name="category" required>
+                  <option value="">Select a category</option>
+                  <option value="account">Account Access</option>
+                  <option value="transfers">Transfers and Payments</option>
+                  <option value="cards">Cards</option>
+                  <option value="statements">Statements</option>
+                  <option value="security">Security or Fraud</option>
+                  <option value="farming">Farming-Specific Help</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="ticketPriority">Priority</label>
+                <select class="form-control" id="ticketPriority" name="priority" required>
+                  <option value="normal">Normal</option>
+                  <option value="high">High</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <label for="ticketSubject">Subject</label>
+                <input class="form-control" type="text" id="ticketSubject" name="subject" placeholder="Briefly describe your issue" required maxlength="160">
+              </div>
+
+              <div class="form-group full-width">
+                <label for="ticketMessage">How can we help?</label>
+                <textarea class="form-control" id="ticketMessage" name="message" placeholder="Describe the issue you are experiencing..." required minlength="10" maxlength="5000"></textarea>
+                <p class="form-help">Do not include passwords, PINs, full card numbers, or verification codes.</p>
+              </div>
+            </div>
+
+            <div class="form-bottom">
+              <p class="privacy-note">
+                Click on the Submit button to agree to the applicable <a href="/privacy">privacy notice</a>. Submit a ticket to get general guidance from an AgriBank representative.
+              </p>
+              <button type="submit" class="button button-primary">Submit Ticket →</button>
+            </div>
           </form>
         </div>
-      </div>
+      </section>
 
-      <!-- 6. FARMING SPECIFIC HELP -->
-      <div class="faq-section animate" style="animation-delay:0.3s;" id="q6">
-        <h2 class="faq-category-title">Farming-Specific Help</h2>
-        <div class="alert-box success"><span class="icon">🌾</span><p><strong>Agricultural Banking Experts Available!</strong> Our specialized ag-lending and ag-banking advisors can help with harvest-cycle planning, seasonal cash flow management, crop insurance financing, and equipment leasing. Schedule a consultation at any branch or via phone.</p></div>
-      </div>
-
-      <!-- 7. RESOURCES -->
-      <div class="faq-section animate" style="animation-delay:0.35s;" id="q7">
-        <h2 class="faq-category-title">Additional Resources</h2>
-        <div class="article-list">
-          <div class="article-item"><span class="article-icon">📄</span><div class="article-info"><div class="article-title">Complete Fee Schedule (PDF)</div><div class="article-meta">Last updated: April 2025</div></div><span class="article-arrow">→</span></div>
-          <div class="article-item"><span class="article-icon">📖</span><div class="article-info"><div class="article-title">Phishing Awareness Guide</div><div class="article-meta">Stay safe from fraudulent emails and texts</div></div><span class="article-arrow">→</span></div>
-          <div class="article-item"><span class="article-icon">👨‍🌾</span><div class="article-info"><div class="article-title">Beginning Farmer Program</div><div class="article-meta">Resources and incentives for new farmers</div></div><span class="article-arrow">→</span></div>
+      <section class="sec-section" id="farming-help">
+        <div class="section-heading">
+          <div><h2>Farming-Specific Help</h2><p>Support for agricultural and rural banking needs.</p></div>
         </div>
-        <button class="btn-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ Back to Top</button>
+
+        <div class="farming-panel">
+          <h3>We're here to support your growth.</h3>
+          <p>Agricultural finances can involve seasonal cash flow, equipment purchases, operating expenses, and changing business needs. Contact the bank to learn about available services and discuss which options may fit your situation.</p>
+          <div class="farming-actions">
+            <a href="/loans" class="button button-gold">Explore Loan Services</a>
+            <a href="#ticket" class="button button-outline">Ask a Question</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="sec-section" id="resources">
+        <div class="section-heading">
+          <div><h2>Additional Resources</h2><p>Find more information and account assistance.</p></div>
+        </div>
+
+        <div class="resource-grid">
+          <a href="/accounts" class="resource-link searchable-item"><span aria-hidden="true">▤</span><span><strong>Accounts</strong><small>Review account information.</small></span><span class="resource-arrow" aria-hidden="true">→</span></a>
+          <a href="/transactions" class="resource-link searchable-item"><span aria-hidden="true">↔</span><span><strong>Transactions</strong><small>Review recent account activity.</small></span><span class="resource-arrow" aria-hidden="true">→</span></a>
+          <a href="/profile" class="resource-link searchable-item"><span aria-hidden="true">♙</span><span><strong>Profile &amp; Settings</strong><small>Manage profile information.</small></span><span class="resource-arrow" aria-hidden="true">→</span></a>
+          <a href="/loans" class="resource-link searchable-item"><span aria-hidden="true">🌱</span><span><strong>Loan Services</strong><small>Explore loan information.</small></span><span class="resource-arrow" aria-hidden="true">→</span></a>
+        </div>
+      </section>
+
+      <div class="no-results" id="noResults" role="status" aria-live="polite">
+        <h3>No matching results found</h3>
+        <p>Try another search term, browse the FAQs, or contact support.</p>
+        <button type="button" class="button button-primary" id="resetSearch" style="margin-top:15px;">Clear Search</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-main">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <span class="brand-mark" aria-hidden="true">A</span>
+          <span class="brand-copy"><span class="brand-name">AgriBank Texas Regional</span></span>
+        </a>
+        <p>Helping customers and agricultural communities move forward with financial services and support.</p>
       </div>
 
-    </main>
-  </div>
+      <div class="footer-column">
+        <h3>Banking</h3>
+        <a href="/accounts">Accounts</a>
+        <a href="/transactions">Transactions</a>
+        <a href="/transfer">Transfers</a>
+        <a href="/loans">Loans</a>
+        <a href="/profile">Profile &amp; Settings</a>
+      </div>
 
-  <!-- ========== FOOTER ========== -->
-  <footer class="footer">
-    <div class="footer-brand">Agri<span>Bank</span></div>
-    <div class="footer-subtitle">Texas Regional • Since 1987</div>
-    <div class="footer-links">
-      <a href="/about">About</a>
-      <a href="/privacy">Privacy Policy</a>
-      <a href="/terms">Terms of Service</a>
-      <a href="/security">Security Center</a>
-      <a href="/help" style="color:var(--gold);">Help & Support</a>
+      <div class="footer-column">
+        <h3>Help &amp; Information</h3>
+        <a href="#faqs">Frequently Asked Questions</a>
+        <a href="#contact">Contact Support</a>
+        <a href="#ticket">Submit a Ticket</a>
+        <a href="#farming-help">Farming-Specific Help</a>
+        <a href="#resources">Resources</a>
+      </div>
     </div>
-    <div>© <%= new Date().getFullYear() || 2025 %> AgriBank Texas Regional. Member FDIC. Equal Housing Lender. NMLS# 482910</div>
+
+    <div class="container footer-bottom">
+      <p>&copy; <%= new Date().getFullYear() %> AgriBank Texas Regional. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+        <a href="/security">Security</a>
+      </div>
+    </div>
   </footer>
 
-  <!-- ========== MOBILE NAV ========== -->
-  <nav class="mobile-nav">
-    <div class="mobile-nav-grid">
-      <a href="/" class="mob-nav-item"><span class="mob-icon">🏠</span>Home</a>
-      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
-      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
-      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
-      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+<!-- AgriBank Customer Support Chat -->
+<section class="chat-window" id="chatWindow" aria-label="AgriBank customer support" aria-hidden="true">
+  <div class="chat-header">
+    <div>
+      <h3>AgriBank Support</h3>
+      <p>Customer Assistance</p>
     </div>
-  </nav>
-
-  <!-- ========== LIVE CHAT WIDGET ========== -->
-  <div class="chat-widget-container">
-    <div id="chatWindow" class="chat-window hidden">
-      <div class="chat-header">
-        <div class="chat-header-info">
-          <div class="agent-avatar">🌾</div>
-          <div><div class="agent-name">AgriBank Support</div><div class="agent-status">● Online</div></div>
-        </div>
-        <button class="close-chat" onclick="toggleChat()">✕</button>
-      </div>
-      <div class="chat-body" id="chatBody">
-        <div class="message bot"><div class="message-bubble">Howdy! 👋 Welcome to AgriBank Support. How can I assist you today?</div></div>
-      </div>
-      <div class="chat-footer">
-        <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="handleChatEnter(event)">
-        <button class="send-btn" onclick="sendChatMessage()">➤</button>
-      </div>
-    </div>
-    <button class="chat-button" onclick="toggleChat()">
-      💬<span class="chat-tooltip">Live Support</span>
-    </button>
+    <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">×</button>
   </div>
 
-  <!-- ========== SCRIPTS ========== -->
+  <div class="chat-status" role="status" aria-live="polite">
+    <span class="status-dot" aria-hidden="true"></span>
+    <span>
+      <strong>Automated assistance available</strong><br>
+      Select a topic or send a message to get assistance.
+    </span>
+  </div>
+
+  <div class="chat-messages" id="chatMessages" aria-live="polite" aria-relevant="additions">
+    <div class="chat-message">
+      Welcome to AgriBank Customer Support. How may we assist you today?
+    </div>
+  </div>
+
+  <form class="chat-form" id="chatForm">
+    <input
+      type="text"
+      id="chatInput"
+      placeholder="Type your message..."
+      aria-label="Your message"
+      maxlength="1000"
+      autocomplete="off"
+      required
+    >
+    <button type="submit" aria-label="Send message">➤</button>
+  </form>
+
+  <p class="chat-disclaimer">
+    For your security, never share your password, PIN, or one-time verification codes.
+  </p>
+</section>
+
+<button
+  type="button"
+  class="chat-launcher"
+  id="chatLauncher"
+  aria-label="Open customer support chat"
+  aria-expanded="false"
+  aria-controls="chatWindow"
+>
+  <span aria-hidden="true">▣</span>
+  <span class="chat-label">Chat Support</span>
+</button>
+
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="/"><span aria-hidden="true">⌂</span><span>Home</span></a>
+    <a href="/accounts"><span aria-hidden="true">▤</span><span>Accounts</span></a>
+    <a href="/transfer"><span aria-hidden="true">↔</span><span>Transfer</span></a>
+    <a href="/billpay"><span aria-hidden="true">▣</span><span>Pay</span></a>
+    <a href="/profile"><span aria-hidden="true">♙</span><span>Profile</span></a>
+  </nav>
+
+  <dialog class="tutorial-dialog" id="tutorialDialog" aria-labelledby="tutorialTitle">
+    <div class="tutorial-dialog-header">
+      <h2 id="tutorialTitle">Help guide</h2>
+      <button type="button" id="tutorialClose" aria-label="Close tutorial">×</button>
+    </div>
+    <div class="tutorial-dialog-body" id="tutorialBody"></div>
+  </dialog>
+
   <script>
-    // FAQ Toggle
-    function toggleFAQ(item) {
-      const isOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-      if (!isOpen) item.classList.add('open');
-    }
+    "use strict";
 
-    // Chat Toggle
-    function toggleChat() {
-      document.getElementById('chatWindow').classList.toggle('hidden');
-    }
-    function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
-    function sendChatMessage() {
-      const input = document.getElementById('chatInput');
-      const text = input.value.trim();
-      if (!text) return;
-      const body = document.getElementById('chatBody');
-      body.innerHTML += '<div class="message user"><div class="message-bubble">' + text + '</div></div>';
-      input.value = '';
-      body.scrollTop = body.scrollHeight;
-      setTimeout(() => {
-        const responses = ["Thanks for reaching out! Let me look into that for you right away. 🌾", "I'd be happy to help! Could you provide a bit more detail?", "Great question! One moment while I pull up the info.", "You can also try visiting your Dashboard → Profile → Security Settings for that option!"];
-        body.innerHTML += '<div class="message bot"><div class="message-bubble">' + responses[Math.floor(Math.random() * responses.length)] + '</div></div>';
-        body.scrollTop = body.scrollHeight;
-      }, 800);
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuToggle = document.getElementById("menuToggle");
+      const primaryNav = document.getElementById("primaryNav");
+      const helpSearch = document.getElementById("helpSearch");
+      const clearSearch = document.getElementById("clearSearch");
+      const resetSearch = document.getElementById("resetSearch");
+      const noResults = document.getElementById("noResults");
 
-    // Search / Filter Articles
-    function filterArticles() {
-      const query = document.getElementById('helpSearch').value.toLowerCase();
-      document.querySelectorAll('.article-item').forEach(item => {
-        const title = item.querySelector('.article-title').textContent.toLowerCase();
-        const meta = item.querySelector('.article-meta').textContent.toLowerCase();
-        item.style.display = (title.includes(query) || meta.includes(query) || query === '') ? 'flex' : 'none';
+      const chatLauncher = document.getElementById("chatLauncher");
+      const chatWindow = document.getElementById("chatWindow");
+      const chatClose = document.getElementById("chatClose");
+      const contactChatButton = document.getElementById("contactChatButton");
+      const chatForm = document.getElementById("chatForm");
+      const chatInput = document.getElementById("chatInput");
+      const chatMessages = document.getElementById("chatMessages");
+
+      const ticketForm = document.getElementById("ticketForm");
+      const ticketNotice = document.getElementById("ticketNotice");
+
+      /* Mobile navigation */
+      if (menuToggle && primaryNav) {
+        menuToggle.addEventListener("click", () => {
+          const open = primaryNav.classList.toggle("open");
+          menuToggle.setAttribute("aria-expanded", String(open));
+          menuToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+          menuToggle.textContent = open ? "×" : "☰";
+        });
+
+        primaryNav.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            primaryNav.classList.remove("open");
+            menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.setAttribute("aria-label", "Open navigation menu");
+            menuToggle.textContent = "☰";
+          });
+        });
+      }
+
+      /* FAQ accordion */
+      document.querySelectorAll(".faq-question").forEach(button => {
+        button.addEventListener("click", () => {
+          const item = button.closest(".faq-item");
+          const open = item.classList.contains("open");
+          item.classList.toggle("open", !open);
+          button.setAttribute("aria-expanded", String(!open));
+        });
       });
-    }
-    function quickSearch(term) { document.getElementById('helpSearch').value = term; filterArticles(); }
-    function openArticle(id) { alert('Opening article: ' + id); }
 
-    // Ticket Form
-    function submitTicket(e) { e.preventDefault(); alert('✅ Ticket submitted successfully!\nOur team will respond within 4 business hours.'); e.target.reset(); }
+      /* Search all relevant help cards */
+      const searchableElements = Array.from(
+        document.querySelectorAll(
+          ".quick-card, .faq-item, .contact-card, .video-card, .resource-link"
+        )
+      );
 
-    // Scroll Spy for TOC
-    document.addEventListener('DOMContentLoaded', () => {
-      const tocLinks = document.querySelectorAll('.toc-list a');
-      const sections = document.querySelectorAll('.sec-section[id]');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            tocLinks.forEach(l => l.classList.remove('active'));
-            const activeLink = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
-            if (activeLink) activeLink.classList.add('active');
+      function performSearch(value) {
+        const query = value.trim().toLowerCase();
+        let matchCount = 0;
+
+        searchableElements.forEach(element => {
+          const matches = !query || element.textContent.toLowerCase().includes(query);
+          element.classList.toggle("search-hidden", !matches);
+          if (matches) matchCount++;
+
+          if (element.classList.contains("faq-item")) {
+            const button = element.querySelector(".faq-question");
+            if (query && matches) {
+              element.classList.add("open");
+              button.setAttribute("aria-expanded", "true");
+            } else if (query && !matches) {
+              element.classList.remove("open");
+              button.setAttribute("aria-expanded", "false");
+            }
           }
         });
-      }, { rootMargin: '-15% 0px -70% 0px' });
-      sections.forEach(sec => observer.observe(sec));
-    });
-  </script>
 
+        clearSearch.hidden = !query;
+        noResults.style.display = query && matchCount === 0 ? "block" : "none";
+      }
+
+      helpSearch.addEventListener("input", () => performSearch(helpSearch.value));
+
+      function resetSearchField() {
+        helpSearch.value = "";
+        performSearch("");
+        helpSearch.focus();
+      }
+
+      clearSearch.addEventListener("click", resetSearchField);
+      resetSearch.addEventListener("click", resetSearchField);
+
+      document.querySelectorAll("[data-search]").forEach(button => {
+        button.addEventListener("click", () => {
+          helpSearch.value = button.dataset.search || "";
+          performSearch(helpSearch.value);
+          helpSearch.focus();
+          document.querySelector(".search-wrap").scrollIntoView({ behavior:"smooth", block:"center" });
+        });
+      });
+
+      /* Active table-of-contents link */
+      const tocLinks = Array.from(document.querySelectorAll(".toc-links a"));
+      const sections = Array.from(document.querySelectorAll(".content .sec-section"));
+
+      function updateActiveSection() {
+        let currentId = "";
+        const marker = window.scrollY + 180;
+
+        sections.forEach(section => {
+          if (section.getBoundingClientRect().top + window.scrollY <= marker) {
+            currentId = section.id;
+          }
+        });
+
+        tocLinks.forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === "#" + currentId);
+        });
+      }
+
+      window.addEventListener("scroll", updateActiveSection, { passive:true });
+      updateActiveSection();
+
+      /* Chat window */
+      function setChatOpen(open) {
+        chatWindow.classList.toggle("open", open);
+        chatWindow.setAttribute("aria-hidden", String(!open));
+        chatLauncher.setAttribute("aria-expanded", String(open));
+        if (open) chatInput.focus();
+      }
+
+      chatLauncher.addEventListener("click", () => {
+        setChatOpen(!chatWindow.classList.contains("open"));
+      });
+
+      chatClose.addEventListener("click", () => {
+        setChatOpen(false);
+        chatLauncher.focus();
+      });
+
+      contactChatButton.addEventListener("click", () => {
+        setChatOpen(true);
+      });
+
+      function addChatMessage(message, sender) {
+        const bubble = document.createElement("div");
+        bubble.className = "chat-message" + (sender === "user" ? " user" : "");
+        bubble.textContent = message;
+        chatMessages.appendChild(bubble);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function getDemoReply(message) {
+        const text = message.toLowerCase();
+
+        if (/password|login|sign in|account access/.test(text)) {
+          return "For account access, use the official sign-in or account recovery options. Never share your password or verification codes here.";
+        }
+
+        if (/fraud|scam|suspicious|stolen/.test(text)) {
+          return "If you suspect fraud, contact the bank immediately through a verified contact channel. Do not share account credentials in this chat.";
+        }
+
+        if (/transfer|payment|wire/.test(text)) {
+          return "Transfer timing and cancellation options depend on the payment method and transaction status. Check your transaction details and contact the bank through a verified channel.";
+        }
+
+        if (/card/.test(text)) {
+          return "If your card is lost or stolen, contact the bank immediately through a verified channel and ask about blocking the card.";
+        }
+
+        if (/statement|document/.test(text)) {
+          return "Available statements are usually found in the account area. If you cannot locate one, contact the bank through a verified support channel.";
+        }
+
+        if (/farm|loan|agric/.test(text)) {
+          return "For farming-related questions, review the loan services page or use the support request form. Available products should be confirmed directly with the bank.";
+        }
+
+       return "Thank you for contacting AgriBank Texas. Your message has been received. Our customer support team will review your inquiry and assist you as soon as possible.";
+      }
+
+      chatForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        addChatMessage(message, "user");
+        chatInput.value = "";
+        chatInput.focus();
+
+        window.setTimeout(() => {
+          addChatMessage(getDemoReply(message), "assistant");
+        }, 450);
+      });
+
+     /* Support ticket form submission */
+ticketForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  // Continue with your server submission logic here.
+});
+
+        if (!ticketForm.reportValidity()) return;
+
+        ticketNotice.classList.add("visible");
+        ticketNotice.focus();
+        ticketNotice.scrollIntoView({ behavior:"smooth", block:"center" });
+      });
+
+      /* In-page tutorial guides */
+      const tutorialDialog = document.getElementById("tutorialDialog");
+      const tutorialTitle = document.getElementById("tutorialTitle");
+      const tutorialBody = document.getElementById("tutorialBody");
+      const tutorialClose = document.getElementById("tutorialClose");
+
+      const guides = {
+        "online-banking": {
+          title:"Getting Started with Online Banking",
+          intro:"Use these general steps to find your way around online banking.",
+          steps:[
+            "Open the bank's verified website directly rather than following an unexpected message link.",
+            "Choose the sign-in option and enter your credentials only on the verified site.",
+            "After signing in, look for your account summary, recent activity, statements, and profile settings.",
+            "Sign out when finished, especially on a shared device."
+          ],
+          note:"This is a general guide, not an official bank-specific video. Never share your password or verification codes."
+        },
+        "transfers": {
+          title:"Making a Transfer",
+          intro:"Review these general precautions before making a payment.",
+          steps:[
+            "Sign in through the bank's verified website or application.",
+            "Open the transfer or payments area and select the appropriate transfer type.",
+            "Carefully check the recipient details and amount before confirming.",
+            "Review the confirmation and transaction reference, then check the transaction status if needed."
+          ],
+          note:"Transfer options, fees, processing times, and cancellation rules depend on the bank and payment type. Do not repeat a transfer until the original status is clear."
+        },
+        "statements": {
+          title:"Finding Your Bank Statements",
+          intro:"Use these general steps to locate account documents.",
+          steps:[
+            "Sign in using the bank's verified website or application.",
+            "Select the relevant account.",
+            "Look for Statements, Documents, or Account Activity.",
+            "Choose the available period and use the provided view or download option."
+          ],
+          note:"The exact menu names may differ. Contact the bank through a verified channel if a statement is missing."
+        },
+        "security": {
+          title:"Keeping Your Account Secure",
+          intro:"Protect your account with these basic security practices.",
+          steps:[
+            "Use a unique, strong password and never share it.",
+            "Never disclose PINs, one-time codes, or security answers to someone contacting you unexpectedly.",
+            "Avoid signing in through suspicious links or attachments.",
+            "Review account activity and promptly report transactions you do not recognize.",
+            "Contact the bank using independently verified contact details if you suspect fraud."
+          ],
+          note:"A real bank representative should not need you to reveal your password or full verification code."
+        }
+      };
+
+      document.querySelectorAll("[data-article]").forEach(button => {
+        button.addEventListener("click", () => {
+          const guide = guides[button.dataset.article];
+          if (!guide) return;
+
+          tutorialTitle.textContent = guide.title;
+          tutorialBody.replaceChildren();
+
+          const intro = document.createElement("p");
+          intro.textContent = guide.intro;
+          tutorialBody.appendChild(intro);
+
+          const heading = document.createElement("h3");
+          heading.textContent = "Step-by-step guide";
+          tutorialBody.appendChild(heading);
+
+          const list = document.createElement("ol");
+          guide.steps.forEach(step => {
+            const item = document.createElement("li");
+            item.textContent = step;
+            list.appendChild(item);
+          });
+          tutorialBody.appendChild(list);
+
+          const noteHeading = document.createElement("h3");
+          noteHeading.textContent = "Important";
+          tutorialBody.appendChild(noteHeading);
+
+          const note = document.createElement("p");
+          note.textContent = guide.note;
+          tutorialBody.appendChild(note);
+
+          if (typeof tutorialDialog.showModal === "function") {
+            tutorialDialog.showModal();
+          } else {
+            // Fallback for browsers without dialog support.
+            window.alert(guide.title + "\n\n" + guide.intro + "\n\n" +
+              guide.steps.map((step, index) => (index + 1) + ". " + step).join("\n") +
+              "\n\n" + guide.note);
+          }
+        });
+      });
+
+      tutorialClose.addEventListener("click", () => tutorialDialog.close());
+
+      tutorialDialog.addEventListener("click", event => {
+        if (event.target === tutorialDialog) tutorialDialog.close();
+      });
+  </script>
 </body>
 </html>
-
-<div class="quick-card">
-  🔐
-  <h3>Reset Password</h3>
-  <p>Forgot your login? ...</p>
-</div>
-<!-- This was a DEAD DIV — no link, no navigation -->
-
-<a href="/profile" class="quick-card">
-  🔐
-  <h3>Reset Password</h3>
-  <p>Forgot your login? Change it instantly from your Profile → Security Settings.</p>
-</a>
-<!-- Now clicking it goes to /profile where users can update their credentials -->
-

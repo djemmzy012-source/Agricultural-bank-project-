@@ -1,396 +1,1779 @@
-
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <style>
-                body {
-                  background-color: white; /* Ensure the iframe has a white background */
-                }
-
-                
-              </style>
-                        </head>
-                        <body>
-                            <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Transfer Funds | AgriBank Texas' }) %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer Funds | AgriBank Texas</title>
+  <meta name="theme-color" content="#0c3f24">
+  <meta name="description" content="Manage account transfers and payment services with AgriBank Texas.">
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
   <style>
-    /* =========================================
-       TRANSFER PAGE STYLES (AgriBank Theme)
-       ========================================= */
     :root {
-      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
-      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
-      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
-      --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444;
-      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+      --green-950: #072a18;
+      --green-900: #0c3f24;
+      --green-800: #155738;
+      --green-700: #1d7047;
+      --green-soft: #e8f0ea;
+      --gold: #c7a45b;
+      --gold-light: #e3cb91;
+      --ink: #24332b;
+      --muted: #68776d;
+      --border: #dfe7e0;
+      --surface: #fff;
+      --background: #f5f7f5;
+      --danger-bg: #fff0ef;
+      --danger: #a52c27;
+      --radius: 7px;
+      --shadow: 0 3px 12px rgba(7, 42, 24, .055);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; transition: 0.2s; }
 
-    /* --- SIDEBAR --- */
-    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
-    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
-    .sidebar-brand span { color: var(--gold); }
-    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
-    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
-    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
-    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
-    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
-    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
-    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
-    .user-info .name { font-size: 0.85rem; font-weight: 600; }
-    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    /* --- MAIN AREA --- */
-    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
-    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
-    .topbar-left { display: flex; align-items: center; gap: 1rem; }
-    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
-    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
-    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+    body {
+      font-family: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--background);
+      line-height: 1.5;
+    }
 
-    /* --- TRANSFER GRID --- */
-    .transfer-grid { display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; }
-    .form-section { display: flex; flex-direction: column; gap: 1rem; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    /* --- TABS --- */
-    .transfer-tabs { display: flex; background: var(--surface); padding: 0.35rem; border-radius: var(--radius-sm); box-shadow: var(--shadow); gap: 0.25rem; }
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* HEADER — GREEN, MATCH STATEMENTS PAGE */
+.bank-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--green-900);
+  box-shadow: 0 2px 7px rgba(7, 42, 24, .12);
+}
+
+.topbar {
+  background: var(--green-900);
+  border-bottom: 1px solid rgba(255, 255, 255, .14);
+}
+
+.header-inner {
+  max-width: 1180px;
+  min-height: 56px;
+  margin: 0 auto;
+  padding: 7px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--green-900);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.brand-logo {
+  display: block;
+  width: 180px;
+  max-width: 35vw;
+  max-height: 42px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.header-action:hover {
+  color: var(--gold-light);
+}
+
+.signout-link {
+  padding-left: 14px;
+  border-left: 1px solid rgba(255, 255, 255, .3);
+}
+
+/* Tablet */
+@media (max-width: 760px) {
+  .header-inner {
+    min-height: 52px;
+    padding: 7px 18px;
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: 145px;
+    max-width: 42vw;
+    max-height: 36px;
+  }
+
+  .header-actions {
+    gap: 12px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .header-inner {
+    padding: 7px 14px;
+    gap: 10px;
+  }
+
+  .brand-logo {
+    width: 130px;
+    max-width: 42vw;
+    max-height: 32px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-action {
+    gap: 5px;
+    font-size: 11px;
+  }
+
+  .signout-link {
+    padding-left: 10px;
+  }
+}
+
+    /* PRIMARY NAV */
+    .primary-nav {
+      background: var(--green-900);
+      color: #fff;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      min-height: 45px;
+      margin: 0 auto;
+      padding: 0 16px;
+      display: flex;
+      gap: 3px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .nav-link {
+      min-height: 45px;
+      padding: 12px 16px 10px;
+      display: inline-flex;
+      align-items: center;
+      color: rgba(255,255,255,.88);
+      border-bottom: 3px solid transparent;
+      margin-bottom: -3px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255,255,255,.08);
+    }
+
+    .nav-link.active {
+      color: #fff;
+      background: rgba(255,255,255,.075);
+      border-bottom-color: var(--gold-light);
+    }
+
+    /* SECONDARY NAV */
+    .secondary-nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .secondary-inner {
+      max-width: 1180px;
+      min-height: 40px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      gap: 25px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .secondary-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      color: #58685e;
+      border-bottom: 2px solid transparent;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .secondary-link:hover {
+      color: var(--green-700);
+    }
+
+    .secondary-link.active {
+      color: var(--green-900);
+      border-bottom-color: var(--green-700);
+      font-weight: 800;
+    }
+
+    /* PAGE */
+    .page-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 27px 24px 54px;
+    }
+
+    .breadcrumbs {
+      margin-bottom: 17px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .breadcrumbs a {
+      color: var(--green-700);
+      font-weight: 700;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      margin-bottom: 5px;
+      color: var(--green-700);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      color: var(--green-950);
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(29px, 3vw, 37px);
+      font-weight: 400;
+    }
+
+    .page-description {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .back-link {
+      color: var(--green-700);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      margin-bottom: 20px;
+      padding: 13px 16px;
+      border: 1px solid #f0c6c2;
+      border-radius: var(--radius);
+      background: var(--danger-bg);
+      color: var(--danger);
+      font-size: 13px;
+    }
+
+    /* PAYMENT SHORTCUTS */
+    .payment-shortcuts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .payment-shortcut {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      min-width: 0;
+      min-height: 91px;
+      padding: 17px 19px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--green-950);
+      box-shadow: var(--shadow);
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .payment-shortcut:hover {
+      border-color: var(--gold);
+      box-shadow: 0 6px 18px rgba(7, 42, 24, .09);
+      transform: translateY(-1px);
+    }
+
+    .payment-shortcut:focus-visible {
+      outline: 3px solid rgba(29, 112, 71, .25);
+      outline-offset: 3px;
+    }
+
+    .shortcut-logo {
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #d9e5db;
+      border-radius: 7px;
+      background: #eef4ef;
+      color: var(--green-900);
+    }
+
+    .shortcut-logo svg {
+      display: block;
+      width: 29px;
+      height: 29px;
+    }
+
+    .shortcut-copy {
+      min-width: 0;
+    }
+
+    .shortcut-copy strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--green-950);
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .shortcut-copy small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .shortcut-arrow {
+      flex: 0 0 auto;
+      margin-left: auto;
+      color: var(--green-700);
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    /* TRANSFER */
+    .transfer-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 305px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .transfer-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 5px;
+      margin-bottom: 15px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
     .tab-btn {
-      flex: 1; padding: 0.75rem; border: none; background: transparent; border-radius: 8px;
-      font-size: 0.8rem; font-weight: 600; cursor: pointer; color: var(--text-secondary);
-      transition: all 0.25s; text-align: center;
+      min-height: 43px;
+      padding: 10px 8px;
+      border: none;
+      border-radius: 4px;
+      background: transparent;
+      color: #536359;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
     }
-    .tab-btn.active { background: var(--green-800); color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .tab-btn:hover:not(.active) { background: #f8fafc; }
 
-    /* --- FORMS --- */
-    .form-card { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
-    .form-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
-    .form-group { margin-bottom: 1.25rem; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.5rem; }
-    .form-input, .form-select {
-      width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px;
-      font-size: 0.9rem; font-family: inherit; transition: 0.2s; background: white;
+    .tab-btn:hover:not(.active) {
+      background: var(--green-soft);
     }
-    .form-input:focus, .form-select:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
-    
+
+    .tab-btn.active {
+      background: var(--green-900);
+      color: #fff;
+    }
+
+    .form-card,
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .form-card {
+      padding: 25px;
+    }
+
+    .form-card.hidden {
+      display: none !important;
+    }
+
+    .form-heading {
+      margin-bottom: 6px;
+      color: var(--green-950);
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 23px;
+      font-weight: 400;
+    }
+
+    .form-description {
+      margin-bottom: 23px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .form-group {
+      min-width: 0;
+      margin-bottom: 18px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 7px;
+      color: #405248;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      min-height: 45px;
+      padding: 10px 12px;
+      border: 1px solid #d2ddd4;
+      border-radius: 4px;
+      font-size: 13px;
+      background: #fff;
+      color: var(--ink);
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: var(--green-700);
+      box-shadow: 0 0 0 3px rgba(29, 112, 71, .11);
+    }
+
+    .amount-wrap {
+      position: relative;
+    }
+
+    .amount-symbol {
+      position: absolute;
+      top: 50%;
+      left: 13px;
+      transform: translateY(-50%);
+      color: #64756a;
+      pointer-events: none;
+    }
+
+    .amount-wrap .form-input {
+      padding-left: 29px;
+    }
+
     .btn-submit {
-      width: 100%; padding: 0.85rem; background: var(--green-800); color: white; border: none;
-      border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.2s;
-      margin-top: 0.5rem;
+      display: flex;
+      width: 100%;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 7px;
+      padding: 12px 16px;
+      border: 1px solid var(--green-900);
+      border-radius: 4px;
+      background: var(--green-900);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease;
     }
-    .btn-submit:hover { background: var(--green-700); }
-    
-    .alert { padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
-    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
 
-    /* --- SUMMARY SIDEBAR --- */
-    .summary-card { background: var(--surface); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow); border: 1px solid var(--border); position: sticky; top: calc(var(--header-h) + 1.5rem); }
-    .summary-card h4 { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
-    .quick-acct { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem; border-radius: 8px; margin-bottom: 0.5rem; transition: 0.2s; cursor: pointer; border: 1px solid transparent; }
-    .quick-acct:hover { background: #f8fafc; border-color: var(--border); }
-    .quick-acct-icon { width: 36px; height: 36px; background: #f0fdf4; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .quick-acct-info { flex: 1; }
-    .quick-acct-name { font-size: 0.85rem; font-weight: 600; }
-    .quick-acct-num { font-size: 0.65rem; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
-    .quick-acct-bal { font-size: 0.9rem; font-weight: 800; font-family: 'DM Serif Display', serif; }
-    .summary-row { display: flex; justify-content: space-between; padding: 0.5rem 0; font-size: 0.8rem; }
-    .summary-row .label { color: var(--text-secondary); }
-    .summary-row .value { font-weight: 600; }
+    .btn-submit:hover {
+      background: var(--green-950);
+      border-color: var(--green-950);
+    }
 
-    .hidden { display: none; }
-    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
-    .btn-text:hover { color: var(--green-900); }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .animate { animation: fadeInUp 0.4s ease both; }
+    .btn-submit:focus-visible,
+    .btn-cancel:focus-visible {
+      outline: 3px solid rgba(29, 112, 71, .22);
+      outline-offset: 2px;
+    }
 
-    /* --- MOBILE --- */
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
-    .sidebar-overlay.show { display: block; opacity: 1; }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
-    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
-    .mob-nav-item.active { color: var(--green-700); }
-    .mob-nav-item .mob-icon { font-size: 1.25rem; }
+    .btn-cancel {
+      background: #fff !important;
+      color: var(--green-900) !important;
+      border: 1px solid var(--border) !important;
+      margin-top: 10px;
+    }
 
-    @media (max-width: 1024px) { .transfer-grid { grid-template-columns: 1fr; } .summary-card { position: static; order: -1; } }
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); } .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; } .hamburger { display: flex; }
-      .content { padding: 1.25rem; padding-bottom: 5rem; } .topbar { padding: 0 1.25rem; }
-      .mobile-nav { display: block; }
+    .btn-cancel:hover {
+      background: #f5f8f5 !important;
+    }
+
+    .form-footnote {
+      margin: 13px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      text-align: center;
+    }
+    /* AUTHORIZATION DESIGN */
+.authorization-card {
+  position: relative;
+  overflow: hidden;
+  padding: 0 30px 25px;
+  border-color: #dce6dd;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(7, 42, 24, .08);
+}
+
+.authorization-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 76px;
+  margin: 0 -30px 25px;
+  padding: 15px 24px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+
+.authorization-logo {
+  display: block;
+  width: 150px;
+  height: 42px;
+  object-fit: contain;
+}
+
+.authorization-icon {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  color: var(--green-800);
+  background: #edf5ee;
+  border: 1px solid #d5e5d7;
+  border-radius: 50%;
+}
+
+.authorization-icon svg {
+  width: 43px;
+  height: 43px;
+}
+
+.authorization-eyebrow {
+  margin-bottom: 8px;
+  color: var(--green-700);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.authorization-card .form-heading {
+  margin-bottom: 8px;
+  font-size: 29px;
+  text-align: center;
+}
+
+.authorization-card .form-description {
+  max-width: 430px;
+  margin: 0 auto 24px;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.authorization-status {
+  margin-bottom: 18px;
+  padding: 13px 15px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.authorization-status[hidden] {
+  display: none !important;
+}
+
+.authorization-status.success {
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.authorization-status.error {
+  color: #991b1b;
+  background: #fff0ef;
+  border: 1px solid #f0c6c2;
+}
+
+.authorization-code-input {
+  min-height: 52px;
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.authorization-resend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.authorization-resend a {
+  color: var(--green-700);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.authorization-resend a:hover {
+  color: var(--green-950);
+}
+
+.authorization-resend a[aria-disabled="true"] {
+  opacity: .6;
+  pointer-events: none;
+}
+
+.authorization-submit {
+  min-height: 51px;
+  border-radius: 5px;
+}
+
+.authorization-submit:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+
+.authorization-card .btn-cancel {
+  min-height: 45px;
+  border-radius: 5px;
+}
+
+.authorization-security {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.authorization-security span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #166534;
+  background: #dcfce7;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 760px) {
+  .authorization-card {
+    padding: 0 20px 22px;
+  }
+
+  .authorization-brand {
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .authorization-card .form-heading {
+    font-size: 26px;
+  }
+}
+
+    /* SIDE PANEL */
+    .panel {
+      margin-bottom: 16px;
+      padding: 20px;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 13px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 19px;
+      font-weight: 400;
+      color: var(--green-950);
+    }
+
+    .panel-heading a {
+      color: var(--green-700);
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .quick-acct {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 7px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .quick-acct:hover,
+    .quick-acct.selected {
+      border-color: #d4e3d7;
+      background: #f2f7f3;
+    }
+
+    .quick-acct:focus-visible {
+      outline: 2px solid var(--green-700);
+      outline-offset: 2px;
+    }
+
+    .quick-acct-icon {
+      flex: 0 0 36px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background: var(--green-soft);
+      font-size: 17px;
+    }
+
+    .quick-acct-name {
+      display: block;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .quick-acct-num {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .quick-acct-bal {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green-950);
+      white-space: nowrap;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #edf0ed;
+      font-size: 12px;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .summary-row .label {
+      color: var(--muted);
+    }
+
+    .summary-row .value {
+      font-weight: 800;
+      color: var(--green-950);
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .fee-note {
+      margin-top: 14px;
+      padding: 11px 12px;
+      border-left: 3px solid var(--gold);
+      background: #faf7ef;
+      color: #67583b;
+      font-size: 11px;
+    }
+
+    /* FOOTER */
+    .bank-footer {
+      padding: 22px 24px;
+      border-top: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-brand {
+      color: var(--green-950);
+      font-weight: 800;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1000px) {
+      .transfer-layout {
+        grid-template-columns: minmax(0, 1fr) 275px;
+        gap: 16px;
+      }
+
+      .header-inner {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .header-actions {
+        gap: 13px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .transfer-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .brand-logo {
+        width: 100px;
+        height: 28px;
+      }
+
+      .page-heading {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .back-link {
+        white-space: normal;
+      }
+
+      .secondary-inner {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .page-wrap {
+        padding: 23px 18px 40px;
+      }
+
+      .header-inner {
+        padding: 9px 18px;
+      }
+
+      .transfer-main {
+        min-width: 0;
+      }
+
+      .form-card {
+        padding: 21px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .header-inner {
+        gap: 10px;
+      }
+
+      .header-actions {
+        gap: 10px;
+      }
+
+      .header-action {
+        font-size: 11px;
+      }
+
+      .header-action:first-child {
+        display: none;
+      }
+
+      .signout-link {
+        padding-left: 10px;
+      }
+
+      .payment-shortcuts {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .payment-shortcut {
+        min-height: 80px;
+        padding: 14px;
+      }
+
+      .transfer-tabs {
+        gap: 3px;
+        padding: 4px;
+      }
+
+      .tab-btn {
+        padding: 9px 5px;
+        font-size: 11px;
+      }
+
+      .panel {
+        padding: 17px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <%
-    /* 
-       🔴 FIX: Safe Variable Initialization 
-       We define 'acctList' safely so the page never crashes if 'accounts' is missing.
-    */
-    var safeUser = user || { firstName: 'Customer' };
-    var acctList = (typeof accounts !== 'undefined' && Array.isArray(accounts)) ? accounts : [];
+    var safeUser = (typeof user !== 'undefined' && user)
+      ? user
+      : { firstName: 'Customer' };
+
+    var acctList = (typeof accounts !== 'undefined' && Array.isArray(accounts))
+      ? accounts
+      : [];
   %>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
-      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
-      <a href="/transfer" class="nav-item active"><span class="icon">⇄</span> Transfer</a>
-      <div class="nav-section">Services</div>
-      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
-      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
-      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
-      <div class="nav-section">Account</div>
-      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
-      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+  <header class="bank-header">
+    <div class="topbar">
+      <div class="header-inner">
+        <a class="brand" href="/dashboard" aria-label="AgriBank Texas dashboard">
+          <img
+            class="brand-logo"
+            src="/images/agribank-logo.png"
+            alt="AgriBank Texas"
+          >
+        </a>
+
+        <div class="header-actions">
+          <a class="header-action" href="/notifications">Notifications</a>
+          <a class="header-action" href="/profile"><%= safeUser.firstName %></a>
+          <a class="header-action signout-link" href="/logout">Sign out</a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <div class="nav-inner">
+        <a href="/accounts" class="nav-link">Accounts</a>
+        <a href="/transfer" class="nav-link active" aria-current="page">Transfer</a>
+        <a href="/deposits" class="nav-link">Deposit</a>
+        <a href="/profile" class="nav-link">Security</a>
+      </div>
     </nav>
-    <div class="sidebar-footer">
-      <a href="/logout" class="sidebar-user">
-        <div class="avatar"><%= safeUser.firstName.charAt(0).toUpperCase() %></div>
-        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role">Member</div></div>
-      </a>
+
+    <nav class="secondary-nav" aria-label="Account navigation">
+      <div class="secondary-inner">
+        <a href="/dashboard" class="secondary-link">Overview</a>
+        <a href="/transactions" class="secondary-link">Activity</a>
+        <a href="/transfer" class="secondary-link active" aria-current="page">Transfers</a>
+        <a href="/billpay" class="secondary-link">Bill Pay</a>
+        <a href="/statements" class="secondary-link">Statements &amp; documents</a>
+        <a href="/profile" class="secondary-link">Profile &amp; settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/dashboard">Home</a> /
+      <a href="/transfer">Pay &amp; transfer</a> /
+      Transfer funds
     </div>
-  </aside>
 
-  <div class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1>Transfer Funds</h1></div>
+    <div class="page-heading">
+      <div>
+        <div class="eyebrow">Payments and transfers</div>
+        <h1>Transfer Funds</h1>
+        <p class="page-description">
+          Manage transfers between your accounts or enter recipient details for a domestic or international wire transfer.
+        </p>
       </div>
-      <div class="topbar-right">
-        <a href="/notifications" class="topbar-btn">🔔</a>
-        <a href="/profile" class="topbar-btn">👤</a>
-      </div>
-    </header>
 
-    <div class="content">
-      <div style="margin-bottom: 1.25rem;"><a href="/dashboard" class="btn-text animate">← Back to Dashboard</a></div>
-      
-      <% if (typeof error !== 'undefined' && error) { %>
-        <div class="alert alert-error animate">⚠️ <%= error %></div>
-      <% } %>
+      <a class="back-link" href="/dashboard">← Back to Dashboard</a>
+    </div>
 
-      <div class="transfer-grid">
-        <div class="form-section animate">
-          <!-- TABS -->
-          <div class="transfer-tabs">
-            <button class="tab-btn active" onclick="showForm('internal', this)">Internal</button>
-            <button class="tab-btn" onclick="showForm('domestic', this)">Domestic Wire</button>
-            <button class="tab-btn" onclick="showForm('international', this)">International</button>
-          </div>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert" role="alert">⚠ <%= error %></div>
+    <% } %>
 
-          <!-- 1. INTERNAL TRANSFER FORM -->
-          <form id="form-internal" class="form-card" action="/transfer" method="POST">
-            <input type="hidden" name="transferType" value="internal">
-            <h3>Between Your Accounts</h3>
-            
-            <div class="form-group">
-              <label class="form-label">From Account</label>
-              <select name="fromAccount" class="form-select" required>
-                <option value="">Select source</option>
-                <% acctList.forEach(function(acc) { %>
-                  <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %></option>
-                <% }); %>
-              </select>
-            </div>
+    <div class="transfer-layout">
+      <section class="transfer-main" aria-label="Transfer options">
 
-            <div class="form-group">
-              <label class="form-label">To Account</label>
-              <select name="toAccount" class="form-select" required>
-                <option value="">Select destination</option>
-                <% acctList.forEach(function(acc) { %>
-                  <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>)</option>
-                <% }); %>
-              </select>
-            </div>
+        <!-- QUICK PAYMENT SHORTCUTS -->
+        <div class="payment-shortcuts">
+          <a class="payment-shortcut" href="#transfer-options">
+            <span class="shortcut-logo" aria-hidden="true">
+              <!-- Custom transfer mark -->
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3.5" y="5.5" width="25" height="21" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M8 12H24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M8 17H14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M18 19L21 22L26 16" stroke="#1D7047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
 
-            <div class="form-group">
-              <label class="form-label">Amount</label>
-              <div style="position:relative;">
-                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary);">$</span>
-                <input type="number" name="amount" class="form-input" placeholder="0.00" min="0.01" step="0.01" required style="padding-left:28px;">
-              </div>
-            </div>
+            <span class="shortcut-copy">
+              <strong>Transfer Money</strong>
+              <small>Move money between accounts or send a wire.</small>
+            </span>
 
-            <div class="form-group">
-              <label class="form-label">Memo (Optional)</label>
-              <input type="text" name="memo" class="form-input" placeholder="Add a note">
-            </div>
+            <span class="shortcut-arrow" aria-hidden="true">›</span>
+          </a>
 
-            <button type="submit" class="btn-submit">Transfer Funds</button>
-          </form>
+          <a class="payment-shortcut" href="/billpay">
+            <span class="shortcut-logo" aria-hidden="true">
+              <!-- Custom bill-pay mark: document, payment lines, and confirmation check -->
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3.75H19L25 9.75V26.25C25 27.35 24.1 28.25 23 28.25H8C6.9 28.25 6 27.35 6 26.25V5.75C6 4.65 6.9 3.75 8 3.75Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M18.5 4V10H24.5" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M10 14H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M10 18H15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <circle cx="22.5" cy="22.5" r="6" fill="#E8F0EA" stroke="#1D7047" stroke-width="1.5"/>
+                <path d="M19.7 22.5L21.6 24.4L25.2 20.7" stroke="#1D7047" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
 
-          <!-- 2. DOMESTIC WIRE FORM -->
-          <form id="form-domestic" class="form-card hidden" action="/transfer" method="POST">
-            <input type="hidden" name="transferType" value="domestic">
-            <h3>Domestic Wire Transfer</h3>
-            
-            <div class="form-group">
-              <label class="form-label">From Account</label>
-              <select name="fromAccount" class="form-select" required>
-                <option value="">Select source</option>
-                <% acctList.forEach(function(acc) { %>
-                  <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %></option>
-                <% }); %>
-              </select>
-            </div>
+            <span class="shortcut-copy">
+              <strong>Bill Pay</strong>
+              <small>Visit your bill-payment page to manage payments.</small>
+            </span>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Recipient Name</label>
-                <input type="text" name="recipientName" class="form-input" placeholder="Full legal name" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Bank Name</label>
-                <input type="text" name="bankName" class="form-input" placeholder="Bank Name" required>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Routing Number (9 digits)</label>
-                <input type="text" name="routingNumber" class="form-input" placeholder="000000000" pattern="[0-9]{9}" maxlength="9" required>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Account Number</label>
-                <input type="text" name="accountNumber" class="form-input" placeholder="Recipient Account #" required>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Amount</label>
-              <div style="position:relative;">
-                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary);">$</span>
-                <input type="number" name="amount" class="form-input" placeholder="0.00" min="0.01" step="0.01" required style="padding-left:28px;">
-              </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Send Wire ($25 fee)</button>
-          </form>
-
-          <!-- 3. INTERNATIONAL WIRE FORM -->
-          <form id="form-international" class="form-card hidden" action="/transfer" method="POST">
-            <input type="hidden" name="transferType" value="international">
-            <h3>International Wire</h3>
-            
-            <div class="form-group">
-              <label class="form-label">From Account</label>
-              <select name="fromAccount" class="form-select" required>
-                <option value="">Select source</option>
-                <% acctList.forEach(function(acc) { %>
-                  <option value="<%= acc.id %>"><%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %></option>
-                <% }); %>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Recipient Name</label>
-              <input type="text" name="recipientName" class="form-input" placeholder="Full legal name" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">SWIFT / BIC Code</label>
-              <input type="text" name="swiftCode" class="form-input" placeholder="e.g. BOFAUS3N" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Account / IBAN</label>
-              <input type="text" name="accountNumber" class="form-input" placeholder="International account number" required>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Amount</label>
-              <div style="position:relative;">
-                <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-secondary);">$</span>
-                <input type="number" name="amount" class="form-input" placeholder="0.00" min="0.01" step="0.01" required style="padding-left:28px;">
-              </div>
-            </div>
-
-            <button type="submit" class="btn-submit">Send International Wire ($45 fee)</button>
-          </form>
-
+            <span class="shortcut-arrow" aria-hidden="true">›</span>
+          </a>
         </div>
 
-        <!-- RIGHT SIDEBAR -->
-        <div class="animate">
-          <div class="summary-card">
-            <h4>Your Accounts</h4>
-            <% acctList.forEach(function(acc) { %>
-              <div class="quick-acct" onclick="selectAcct('<%= acc.id %>')">
-                <div class="quick-acct-icon"><%= acc.icon || '🏦' %></div>
-                <div class="quick-acct-info">
-                  <div class="quick-acct-name"><%= acc.name %></div>
-                  <div class="quick-acct-num">****<%= acc.number %></div>
-                </div>
-                <div class="quick-acct-bal">$<%= Number(acc.balance || 0).toFixed(2) %></div>
-              </div>
-            <% }); %>
-            
-            <div style="height:1px; background:var(--border); margin:1rem 0;"></div>
-            
-            <h4>Limits & Fees</h4>
-            <div class="summary-row"><span class="label">Daily Limit</span><span class="value">$50,000.00</span></div>
-            <div class="summary-row"><span class="label">Internal</span><span class="value" style="color:var(--success)">Free</span></div>
-            <div class="summary-row"><span class="label">Domestic</span><span class="value">$25.00</span></div>
-            <div class="summary-row"><span class="label">International</span><span class="value">$45.00</span></div>
-          </div>
+        <div id="transfer-options" class="transfer-tabs" role="group" aria-label="Transfer type">
+          <button
+            type="button"
+            class="tab-btn active"
+            data-form-type="internal"
+            aria-pressed="true"
+            onclick="showForm('internal', this)"
+          >Between Accounts</button>
+
+          <button
+            type="button"
+            class="tab-btn"
+            data-form-type="domestic"
+            aria-pressed="false"
+            onclick="showForm('domestic', this)"
+          >Domestic Wire</button>
+
+          <button
+            type="button"
+            class="tab-btn"
+            data-form-type="international"
+            aria-pressed="false"
+            onclick="showForm('international', this)"
+          >International</button>
         </div>
-      </div>
-    </div>
+
+        <!-- INTERNAL TRANSFER -->
+        <form id="form-internal" class="form-card" action="/transfer" method="POST">
+          <input type="hidden" name="transferType" value="internal">
+
+          <h2 class="form-heading">Between Your Accounts</h2>
+          <p class="form-description">
+            Choose the account to transfer from and the destination account.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="internal-from-account">From Account</label>
+            <select id="internal-from-account" name="fromAccount" class="form-select" required>
+              <option value="">Select source account</option>
+              <% acctList.forEach(function(acc) { %>
+                <option value="<%= acc.id %>">
+                  <%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="internal-to-account">To Account</label>
+            <select id="internal-to-account" name="toAccount" class="form-select" required>
+              <option value="">Select destination account</option>
+              <% acctList.forEach(function(acc) { %>
+                <option value="<%= acc.id %>">
+                  <%= acc.name %> (****<%= acc.number %>)
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="internal-amount">Amount</label>
+            <div class="amount-wrap">
+              <span class="amount-symbol" aria-hidden="true">$</span>
+              <input
+                id="internal-amount"
+                type="number"
+                name="amount"
+                class="form-input"
+                placeholder="0.00"
+                min="0.01"
+                step="0.01"
+                inputmode="decimal"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="internal-memo">Memo (Optional)</label>
+            <input
+              id="internal-memo"
+              type="text"
+              name="memo"
+              class="form-input"
+              maxlength="200"
+              placeholder="Add a note"
+            >
+          </div>
+
+          <button type="submit" class="btn-submit">Continue Transfer →</button>
+          <p class="form-footnote">
+            Your transfer must be validated by the server before it can be completed.
+          </p>
+        </form>
+
+        <!-- DOMESTIC WIRE -->
+        <form id="form-domestic" class="form-card hidden" action="/transfer" method="POST" novalidate>
+          <input type="hidden" name="transferType" value="domestic">
+
+          <h2 class="form-heading">Domestic Wire Transfer</h2>
+          <p class="form-description">
+            Enter the recipient's bank details and the amount.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="domestic-from-account">From Account</label>
+            <select id="domestic-from-account" name="fromAccount" class="form-select" required>
+              <option value="">Select source account</option>
+              <% acctList.forEach(function(acc) { %>
+                <option value="<%= acc.id %>">
+                  <%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="domestic-recipient">Recipient Name</label>
+              <input id="domestic-recipient" type="text" name="recipientName" class="form-input" maxlength="120" autocomplete="name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="domestic-bank">Bank Name</label>
+              <input id="domestic-bank" type="text" name="bankName" class="form-input" maxlength="120" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="domestic-routing">Routing Number</label>
+              <input
+                id="domestic-routing"
+                type="text"
+                name="routingNumber"
+                class="form-input"
+                inputmode="numeric"
+                pattern="[0-9]{9}"
+                maxlength="9"
+                autocomplete="off"
+                required
+              >
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="domestic-account-number">Account Number</label>
+              <input
+                id="domestic-account-number"
+                type="text"
+                name="accountNumber"
+                class="form-input"
+                maxlength="34"
+                autocomplete="off"
+                required
+              >
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="domestic-amount">Amount</label>
+            <div class="amount-wrap">
+              <span class="amount-symbol" aria-hidden="true">$</span>
+              <input
+                id="domestic-amount"
+                type="number"
+                name="amount"
+                class="form-input"
+                placeholder="0.00"
+                min="0.01"
+                step="0.01"
+                inputmode="decimal"
+                required
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Continue Domestic Wire →</button>
+          <p class="form-footnote">
+            Recipient details and transfer eligibility must be verified before processing.
+          </p>
+        </form>
+
+        <!-- INTERNATIONAL WIRE -->
+        <form id="form-international" class="form-card hidden" action="/transfer" method="POST" novalidate>
+          <input type="hidden" name="transferType" value="international">
+
+          <h2 class="form-heading">International Wire</h2>
+          <p class="form-description">
+            Provide the recipient details for an international transfer.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="international-from-account">From Account</label>
+            <select id="international-from-account" name="fromAccount" class="form-select" required>
+              <option value="">Select source account</option>
+              <% acctList.forEach(function(acc) { %>
+                <option value="<%= acc.id %>">
+                  <%= acc.name %> (****<%= acc.number %>) — $<%= Number(acc.balance || 0).toFixed(2) %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="international-recipient">Recipient Name</label>
+            <input id="international-recipient" type="text" name="recipientName" class="form-input" maxlength="120" autocomplete="name" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="international-swift">SWIFT / BIC Code</label>
+            <input id="international-swift" type="text" name="swiftCode" class="form-input" maxlength="11" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="international-account-number">Account Number / IBAN</label>
+            <input id="international-account-number" type="text" name="accountNumber" class="form-input" maxlength="34" autocomplete="off" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="international-amount">Amount</label>
+            <div class="amount-wrap">
+              <span class="amount-symbol" aria-hidden="true">$</span>
+              <input
+                id="international-amount"
+                type="number"
+                name="amount"
+                class="form-input"
+                placeholder="0.00"
+                min="0.01"
+                step="0.01"
+                inputmode="decimal"
+                required
+              >
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Continue International Wire →</button>
+          <p class="form-footnote">
+            International transfers may require additional verification and processing time.
+          </p>
+        </form>
+
+       <!-- AUTHORIZATION STEP -->
+<div id="auth-step" class="form-card hidden authorization-card">
+
+  <div class="authorization-brand">
+    <img
+      src="/images/agribank-logo.png"
+      alt="AgriBank Texas"
+      class="authorization-logo"
+    >
   </div>
 
-  <nav class="mobile-nav">
-    <div class="mobile-nav-grid">
-      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
-      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
-      <a href="/transfer" class="mob-nav-item active"><span class="mob-icon">⇄</span>Transfer</a>
-      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
-      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+  <div class="authorization-icon" aria-hidden="true">
+    <svg viewBox="0 0 48 48" fill="none">
+      <path
+        d="M24 4L40 10V22C40 32 33 39 24 44C15 39 8 32 8 22V10L24 4Z"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16 24L21 29L32 18"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+
+  <div class="authorization-eyebrow">Secure transfer verification</div>
+
+  <h2 class="form-heading">Authorization Required</h2>
+
+  <p class="form-description">
+    Continue only with an authorization code issued through your bank's verified security process.
+  </p>
+
+  <div
+    id="authorization-status"
+    class="authorization-status"
+    role="status"
+    aria-live="polite"
+    hidden
+  ></div>
+
+  <div class="form-group">
+    <label class="form-label" for="auth-code">
+      Authorization Code
+    </label>
+
+    <input
+      id="auth-code"
+      type="password"
+      class="form-input authorization-code-input"
+      placeholder="Enter your authorization code"
+      maxlength="12"
+      autocomplete="one-time-code"
+      inputmode="numeric"
+      aria-describedby="authorization-help"
+    >
+  </div>
+
+  <div class="authorization-resend">
+    <span>Need a new code?</span>
+    <a href="#" id="resend-code">Request another code</a>
+  </div>
+
+  <button
+    type="button"
+    class="btn-submit authorization-submit"
+    id="confirm-transfer-btn"
+  >
+    Submit for Verification →
+  </button>
+
+  <button
+    type="button"
+    class="btn-submit btn-cancel"
+    id="cancel-auth-btn"
+  >
+    Cancel
+  </button>
+
+  <p id="authorization-help" class="form-footnote">
+    Never share your password or security PIN with another person.
+  </p>
+
+  <div class="authorization-security">
+    <span aria-hidden="true">✓</span>
+    Secure authorization process
+  </div>
+</div>
+
+      </section>
+
+      <!-- SIDEBAR -->
+      <aside aria-label="Account and transfer information">
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Your Accounts</h2>
+            <a href="/accounts">View all</a>
+          </div>
+
+          <% if (acctList.length) { %>
+            <% acctList.forEach(function(acc) { %>
+              <button
+                type="button"
+                class="quick-acct"
+                data-account-id="<%= acc.id %>"
+                onclick="selectAcct('<%= acc.id %>', this)"
+              >
+                <span class="quick-acct-icon" aria-hidden="true"><%= acc.icon || '🏦' %></span>
+
+                <span>
+                  <span class="quick-acct-name"><%= acc.name %></span>
+                  <span class="quick-acct-num">•••• <%= acc.number %></span>
+                </span>
+
+                <span class="quick-acct-bal">$<%= Number(acc.balance || 0).toFixed(2) %></span>
+              </button>
+            <% }) %>
+          <% } else { %>
+            <p style="color:var(--muted);font-size:12px;">No accounts available.</p>
+          <% } %>
+        </section>
+
+        <section class="panel">
+          <div class="panel-heading">
+            <h2>Transfer Information</h2>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">Internal transfer</span>
+            <span class="value">No listed fee</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">Domestic wire</span>
+            <span class="value">$25.00</span>
+          </div>
+
+          <div class="summary-row">
+            <span class="label">International wire</span>
+            <span class="value">$45.00</span>
+          </div>
+
+          <div class="fee-note">
+            Fees shown are informational. Confirm the applicable terms before initiating a transfer.
+          </div>
+        </section>
+      </aside>
     </div>
-  </nav>
+  </main>
+
+  <footer class="bank-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AgriBank Texas</span>
+      <span>Account services · Transfers · Customer support</span>
+    </div>
+  </footer>
 
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('show');
-    }
+    let pendingForm = null;
+    let activeFormType = 'internal';
+
+    const transferForms = {
+      internal: document.getElementById('form-internal'),
+      domestic: document.getElementById('form-domestic'),
+      international: document.getElementById('form-international')
+    };
+
+    const authStep = document.getElementById('auth-step');
+    const authCodeInput = document.getElementById('auth-code');
+    const confirmTransferButton = document.getElementById('confirm-transfer-btn');
+
     function showForm(id, btn) {
-      document.querySelectorAll('.form-card').forEach(f => f.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('form-' + id).classList.remove('hidden');
-      btn.classList.add('active');
-    }
-    function selectAcct(id) {
-      document.querySelectorAll('.quick-acct').forEach(e => e.classList.remove('selected'));
-      event.currentTarget.classList.add('selected');
-      document.querySelectorAll('select[name="fromAccount"]').forEach(s => {
-        for(var i=0; i<s.options.length; i++) { if(s.options[i].value === id) s.value = id; }
+      if (!transferForms[id]) return;
+
+      activeFormType = id;
+
+      Object.keys(transferForms).forEach(function(type) {
+        transferForms[type].classList.toggle('hidden', type !== id);
       });
+
+      authStep.classList.add('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(function(tab) {
+        const isActive = tab.dataset.formType === id;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-pressed', String(isActive));
+      });
+
+      pendingForm = null;
     }
+
+    function selectAcct(id, button) {
+      document.querySelectorAll('.quick-acct').forEach(function(el) {
+        el.classList.remove('selected');
+      });
+
+      if (button) {
+        button.classList.add('selected');
+      }
+
+      /*
+       * Fill the source-account selector in each transfer form.
+       * Only the currently visible form will be submitted.
+       */
+      document.querySelectorAll('select[name="fromAccount"]').forEach(function(select) {
+        select.value = id;
+      });
+
+      const activeSource = transferForms[activeFormType]
+        ? transferForms[activeFormType].querySelector('select[name="fromAccount"]')
+        : null;
+
+      if (activeSource) {
+        activeSource.focus({ preventScroll: true });
+      }
+    }
+    /*
+     * Front-end transition only:
+     * the server must validate the submitted transfer and authorization.
+     */
+    Object.keys(transferForms).forEach(function(type) {
+      const form = transferForms[type];
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        if (type === 'internal') {
+          const fromAccount = form.querySelector('[name="fromAccount"]').value;
+          const toAccount = form.querySelector('[name="toAccount"]').value;
+
+          if (fromAccount && toAccount && fromAccount === toAccount) {
+            alert('Please select two different accounts.');
+            return;
+          }
+        }
+
+        pendingForm = form;
+        activeFormType = type;
+
+        Object.keys(transferForms).forEach(function(formType) {
+          transferForms[formType].classList.add('hidden');
+        });
+
+        authStep.classList.remove('hidden');
+        authCodeInput.value = '';
+        authCodeInput.focus();
+
+        authStep.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      });
+    });
+
+    confirmTransferButton.addEventListener('click', function() {
+      const code = authCodeInput.value.trim();
+
+      if (!pendingForm) {
+        alert('Please select a transfer form before continuing.');
+        authStep.classList.add('hidden');
+        showForm(activeFormType);
+        return;
+      }
+
+      if (!code) {
+        alert('Please enter your authorization code.');
+        authCodeInput.focus();
+        return;
+      }
+
+      /*
+       * Add the authorization value to the existing form and submit it.
+       * Do not treat this client-side step as proof of authorization.
+       * Validate the code securely on the server.
+       */
+      let hidden = pendingForm.querySelector('input[name="authCode"]');
+
+      if (!hidden) {
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'authCode';
+        pendingForm.appendChild(hidden);
+      }
+
+      hidden.value = code;
+
+      confirmTransferButton.disabled = true;
+      confirmTransferButton.textContent = 'Submitting…';
+
+      pendingForm.submit();
+    });
+
+    document.getElementById('cancel-auth-btn').addEventListener('click', function() {
+      authStep.classList.add('hidden');
+      authCodeInput.value = '';
+
+      const formTypeToRestore = activeFormType;
+      const formToRestore = transferForms[formTypeToRestore];
+
+      if (formToRestore) {
+        formToRestore.classList.remove('hidden');
+      }
+
+      pendingForm = null;
+
+      document.querySelectorAll('.tab-btn').forEach(function(tab) {
+        const isActive = tab.dataset.formType === formTypeToRestore;
+        tab.classList.toggle('active', isActive);
+        tab.setAttribute('aria-pressed', String(isActive));
+      });
+    });
+
+
+const authorizationStatus = document.getElementById('authorization-status');
+const resendCodeLink = document.getElementById('resend-code');
+
+function showAuthorizationStatus(message, type) {
+  authorizationStatus.textContent = message;
+  authorizationStatus.className = 'authorization-status ' + type;
+  authorizationStatus.hidden = false;
+}
+
+resendCodeLink.addEventListener('click', async function(event) {
+  event.preventDefault();
+
+  if (!pendingForm) {
+    showAuthorizationStatus(
+      'Please select a transfer form before continuing.',
+      'error'
+    );
+    return;
+  }
+
+  if (!pendingForm.checkValidity()) {
+    pendingForm.reportValidity();
+    return;
+  }
+
+  const originalText = resendCodeLink.textContent;
+  const formData = new FormData(pendingForm);
+
+  resendCodeLink.setAttribute('aria-disabled', 'true');
+  resendCodeLink.textContent = 'Requesting…';
+
+  try {
+    const response = await fetch('/transfer/request-code', {
+      method: 'POST',
+      body: new URLSearchParams(formData),
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message || 'Unable to request an authorization code.'
+      );
+    }
+
+    showAuthorizationStatus(
+      result.message ||
+      'The authorization code has been sent to your registered email address.',
+      'success'
+    );
+  } catch (error) {
+    showAuthorizationStatus(
+      error.message ||
+      'Unable to request an authorization code. Please try again.',
+      'error'
+    );
+  } finally {
+    resendCodeLink.removeAttribute('aria-disabled');
+    resendCodeLink.textContent = originalText;
+  }
+});
   </script>
 </body>
+
 </html>

@@ -1,1 +1,13 @@
 node_modules/
+node_modules/
+.env
+.env.*
+!.env.example
+bank.db
+bank.db-shm
+bank.db-wal
+*.db
+*.sqlite
+*.sqlite3
+private_uploads/
+*.bak

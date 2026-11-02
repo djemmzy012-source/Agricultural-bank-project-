@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Documents | AgriBank Texas</title>
+
+  <style>
+    :root {
+      --green: #123d2c;
+      --dark: #0b2c20;
+      --gold: #c6a45b;
+      --bg: #f4f6f4;
+      --muted: #738078;
+      --border: #e0e6e1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: #26352d;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: var(--green);
+      color: white;
+      padding: 22px max(20px, calc((100% - 1050px) / 2));
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .brand { font-size: 20px; font-weight: 700; }
+    .brand span { color: #e0c47f; }
+
+    .sub {
+      font-size: 12px;
+      margin-top: 5px;
+      color: #d9e4dc;
+    }
+
+    main {
+      max-width: 1050px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+
+    .eyebrow {
+      color: #927333;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0;
+      color: var(--dark);
+      font-size: 30px;
+    }
+
+    h2 {
+      color: var(--dark);
+      font-size: 18px;
+      margin: 0 0 15px;
+    }
+
+    .intro {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .nav a {
+      display: inline-block;
+      padding: 11px 15px;
+      background: white;
+      color: var(--green);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav a.active {
+      background: var(--green);
+      color: white;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .account-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .account {
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .account h3 {
+      margin: 0 0 5px;
+      color: var(--green);
+      font-size: 16px;
+    }
+
+    .type {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: capitalize;
+    }
+
+    .detail {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      border-top: 1px solid #edf0ed;
+      padding: 12px 0 0;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .detail span:first-child { color: var(--muted); }
+
+    .detail strong {
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      min-height: 43px;
+      padding: 10px;
+      border: 1px solid #cfd8d1;
+      border-radius: 6px;
+      background: white;
+      color: #26352d;
+      font: inherit;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .button {
+      display: inline-block;
+      border: 1px solid var(--green);
+      border-radius: 6px;
+      padding: 12px 16px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: white;
+      color: var(--green);
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .notice {
+      background: #fff8e9;
+      border: 1px solid #eddfbd;
+      color: #67552e;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 650px) {
+      main {
+        padding: 0 13px;
+        margin-top: 22px;
+      }
+
+      h1 { font-size: 25px; }
+      .account-grid, .fields { grid-template-columns: 1fr; }
+      .panel { padding: 16px; }
+      .button { text-align: center; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="brand">AgriBank <span>Texas</span></div>
+    <div class="sub">Banking built around your future.</div>
+  </header>
+
+  <main>
+    <div class="eyebrow">Account services</div>
+    <h1>Account Documents</h1>
+
+    <p class="intro">
+      Review your saved account details and view or export transaction
+      records for a selected period.
+    </p>
+
+    <nav class="nav">
+      <a href="/statements">Statements</a>
+      <a class="active" href="/statements/documents">Account Documents</a>
+      <a href="/accounts">Accounts</a>
+      <a href="/transactions">Transactions</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+
+    <section class="panel">
+      <h2>Prepare your transaction records</h2>
+
+      <% if (!accounts.length) { %>
+        <p class="muted">
+          No accounts are associated with this profile yet.
+        </p>
+      <% } else { %>
+        <p class="muted">
+          Select an account and date range. You can view the matching
+          statement or download the matching transactions as a CSV file.
+        </p>
+
+        <form id="documentForm" method="GET" action="/statements">
+          <div class="fields">
+            <div>
+              <label for="accountId">Account</label>
+              <select id="accountId" name="accountId">
+                <option value="">All my accounts</option>
+                <% accounts.forEach(account => { %>
+                  <option value="<%= account.id %>">
+                    <%= account.name %> — <%= account.number %>
+                  </option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div>
+              <label for="from">Start date</label>
+              <input id="from" name="from" type="date">
+            </div>
+
+            <div>
+              <label for="to">End date</label>
+              <input id="to" name="to" type="date">
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="button" type="submit">
+              View statement
+            </button>
+
+            <button
+              class="button secondary"
+              type="submit"
+              formaction="/statements/export"
+            >
+              Download transactions CSV
+            </button>
+            <button
+  class="button"
+  type="submit"
+  formaction="/statements/pdf"
+>
+  Download PDF Statement
+</button>
+
+            <button
+              class="button secondary"
+              type="reset"
+            >
+              Clear filters
+            </button>
+          </div>
+        </form>
+
+        <p class="muted">
+          The CSV contains transaction records available in the your online banking profile.
+          It is a bank-issued PDF statement.
+        </p>
+      <% } %>
+    </section>
+
+    <section class="panel">
+      <h2>Bank information</h2>
+
+      <div class="detail">
+        <span>Institution name</span>
+        <strong><%= bankDetails.name %></strong>
+      </div>
+
+      <div class="detail">
+        <span>Routing number</span>
+        <strong><%= bankDetails.routingNumber || 'Not configured' %></strong>
+      </div>
+
+      <div class="detail">
+        <span>Mailing address</span>
+        <strong><%= bankDetails.mailingAddress || 'Not configured' %></strong>
+      </div>
+
+      <p class="muted">
+        Only verified institution-wide details should be displayed here.
+        An account's routing number should will automatically be treated
+        as the bank's official routing number.
+      </p>
+    </section>
+
+    <section class="panel">
+      <h2>Your accounts</h2>
+
+      <% if (!accounts.length) { %>
+        <p class="muted">No accounts are currently available.</p>
+      <% } else { %>
+        <div class="account-grid">
+          <% accounts.forEach(account => { %>
+            <article class="account">
+              <h3><%= account.name %></h3>
+
+              <div class="type"><%= account.type %> account</div>
+
+              <div class="detail">
+                <span>Account number</span>
+                <strong><%= account.number %></strong>
+              </div>
+
+              <div class="detail">
+                <span>Recorded balance</span>
+                <strong>
+                  <%= Number(account.balance || 0).toLocaleString(
+                    'en-US',
+                    { style: 'currency', currency: 'USD' }
+                  ) %>
+                </strong>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+      <% } %>
+    </section>
+
+    <div class="notice">
+      <strong>Document status:</strong>
+      This application can display and export saved transaction data.
+      Official bank letters and issued monthly PDF statements are not
+      configured.
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('documentForm')?.addEventListener('reset', () => {
+      window.setTimeout(() => {
+        document.getElementById('accountId').value = '';
+        document.getElementById('from').value = '';
+        document.getElementById('to').value = '';
+      }, 0);
+    });
+  </script>
+</body>
+</html>

@@ -1,272 +1,896 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Loan Services | AgriBank Texas' }) %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loans | AgriBank Texas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
-      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
-      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
-      --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
+      --green: #0c3f24;
+      --green-dark: #072a18;
+      --green-soft: #e8f0ea;
+      --gold: #c7a45b;
+      --bg: #f4f6f4;
+      --white: #ffffff;
+      --ink: #1a1a1a;
+      --muted: #555;
+      --border: #e0e6e1;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; transition: 0.2s; }
 
-    /* SIDEBAR */
-    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
-    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
-    .sidebar-brand span { color: var(--gold); }
-    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
-    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
-    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
-    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
-    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
-    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
-    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
-    .user-info .name { font-size: 0.85rem; font-weight: 600; }
-    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
-
-    /* MAIN */
-    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
-    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
-    .topbar-left { display: flex; align-items: center; gap: 1rem; }
-    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
-    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
-    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .content { padding: 2rem; max-width: 1400px; margin: 0 auto; }
-
-    /* LOANS LAYOUT */
-    .loans-grid { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; }
-    
-    /* PRODUCT CARDS */
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-    .product-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 2rem; transition: all 0.3s; position: relative; overflow: hidden;
+    body {
+      font-family: "Source Sans 3", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
     }
-    .product-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--gold); }
-    .product-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--green-600); }
-    .product-card:nth-child(2)::before { background: var(--warning); }
-    .product-card:nth-child(3)::before { background: #8b5cf6; }
 
-    .prod-icon { width: 56px; height: 56px; background: #f0fdf4; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 1.25rem; }
-    .product-card:nth-child(2) .prod-icon { background: #fefce8; }
-    .product-card:nth-child(3) .prod-icon { background: #f5f3ff; }
+    a { text-decoration: none; color: inherit; }
+    button, input, select { font: inherit; }
 
-    .prod-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.25rem; color: var(--text); }
-    .prod-rate { font-size: 0.85rem; font-weight: 700; color: var(--success); margin-bottom: 1rem; display: inline-block; background: #ecfdf5; padding: 0.2rem 0.5rem; border-radius: 4px; }
-    .prod-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
-    .prod-features { list-style: none; margin-bottom: 1.5rem; }
-    .prod-features li { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
-    .prod-features li::before { content: '✓'; color: var(--success); font-weight: 700; }
-
-    .btn-apply { width: 100%; padding: 0.75rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .btn-apply:hover { background: var(--green-700); }
-
-    /* CALCULATOR SIDEBAR */
-    .calc-widget { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); border: 1px solid var(--border); position: sticky; top: calc(var(--header-h) + 1.5rem); }
-    .calc-widget h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; }
-    .calc-group { margin-bottom: 1rem; }
-    .calc-group label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.4rem; }
-    .calc-input { width: 100%; padding: 0.6rem; border: 1px solid var(--border); border-radius: 6px; font-size: 0.9rem; }
-    .calc-result { background: #f8fafc; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center; border: 1px solid var(--border); }
-    .calc-val { font-size: 1.75rem; font-weight: 800; font-family: 'DM Serif Display', serif; color: var(--green-700); }
-    .calc-label { font-size: 0.75rem; color: var(--text-secondary); }
-
-    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
-    .btn-text:hover { color: var(--green-900); }
-
-    /* MOBILE */
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
-    .sidebar-overlay.show { display: block; opacity: 1; }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
-    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
-    .mob-nav-item.active { color: var(--green-700); }
-    .mob-nav-item .mob-icon { font-size: 1.25rem; }
-
-    @media (max-width: 1024px) {
-      .loans-grid { grid-template-columns: 1fr; }
-      .calc-widget { position: static; margin-top: 1rem; }
+    .topbar {
+      background: var(--green);
+      color: white;
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; }
-      .hamburger { display: flex; }
-      .content { padding: 1.25rem; padding-bottom: 5rem; }
-      .topbar { padding: 0 1.25rem; }
-      .mobile-nav { display: block; }
+
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
     }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .animate { animation: fadeInUp 0.4s ease both; }
+
+    .brand { display: flex; align-items: center; flex-shrink: 0; }
+
+    .brand-logo {
+      display: block;
+      width: 180px;
+      max-width: 35vw;
+      max-height: 42px;
+      height: auto;
+      object-fit: contain;
+      object-position: left center;
+    }
+
+    .top-nav { display: flex; align-items: center; gap: 5px; }
+
+    .top-nav a {
+      color: rgba(255,255,255,.92);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 11px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    .top-nav a:hover,
+    .top-nav a.active {
+      background: rgba(255,255,255,.13);
+      color: white;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-size: 13.5px;
+      white-space: nowrap;
+    }
+
+    .top-actions a { color: rgba(255,255,255,.92); font-weight: 500; }
+    .top-actions a:hover { color: white; text-decoration: underline; }
+
+    .subnav {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 0 20px;
+    }
+
+    .subnav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+    }
+
+    .subnav a {
+      padding: 13px 14px 11px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #444;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+    }
+
+    .subnav a:hover,
+    .subnav a.active {
+      color: var(--green);
+      border-bottom-color: var(--green);
+    }
+
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 50px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .page-heading h1 {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: var(--green-dark);
+    }
+
+    .page-heading p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 14.5px;
+      max-width: 640px;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      background: #fff;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .back-link:hover { background: var(--green-soft); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .products { display: grid; gap: 16px; }
+
+    .product {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 22px;
+    }
+
+    .product:hover {
+      border-color: #c5d5c9;
+      box-shadow: 0 4px 14px rgba(7, 42, 24, 0.05);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .product-top {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .product-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: var(--green-soft);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .product-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--green-dark);
+      margin-bottom: 4px;
+    }
+
+    .product-rate {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--green);
+      background: var(--green-soft);
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+
+    .product-desc {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .detail-box {
+      background: #f7faf8;
+      border: 1px solid #e5eee7;
+      border-radius: 6px;
+      padding: 10px 11px;
+    }
+
+    .detail-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .detail-value {
+      margin-top: 3px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+    }
+
+    .feature-list li {
+      font-size: 13px;
+      color: #3d4a41;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 800;
+    }
+
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 150px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 5px;
+      font-size: 13.5px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-green { background: var(--green); color: #fff; }
+    .btn-green:hover { background: var(--green-dark); }
+
+    .btn-outline {
+      background: #fff;
+      border-color: #cbd5ce;
+      color: var(--ink);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .side-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 76px;
+    }
+
+    .side-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 18px;
+    }
+
+    .side-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: var(--green-dark);
+    }
+
+    .side-card > p {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .field { margin-bottom: 12px; }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3d4a41;
+      margin-bottom: 5px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      height: 40px;
+      padding: 0 11px;
+      border: 1px solid #cbd5ce;
+      border-radius: 5px;
+      background: #fff;
+      font-size: 14px;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(12, 63, 36, 0.12);
+    }
+
+    .calc-result {
+      background: #f7faf8;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 14px;
+      margin-top: 4px;
+    }
+
+    .calc-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid #edf0ed;
+      font-size: 13px;
+    }
+
+    .calc-row:last-child {
+      border-bottom: 0;
+      padding-top: 10px;
+    }
+
+    .calc-row span { color: var(--muted); }
+    .calc-row strong { color: var(--green-dark); font-weight: 800; }
+
+    .calc-main {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .calc-note {
+      margin-top: 10px;
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .info-list {
+      list-style: none;
+      display: grid;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .info-list li {
+      font-size: 13px;
+      color: #3d4a41;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .info-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 7px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .notice {
+      background: #faf7ef;
+      border-left: 3px solid var(--gold);
+      padding: 12px 14px;
+      border-radius: 0 6px 6px 0;
+      font-size: 12.5px;
+      color: #67583b;
+      line-height: 1.5;
+      margin-top: 18px;
+    }
+
+    .how-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .how-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 16px;
+    }
+
+    .how-step {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 6px;
+    }
+
+    .how-card h3 {
+      font-size: 14.5px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .how-card p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .side-stack { position: static; }
+      .product-grid { grid-template-columns: 1fr; }
+      .product-actions { flex-direction: row; flex-wrap: wrap; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .how-grid { grid-template-columns: 1fr; }
+      .top-nav { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .topbar { padding: 0 14px; }
+      .brand-logo {
+        width: 145px;
+        max-width: 42vw;
+        max-height: 36px;
+      }
+      .main { padding: 22px 12px 40px; }
+      .page-heading h1 { font-size: 26px; }
+      .subnav { padding: 0 10px; }
+    }
   </style>
 </head>
+
+<%
+  const safeUser = (typeof user !== 'undefined' && user) ? user : { firstName: 'Customer' };
+
+  const loanProducts = (typeof products !== 'undefined' && Array.isArray(products) && products.length)
+    ? products
+    : [
+        {
+          title: 'Personal Loan',
+          rate: '7.49% APR',
+          desc: 'Unsecured personal financing for qualified members for eligible personal expenses.'
+        },
+        {
+          title: 'Operating Loan',
+          rate: '6.25% APR',
+          desc: 'Seasonal financing for seed, feed, labor, fuel, and operating expenses through the production cycle.'
+        },
+        {
+          title: 'Equipment Loan',
+          rate: '5.90% APR',
+          desc: 'Finance tractors, combines, irrigation systems, implements, and other production equipment.'
+        },
+        {
+          title: 'Land Improvement Loan',
+          rate: '6.75% APR',
+          desc: 'Support fencing, barns, drainage, storage, and infrastructure that improve long-term productivity.'
+        }
+      ];
+
+  function productIcon(title) {
+    const t = String(title || '').toLowerCase();
+    if (t.includes('personal')) return '👤';
+    if (t.includes('equipment')) return '🚜';
+    if (t.includes('land') || t.includes('improvement')) return '🏗️';
+    return '🌱';
+  }
+
+  function productMeta(title) {
+    const t = String(title || '').toLowerCase();
+
+    if (t.includes('personal')) {
+      return {
+        amounts: '$2,000 – $50,000',
+        terms: '12 – 60 months',
+        use: 'Personal expenses',
+        features: [
+          'Unsecured personal financing for qualified members',
+          'Fixed monthly payment options may be available',
+          'Decision subject to underwriting and bank policy'
+        ]
+      };
+    }
+
+    if (t.includes('equipment')) {
+      return {
+        amounts: '$10,000 – $500,000',
+        terms: '24 – 84 months',
+        use: 'Machinery & equipment',
+        features: [
+          'Terms aligned to equipment useful life',
+          'New and used equipment may be considered',
+          'Fixed or variable rate options may be available'
+        ]
+      };
+    }
+
+    if (t.includes('land') || t.includes('improvement')) {
+      return {
+        amounts: '$15,000 – $750,000',
+        terms: '36 – 120 months',
+        use: 'Infrastructure & improvements',
+        features: [
+          'Designed for lasting farm improvements',
+          'Draw schedules may be available when approved',
+          'Relationship-based underwriting review'
+        ]
+      };
+    }
+
+    return {
+      amounts: '$5,000 – $250,000',
+      terms: '6 – 36 months',
+      use: 'Seasonal operating needs',
+      features: [
+        'Cash flow structured around the crop cycle',
+        'Revolving or closed-end options may be available',
+        'Dedicated agricultural lending support'
+      ]
+    };
+  }
+
+  function rateNumber(rateText) {
+    const match = String(rateText || '').match(/[\d.]+/);
+    return match ? match[0] : '6.25';
+  }
+%>
+
 <body>
-  <%
-    /* 
-       FIX: Added strict checks for 'user' and 'products' variables.
-       This prevents the "ReferenceError: user is not defined" (500 Error).
-    */
-    const safeUser = (typeof user !== 'undefined' && user) ? user : { firstName: 'Customer', lastName: '' };
-    const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
-    const isAdmin = safeUser.isAdmin === 1;
-    
-    const loanProducts = (typeof products !== 'undefined' && Array.isArray(products)) ? products : [
-      { title: 'Operating Loan', rate: '6.25% APR', desc: 'Flexible financing for seed, feed, labor, and seasonal cash flow.' },
-      { title: 'Equipment Loan', rate: '5.90% APR', desc: 'Finance tractors, combines, irrigation systems, and processing equipment.' },
-      { title: 'Land Improvement Loan', rate: '6.75% APR', desc: 'Support fencing, barns, drainage, and infrastructure upgrades.' }
-    ];
-  %>
-
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
-      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
-      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
-      <div class="nav-section">Services</div>
-      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
-      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
-      <a href="/loans" class="nav-item active"><span class="icon">🏦</span> Loans</a>
-      <div class="nav-section">Account</div>
-      <a href="/profile" class="nav-item"><span class="icon">👤</span> Profile</a>
-      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
-      <% if(isAdmin) { %><a href="/admin" class="nav-item"><span class="icon">⚙️</span> Admin</a><% } %>
-    </nav>
-    <div class="sidebar-footer">
-      <a href="/logout" class="sidebar-user">
-        <div class="avatar"><%= initials %></div>
-        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/dashboard" class="brand" aria-label="AgriBank overview">
+        <img src="/images/agribank-logo.png" alt="AgriBank" class="brand-logo">
       </a>
-    </div>
-  </aside>
 
-  <div class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1>Loan Services</h1></div>
-      </div>
-      <div class="topbar-right">
-        <a href="/notifications" class="topbar-btn">🔔</a>
-        <a href="/profile" class="topbar-btn">👤</a>
-      </div>
-    </header>
+      <nav class="top-nav" aria-label="Main navigation">
+        <a href="/dashboard">Accounts</a>
+        <a href="/transfer">Pay &amp; transfer</a>
+        <a href="/deposits">Deposit</a>
+        <a href="/loans" class="active">Loans</a>
+        <a href="/profile">Access &amp; security</a>
+      </nav>
 
-    <div class="content">
-      <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
-
-      <div class="loans-grid">
-        
-        <!-- LEFT: PRODUCTS -->
-        <div>
-          <h2 style="font-size:1.5rem; margin-bottom:0.5rem;" class="animate">Agricultural Financing</h2>
-          <p style="color:var(--text-secondary); margin-bottom:1.5rem;" class="animate">Flexible rates and terms designed for the Texas farming cycle.</p>
-          
-          <div class="products-grid animate">
-            <% loanProducts.forEach(p => { 
-               const icon = p.title.includes('Equipment') ? '🚜' : (p.title.includes('Operating') ? '🌱' : '🏗️');
-               const features = [
-                 'Funds available within 24 hours',
-                 'No pre-payment penalties',
-                 'Dedicated loan officer'
-               ];
-            %>
-              <div class="product-card">
-                <div class="prod-icon"><%= icon %></div>
-                <div class="prod-title"><%= p.title %></div>
-                <div class="prod-rate">Starting at <%= p.rate %></div>
-                <p class="prod-desc"><%= p.desc %></p>
-                <ul class="prod-features">
-                  <% features.forEach(f => { %><li><%= f %></li><% }) %>
-                </ul>
-                <button class="btn-apply" onclick="alert('Our loan officer will contact you shortly to begin the <%= p.title %> application process.')">
-                  Apply for <%= p.title %>
-                </button>
-              </div>
-            <% }) %>
-          </div>
-        </div>
-
-        <!-- RIGHT: CALCULATOR -->
-        <div>
-          <div class="calc-widget animate">
-            <h3>🧮 Payment Estimator</h3>
-            <div class="calc-group">
-              <label>Loan Amount ($)</label>
-              <input type="number" id="calc-amount" class="calc-input" value="50000" oninput="calculateLoan()">
-            </div>
-            <div class="calc-group">
-              <label>Interest Rate (%)</label>
-              <input type="number" id="calc-rate" class="calc-input" value="6.25" step="0.01" oninput="calculateLoan()">
-            </div>
-            <div class="calc-group">
-              <label>Term (Months)</label>
-              <input type="number" id="calc-term" class="calc-input" value="60" oninput="calculateLoan()">
-            </div>
-            
-            <div class="calc-result">
-              <div class="calc-val" id="calc-monthly">$972.40</div>
-              <div class="calc-label">Estimated Monthly Payment</div>
-            </div>
-            <p style="font-size:0.65rem; color:var(--text-secondary); margin-top:0.75rem; text-align:center;">
-              *Estimates only. Final rates based on creditworthiness.
-            </p>
-          </div>
-        </div>
-
+      <div class="top-actions">
+        <a href="/help">Help</a>
+        <a href="/profile"><%= safeUser.firstName || 'Profile' %></a>
+        <a href="/logout">Sign out</a>
       </div>
     </div>
-  </div>
+  </header>
 
-  <nav class="mobile-nav">
-    <div class="mobile-nav-grid">
-      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
-      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accounts</a>
-      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Transfer</a>
-      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Pay</a>
-      <a href="/profile" class="mob-nav-item"><span class="mob-icon">👤</span>Profile</a>
+  <nav class="subnav" aria-label="Account navigation">
+    <div class="subnav-inner">
+      <a href="/dashboard">Overview</a>
+      <a href="/transactions">Activity</a>
+      <a href="/statements">Statements &amp; documents</a>
+      <a href="/loans" class="active" aria-current="page">Loans</a>
+      <a href="/profile">Profile &amp; settings</a>
     </div>
   </nav>
 
+  <main class="main">
+    <div class="page-heading">
+      <div>
+        <div class="eyebrow">Lending services</div>
+        <h1>Loan products</h1>
+        <p>
+          Review product details, estimate payments, and start a lending inquiry.
+          Rates shown are starting examples and may vary based on credit, collateral, and relationship.
+        </p>
+      </div>
+      <a class="back-link" href="/dashboard">← Back to Overview</a>
+    </div>
+
+    <div class="layout">
+      <section>
+        <div class="products">
+          <% loanProducts.forEach(function(p) {
+            const meta = productMeta(p.title);
+          %>
+            <article class="product">
+              <div class="product-grid">
+                <div>
+                  <div class="product-top">
+                    <div class="product-icon" aria-hidden="true"><%= productIcon(p.title) %></div>
+                    <div>
+                      <div class="product-title"><%= p.title %></div>
+                      <div class="product-rate">Starting at <%= p.rate %></div>
+                      <p class="product-desc"><%= p.desc %></p>
+                    </div>
+                  </div>
+
+                  <div class="detail-grid">
+                    <div class="detail-box">
+                      <div class="detail-label">Typical amounts</div>
+                      <div class="detail-value"><%= meta.amounts %></div>
+                    </div>
+                    <div class="detail-box">
+                      <div class="detail-label">Common terms</div>
+                      <div class="detail-value"><%= meta.terms %></div>
+                    </div>
+                    <div class="detail-box">
+                      <div class="detail-label">Primary use</div>
+                      <div class="detail-value"><%= meta.use %></div>
+                    </div>
+                  </div>
+
+                  <ul class="feature-list">
+                    <% meta.features.forEach(function(f) { %>
+                      <li><%= f %></li>
+                    <% }) %>
+                  </ul>
+                </div>
+
+                <div class="product-actions">
+                  <button
+                    type="button"
+                    class="btn btn-green"
+                    data-product="<%= p.title %>"
+                    data-rate="<%= rateNumber(p.rate) %>"
+                    onclick="useProductInCalculator(this)"
+                  >
+                    Estimate payment
+                  </button>
+
+                  <a
+                    class="btn btn-outline"
+                    href="/loans/apply?product=<%= encodeURIComponent(p.title) %>"
+                  >
+                    Start inquiry
+                  </a>
+                </div>
+              </div>
+            </article>
+          <% }) %>
+        </div>
+
+        <div class="how-grid">
+          <div class="how-card">
+            <div class="how-step">Step 1</div>
+            <h3>Share your needs</h3>
+            <p>Tell us the purpose, amount, and timing for personal or agricultural financing.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-step">Step 2</div>
+            <h3>Review &amp; underwriting</h3>
+            <p>We review financials, credit profile, collateral, and cash flow.</p>
+          </div>
+          <div class="how-card">
+            <div class="how-step">Step 3</div>
+            <h3>Decision &amp; funding</h3>
+            <p>If approved by an administrator, terms are finalized and funding is coordinated.</p>
+          </div>
+        </div>
+
+        <div class="notice">
+          Important: This page provides general loan information. An inquiry is not a credit decision.
+          Final approval, rates, fees, and terms depend on underwriting and bank policy.
+          Only authorized administrators can approve loan applications.
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="side-card">
+          <h3>Loan payment calculator</h3>
+          <p>Estimate fixed monthly payments. Results are illustrative only.</p>
+
+          <div class="field">
+            <label for="calc-product">Loan type</label>
+            <select id="calc-product" onchange="onProductChange()">
+              <% loanProducts.forEach(function(p) { %>
+                <option value="<%= p.title %>" data-rate="<%= rateNumber(p.rate) %>">
+                  <%= p.title %>
+                </option>
+              <% }) %>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="calc-amount">Loan amount ($)</label>
+            <input type="number" id="calc-amount" value="50000" min="1000" step="500" oninput="calculateLoan()">
+          </div>
+
+          <div class="field">
+            <label for="calc-rate">Interest rate (% APR)</label>
+            <input type="number" id="calc-rate" value="6.25" min="0" step="0.01" oninput="calculateLoan()">
+          </div>
+
+          <div class="field">
+            <label for="calc-term">Term (months)</label>
+            <input type="number" id="calc-term" value="60" min="6" max="360" step="1" oninput="calculateLoan()">
+          </div>
+
+          <div class="calc-result">
+            <div class="calc-row">
+              <span>Monthly payment</span>
+              <strong class="calc-main" id="calc-monthly">$0.00</strong>
+            </div>
+            <div class="calc-row">
+              <span>Total of payments</span>
+              <strong id="calc-total">$0.00</strong>
+            </div>
+            <div class="calc-row">
+              <span>Estimated interest</span>
+              <strong id="calc-interest">$0.00</strong>
+            </div>
+          </div>
+
+          <p class="calc-note">
+            Assumes a fixed rate and equal monthly payments. Actual payments may differ based on
+            rate type, fees, amortization schedule, and final approved terms.
+          </p>
+        </section>
+
+        <section class="side-card">
+          <h3>What to have ready</h3>
+          <ul class="info-list">
+            <li>Purpose of the loan and requested amount</li>
+            <li>Recent financial statements or tax returns</li>
+            <li>Details on collateral, if applicable</li>
+            <li>Current AgriBank account information</li>
+          </ul>
+          <a class="btn btn-outline" href="/profile" style="width:100%;">Review profile details</a>
+        </section>
+
+        <section class="side-card">
+          <h3>Lending support</h3>
+          <p>Questions about eligibility, documents, or timing? Support can help with the next step.</p>
+          <a class="btn btn-green" href="/help" style="width:100%;">Contact support</a>
+        </section>
+      </aside>
+    </div>
+  </main>
+
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('show');
+    function money(value) {
+      return '$' + Number(value || 0).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
     }
 
-    // Simple Loan Calculator Logic
     function calculateLoan() {
       const amount = parseFloat(document.getElementById('calc-amount').value);
-      const rate = parseFloat(document.getElementById('calc-rate').value) / 100 / 12;
+      const annual = parseFloat(document.getElementById('calc-rate').value);
       const term = parseFloat(document.getElementById('calc-term').value);
 
-      if (amount > 0 && rate > 0 && term > 0) {
-        const x = Math.pow(1 + rate, term);
-        const monthly = (amount * x * rate) / (x - 1);
-        document.getElementById('calc-monthly').textContent = '$' + monthly.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-      } else {
-        document.getElementById('calc-monthly').textContent = '—';
+      const monthlyEl = document.getElementById('calc-monthly');
+      const totalEl = document.getElementById('calc-total');
+      const interestEl = document.getElementById('calc-interest');
+
+      if (!(amount > 0) || !(term > 0) || isNaN(annual) || annual < 0) {
+        monthlyEl.textContent = '—';
+        totalEl.textContent = '—';
+        interestEl.textContent = '—';
+        return;
       }
+
+      let monthly;
+      if (annual === 0) {
+        monthly = amount / term;
+      } else {
+        const rate = annual / 100 / 12;
+        const factor = Math.pow(1 + rate, term);
+        monthly = (amount * rate * factor) / (factor - 1);
+      }
+
+      const total = monthly * term;
+      const interest = total - amount;
+
+      monthlyEl.textContent = money(monthly);
+      totalEl.textContent = money(total);
+      interestEl.textContent = money(interest);
     }
+
+    function onProductChange() {
+      const select = document.getElementById('calc-product');
+      const option = select.options[select.selectedIndex];
+      const rate = option.getAttribute('data-rate');
+      if (rate) {
+        document.getElementById('calc-rate').value = rate;
+      }
+      calculateLoan();
+    }
+
+    function useProductInCalculator(button) {
+      const product = button.getAttribute('data-product');
+      const rate = button.getAttribute('data-rate');
+      const select = document.getElementById('calc-product');
+
+      for (let i = 0; i < select.options.length; i++) {
+        if (select.options[i].value === product) {
+          select.selectedIndex = i;
+          break;
+        }
+      }
+
+      if (rate) {
+        document.getElementById('calc-rate').value = rate;
+      }
+
+      calculateLoan();
+      document.getElementById('calc-amount').focus();
+    }
+
+    calculateLoan();
   </script>
 </body>
 </html>
-

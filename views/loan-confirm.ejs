@@ -1,0 +1,392 @@
+﻿
+<%
+const safeUser = user || {};
+const productName = product || 'Personal Loan';
+const requestedAmount = Number(amount || 0);
+const applicationReference = reference || 'Pending';
+
+const money = (value) => '$' + Number(value || 0).toLocaleString('en-US', {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+const applicantName =
+  [safeUser.firstName, safeUser.lastName].filter(Boolean).join(' ') ||
+  safeUser.username ||
+  'Account holder';
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#174b36">
+  <title>Application Received | AgriBank Texas</title>
+
+  <style>
+    :root {
+      --green: #174b36;
+      --deep: #103526;
+      --gold: #c9a45c;
+      --ink: #24352d;
+      --muted: #748078;
+      --line: #e6ebe7;
+      --bg: #f4f7f4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .brand-banner {
+      background: var(--deep);
+      color: white;
+      text-align: center;
+      padding: 11px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1120px;
+      margin: auto;
+      padding: 19px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      color: var(--green);
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .brand small {
+      display: block;
+      margin-top: 4px;
+      color: #8b9690;
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+
+    .nav a {
+      color: var(--green);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      margin-left: 20px;
+    }
+
+    .nav a:hover {
+      color: var(--gold);
+    }
+
+    main {
+      width: min(900px, calc(100% - 32px));
+      margin: 48px auto;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 12px 35px rgba(20, 55, 38, .06);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 42px 25px 35px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .check {
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 19px;
+      border-radius: 50%;
+      background: #e8f3ec;
+      color: var(--green);
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .hero h1 {
+      margin: 0 0 12px;
+      color: var(--green);
+      font-size: clamp(24px, 4vw, 32px);
+    }
+
+    .hero p {
+      max-width: 570px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .reference {
+      padding: 17px 20px;
+      background: #f7f9f7;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      margin-bottom: 25px;
+    }
+
+    .reference span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 7px;
+    }
+
+    .reference strong {
+      color: var(--green);
+      font-size: 20px;
+      letter-spacing: 1px;
+      overflow-wrap: anywhere;
+    }
+
+    h2 {
+      color: var(--green);
+      font-size: 17px;
+      margin: 0 0 18px;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .detail {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 17px;
+    }
+
+    .detail span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .detail strong {
+      color: var(--ink);
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .status {
+      color: #89651d !important;
+    }
+
+    .notice {
+      background: #f4f8f4;
+      border-left: 4px solid var(--gold);
+      padding: 17px 19px;
+      border-radius: 5px;
+      color: #526158;
+      font-size: 13px;
+      line-height: 1.7;
+      margin-bottom: 25px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 19px;
+      border-radius: 7px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .2s ease;
+    }
+
+    .btn:hover {
+      background: var(--deep);
+    }
+
+    .btn.secondary {
+      background: white;
+      color: var(--green);
+      border: 1px solid #cbd8cf;
+    }
+
+    .btn.secondary:hover {
+      background: #f4f8f4;
+    }
+
+    footer {
+      text-align: center;
+      color: #89938d;
+      font-size: 11px;
+      line-height: 1.7;
+      padding: 25px 15px 35px;
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        padding: 16px;
+      }
+
+      .nav a {
+        margin-left: 10px;
+        font-size: 11px;
+      }
+
+      main {
+        margin: 25px auto;
+      }
+
+      .content {
+        padding: 21px;
+      }
+
+      .details {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 32px 20px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="brand-banner">
+    AgriBank Texas | Secure Banking. Trusted Service. Stronger Communities.
+  </div>
+
+  <header>
+    <div class="nav">
+      <div class="brand">
+        AgriBank Texas
+        <small>GROWING TOGETHER</small>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <a href="/dashboard">Overview</a>
+        <a href="/loans">Loans</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+
+      <div class="hero">
+        <div class="check" aria-hidden="true">✓</div>
+
+        <h1>Application received</h1>
+
+        <p>
+          Thank you, <%= safeUser.firstName || safeUser.username || 'Customer' %>.
+          Your loan application has been successfully submitted
+          and is awaiting review.
+        </p>
+      </div>
+
+      <div class="content">
+
+        <div class="reference">
+          <span>Application reference</span>
+          <strong><%= applicationReference %></strong>
+        </div>
+
+        <h2>Application summary</h2>
+
+        <div class="details">
+
+          <div class="detail">
+            <span>Loan product</span>
+            <strong><%= productName %></strong>
+          </div>
+
+          <div class="detail">
+            <span>Requested amount</span>
+            <strong><%= money(requestedAmount) %></strong>
+          </div>
+
+          <div class="detail">
+            <span>Application status</span>
+            <strong class="status">Pending review</strong>
+          </div>
+
+          <div class="detail">
+            <span>Applicant</span>
+            <strong><%= applicantName %></strong>
+          </div>
+
+        </div>
+
+        <div class="notice">
+          <strong>What happens next?</strong><br>
+          Your loan application has been received and is pending review.
+          An authorized administrator will assess the information
+          provided. Your application status will be updated once
+          a decision has been made. Submission does not constitute
+          loan approval or a commitment to lend.
+        </div>
+
+        <div class="actions">
+          <a class="btn" href="/dashboard">Return to overview</a>
+          <a class="btn secondary" href="/loans">View loan products</a>
+          <a class="btn secondary" href="/notifications">Notifications</a>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      AgriBank Texas<br>
+      Please retain your application reference for future correspondence.
+    </footer>
+
+  </main>
+
+</body>
+</html>

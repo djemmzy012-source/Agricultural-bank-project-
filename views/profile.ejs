@@ -1,444 +1,1589 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('partials/head', { title: 'Profile & Settings | AgriBank Texas' }) %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile &amp; Settings | AgriBank Texas</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --navy: #0a1c14; --green-900: #0f2b1f; --green-800: #144a25;
-      --green-700: #1a5c30; --green-600: #22753d; --gold: #d4a047;
-      --bg: #f0f2f5; --surface: #ffffff; --text: #0f172a;
-      --text-secondary: #64748b; --border: #e2e8f0;
-      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-      --info: #3b82f6;
-      --sidebar-w: 260px; --header-h: 72px; --radius: 16px; --radius-sm: 10px;
-      --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
-      --shadow-lg: 0 8px 30px rgba(0,0,0,0.08);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; transition: 0.2s; }
-
-    /* SIDEBAR */
-    .sidebar { position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; background: var(--green-900); color: white; z-index: 100; display: flex; flex-direction: column; transition: transform 0.3s ease; overflow-y: auto; }
-    .sidebar-brand { padding: 1.75rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-brand h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; }
-    .sidebar-brand span { color: var(--gold); }
-    .sidebar-brand .sub { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.5; margin-top: 0.25rem; font-weight: 600; }
-    .sidebar-nav { padding: 1.25rem 1rem; flex: 1; }
-    .nav-section { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.35; padding: 0.75rem 0.75rem 0.4rem; font-weight: 700; }
-    .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 500; color: rgba(255,255,255,0.65); margin-bottom: 2px; cursor: pointer; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
-    .nav-item.active { background: rgba(212, 160, 71, 0.15); color: var(--gold); font-weight: 600; }
-    .nav-item .icon { width: 20px; text-align: center; font-size: 1rem; opacity: 0.85; }
-    .sidebar-footer { padding: 1.25rem; border-top: 1px solid rgba(255,255,255,0.08); }
-    .sidebar-user { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; border-radius: var(--radius-sm); cursor: pointer; }
-    .sidebar-user:hover { background: rgba(255,255,255,0.05); }
-    .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gold); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--green-900); }
-    .user-info .name { font-size: 0.85rem; font-weight: 600; }
-    .user-info .role { font-size: 0.7rem; opacity: 0.5; }
-
-    /* MAIN AREA */
-    .main { margin-left: var(--sidebar-w); min-height: 100vh; }
-    .topbar { position: sticky; top: 0; height: var(--header-h); background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; z-index: 50; }
-    .topbar-left { display: flex; align-items: center; gap: 1rem; }
-    .hamburger { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text); }
-    .topbar-title h1 { font-size: 1.15rem; font-weight: 700; }
-    .topbar-right { display: flex; align-items: center; gap: 0.75rem; }
-    .topbar-btn { width: 40px; height: 40px; border-radius: 50%; background: transparent; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
-    .topbar-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .content { padding: 2rem; max-width: 1200px; margin: 0 auto; }
-
-    /* PROFILE LAYOUT */
-    .profile-grid { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; }
-    .widget { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); overflow: hidden; margin-bottom: 1.5rem; }
-    .widget-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .widget-header h3 { font-size: 1rem; font-weight: 700; }
-    .widget-body { padding: 1.5rem; }
-
-    /* PROFILE CARD */
-    .profile-card { text-align: center; }
-    .avatar-lg { width: 100px; height: 100px; background: linear-gradient(135deg, var(--green-700), var(--green-900)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; font-weight: 700; margin: 0 auto 1rem; border: 4px solid #ecfdf5; }
-    .profile-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.25rem; }
-    .profile-role { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; }
-    .profile-stats { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-    .stat-item { text-align: center; }
-    .stat-val { font-size: 1.1rem; font-weight: 700; font-family: 'DM Serif Display', serif; }
-    .stat-label { font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
-
-    .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .action-btn { display: block; padding: 0.75rem; border: 1px solid var(--border); border-radius: 8px; text-align: center; font-weight: 600; font-size: 0.85rem; background: white; transition: 0.2s; cursor: pointer; }
-    .action-btn:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .action-btn.primary { background: var(--green-800); color: white; border-color: var(--green-800); }
-    .action-btn.primary:hover { background: var(--green-700); }
-    .action-btn.danger { color: var(--danger); border-color: #fecaca; }
-    .action-btn.danger:hover { background: #fef2f2; }
-
-    /* FORMS */
-    .form-group { margin-bottom: 1.25rem; }
-    .form-label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 0.5rem; }
-    .form-input { width: 100%; padding: 0.7rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: inherit; transition: 0.2s; background: white; }
-    .form-input:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(34,117,61,0.1); }
-    .form-input:disabled { background: #f8fafc; opacity: 0.7; cursor: not-allowed; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .btn-submit { width: 100%; padding: 0.85rem; background: var(--green-800); color: white; border: none; border-radius: 8px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-submit:hover { background: var(--green-700); }
-
-    /* ACCOUNTS LIST */
-    .acct-item { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0; border-bottom: 1px solid #f1f5f9; }
-    .acct-item:last-child { border-bottom: none; }
-    .acct-info h4 { font-size: 0.95rem; font-weight: 600; }
-    .acct-info p { font-size: 0.8rem; color: var(--text-secondary); font-family: monospace; }
-    .acct-actions { display: flex; gap: 0.5rem; }
-    .btn-mini { padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--border); cursor: pointer; background: white; transition: 0.2s; }
-    .btn-mini:hover { background: #f8fafc; }
-    .btn-mini.primary { background: var(--green-800); color: white; border-color: var(--green-800); }
-
-    /* CARD CONTROLS */
-    .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
-    .bank-card { color: white; border-radius: 12px; padding: 1.25rem; position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(15,43,31,0.3); }
-    .bank-card.dark { background: linear-gradient(135deg, #0f2b1f, #1a5c30); }
-    .bank-card.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
-    .bank-card::before { content: ''; position: absolute; top: 0; right: 0; width: 80px; height: 80px; background: rgba(255,255,255,0.08); border-radius: 50%; transform: translate(30%, -30%); }
-    .card-type { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; margin-bottom: 1rem; }
-    .card-number { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 1.25rem; }
-    .card-details { display: flex; justify-content: space-between; align-items: flex-end; }
-    .card-holder label, .card-expiry label { display: block; font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.7; margin-bottom: 0.25rem; }
-    .card-holder span, .card-expiry span { font-weight: 600; font-size: 0.9rem; }
-    .card-actions { display: flex; gap: 0.5rem; margin-top: 1.25rem; }
-    .btn-card { flex: 1; padding: 0.6rem; background: rgba(255,255,255,0.15); border: none; border-radius: 6px; color: white; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-    .btn-card:hover { background: rgba(255,255,255,0.25); }
-    .btn-card.freeze { background: #ef4444; }
-    .btn-card.freeze:hover { background: #dc2626; }
-
-    /* SECURITY TABLE */
-    .login-list { display: flex; flex-direction: column; }
-    .login-row { display: flex; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
-    .login-row:last-child { border-bottom: none; }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 0.75rem; }
-    .status-dot.success { background: var(--success); }
-    .status-dot.fail { background: var(--danger); }
-    .login-meta { flex: 1; }
-    .login-ip { font-weight: 600; }
-    .login-time { font-size: 0.75rem; color: #64748b; } /* FIXED INLINE CSS */
-
-    /* ALERTS */
-    .alert { padding: 1rem 1.25rem; border-radius: 10px; font-size: 0.85rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem; }
-    .alert-success { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
-    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
-
-    /* MOBILE */
-    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 99; opacity: 0; transition: opacity 0.3s; }
-    .sidebar-overlay.show { display: block; opacity: 1; }
-    .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); z-index: 100; padding: 0.5rem 0; padding-bottom: max(0.5rem, env(safe-area-inset-bottom)); box-shadow: 0 -4px 20px rgba(0,0,0,0.06); }
-    .mobile-nav-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
-    .mob-nav-item { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 0.5rem 0; font-size: 0.6rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
-    .mob-nav-item.active { color: var(--green-700); }
-    .mob-nav-item .mob-icon { font-size: 1.25rem; }
-
-    @media (max-width: 1024px) { .profile-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 900px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main { margin-left: 0; }
-      .hamburger { display: flex; }
-      .content { padding: 1.25rem; padding-bottom: 5rem; }
-      .topbar { padding: 0 1.25rem; }
-      .mobile-nav { display: block; }
-      .form-row { grid-template-columns: 1fr; }
+      --green-950:#072a18;
+      --green-900:#0c3f24;
+      --green-800:#155738;
+      --green-700:#1d7047;
+      --green-soft:#e8f0ea;
+      --gold:#c7a45b;
+      --gold-light:#e3cb91;
+      --ink:#24332b;
+      --muted:#68776d;
+      --border:#dfe7e0;
+      --surface:#fff;
+      --background:#f5f7f5;
+      --success-bg:#edf7ef;
+      --success:#24663c;
+      --danger-bg:#fff0ef;
+      --danger:#a52c27;
+      --warning-bg:#faf7ef;
+      --radius:7px;
+      --shadow:0 3px 12px rgba(7,42,24,.055);
     }
 
-    .btn-text { font-size: 0.75rem; font-weight: 600; color: var(--green-700); display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; margin-bottom: 1rem; }
-    .btn-text:hover { color: var(--green-900); }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .animate { animation: fadeInUp 0.4s ease both; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+
+    html {
+      scroll-behavior:smooth;
+      scroll-padding-top:145px;
+    }
+
+    body {
+      font-family:"Source Sans 3","Segoe UI",Arial,sans-serif;
+      color:var(--ink);
+      background:var(--background);
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    a { color:inherit; text-decoration:none; }
+    button, input, select { font:inherit; }
+    button, a { -webkit-tap-highlight-color:transparent; }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline:3px solid rgba(199,164,91,.7);
+      outline-offset:3px;
+    }
+
+    /* HEADER — unchanged logo treatment */
+    .bank-header {
+      position:sticky;
+      top:0;
+      z-index:100;
+      background:#0c3f24;
+      box-shadow:0 2px 7px rgba(7,42,24,.12);
+    }
+
+    .topbar { background:#0c3f24; border-bottom:0; }
+
+    .header-inner {
+      max-width:1280px;
+      min-height:52px;
+      margin:0 auto;
+      padding:0 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .brand {
+      display:flex;
+      align-items:center;
+      flex-shrink:0;
+      padding:0;
+      margin:0;
+      border:0;
+      background:transparent;
+      box-shadow:none;
+      text-decoration:none;
+      line-height:1;
+    }
+
+    .brand-logo {
+      display:block;
+      width:165px;
+      max-width:35vw;
+      max-height:35px;
+      height:auto;
+      object-fit:contain;
+      object-position:left center;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      box-shadow:none;
+    }
+
+    .header-actions {
+      display:flex;
+      align-items:center;
+      gap:13px;
+    }
+
+    .header-action {
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      color:rgba(255,255,255,.92);
+      font-size:13px;
+      font-weight:600;
+      white-space:nowrap;
+    }
+
+    .header-action:hover {
+      color:#fff;
+      text-decoration:underline;
+    }
+
+    .signout-link {
+      padding-left:13px;
+      border-left:1px solid rgba(255,255,255,.3);
+    }
+
+    .primary-nav {
+      background:#0c3f24;
+      color:#fff;
+      border-bottom:3px solid #c7a45b;
+    }
+
+    .nav-inner {
+      max-width:1280px;
+      min-height:38px;
+      margin:0 auto;
+      padding:0 20px;
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+
+    .nav-link {
+      display:inline-flex;
+      align-items:center;
+      min-height:38px;
+      padding:0 13px;
+      color:rgba(255,255,255,.91);
+      font-size:13px;
+      font-weight:600;
+      white-space:nowrap;
+      border-bottom:3px solid transparent;
+      margin-bottom:-3px;
+    }
+
+    .nav-link:hover {
+      background:rgba(255,255,255,.1);
+      color:#fff;
+    }
+
+    .nav-link.active {
+      color:#fff;
+      border-bottom-color:#e3cb91;
+      background:rgba(255,255,255,.07);
+    }
+
+    .secondary-nav {
+      background:#fff;
+      border-bottom:1px solid var(--border);
+    }
+
+    .secondary-inner {
+      max-width:1280px;
+      min-height:40px;
+      margin:0 auto;
+      padding:0 20px;
+      display:flex;
+      align-items:center;
+      gap:24px;
+      overflow-x:auto;
+      scrollbar-width:thin;
+    }
+
+    .secondary-link {
+      display:inline-flex;
+      align-items:center;
+      min-height:40px;
+      flex-shrink:0;
+      color:#526257;
+      font-size:13px;
+      font-weight:600;
+      border-bottom:2px solid transparent;
+    }
+
+    .secondary-link:hover { color:var(--green-900); }
+
+    .secondary-link.active {
+      color:var(--green-900);
+      border-bottom-color:var(--green-900);
+    }
+
+    .page-wrap {
+      max-width:1180px;
+      margin:0 auto;
+      padding:25px 24px 48px;
+    }
+
+    .breadcrumbs {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-bottom:22px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .breadcrumbs a:hover {
+      color:var(--green-800);
+      text-decoration:underline;
+    }
+
+    .page-heading {
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+      margin-bottom:25px;
+    }
+
+    .eyebrow {
+      margin-bottom:6px;
+      color:var(--green-700);
+      font-size:11px;
+      font-weight:800;
+      letter-spacing:1.4px;
+      text-transform:uppercase;
+    }
+
+    .page-heading h1 {
+      color:var(--green-950);
+      font-family:"DM Serif Display",Georgia,serif;
+      font-size:34px;
+      font-weight:400;
+      line-height:1.2;
+    }
+
+    .page-description {
+      max-width:680px;
+      margin-top:9px;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .back-link {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:9px 14px;
+      border:1px solid var(--border);
+      border-radius:5px;
+      background:#fff;
+      color:var(--green-900);
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .back-link:hover {
+      background:var(--green-soft);
+      border-color:#b8cbbc;
+    }
+
+    .alert {
+      padding:13px 16px;
+      margin-bottom:20px;
+      border:1px solid transparent;
+      border-radius:5px;
+      font-size:14px;
+    }
+
+    .alert-success {
+      background:var(--success-bg);
+      color:var(--success);
+      border-color:#cfe5d2;
+    }
+
+    .alert-error {
+      background:var(--danger-bg);
+      color:var(--danger);
+      border-color:#f0ceca;
+    }
+
+    .profile-layout {
+      display:grid;
+      grid-template-columns:300px minmax(0,1fr);
+      align-items:start;
+      gap:24px;
+    }
+
+    .profile-left,
+    .profile-right {
+      display:grid;
+      gap:20px;
+      min-width:0;
+    }
+
+    .panel {
+      min-width:0;
+      overflow:hidden;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      background:var(--surface);
+      box-shadow:var(--shadow);
+    }
+
+    .profile-summary {
+      padding:25px 22px;
+      text-align:center;
+    }
+
+    .avatar {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:76px;
+      height:76px;
+      margin:0 auto 15px;
+      border:4px solid #e1ece3;
+      border-radius:50%;
+      background:var(--green-900);
+      color:#fff;
+      font-size:25px;
+      font-weight:800;
+      letter-spacing:1px;
+    }
+
+    .profile-name {
+      color:var(--green-950);
+      font-family:"DM Serif Display",Georgia,serif;
+      font-size:23px;
+      font-weight:400;
+      overflow-wrap:anywhere;
+    }
+
+    .profile-role {
+      margin-top:5px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .profile-member-id {
+      margin-top:8px;
+      color:var(--green-800);
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .profile-stats {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin:22px 0;
+      padding:17px 0;
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+
+    .stat-value {
+      color:var(--green-900);
+      font-size:17px;
+      font-weight:800;
+      overflow-wrap:anywhere;
+    }
+
+    .stat-label {
+      margin-top:3px;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .quick-actions {
+      display:grid;
+      gap:9px;
+    }
+
+    .action-btn {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
+      padding:9px 13px;
+      border:1px solid var(--border);
+      border-radius:5px;
+      background:#fff;
+      color:var(--green-900);
+      font-size:13px;
+      font-weight:700;
+      text-align:center;
+    }
+
+    .action-btn:hover {
+      background:var(--green-soft);
+      border-color:#b9cdbd;
+    }
+
+    .action-btn.primary {
+      border-color:var(--green-900);
+      background:var(--green-900);
+      color:#fff;
+    }
+
+    .action-btn.primary:hover { background:var(--green-800); }
+
+    .action-btn.danger {
+      color:var(--danger);
+      border-color:#efd3d0;
+    }
+
+    .action-btn.danger:hover { background:var(--danger-bg); }
+
+    .panel-heading {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:15px;
+      padding:18px 21px;
+      border-bottom:1px solid var(--border);
+      background:#fff;
+    }
+
+    .panel-heading h2 {
+      color:var(--green-950);
+      font-size:16px;
+      font-weight:800;
+    }
+
+    .panel-heading p {
+      margin-top:3px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .panel-body { padding:21px; }
+
+    .section-intro {
+      margin-bottom:19px;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .info-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+    }
+
+    .info-item {
+      min-width:0;
+      padding-bottom:14px;
+      border-bottom:1px solid #edf0ed;
+    }
+
+    .info-item.full { grid-column:1 / -1; }
+
+    .info-label {
+      display:block;
+      margin-bottom:5px;
+      color:var(--muted);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+    }
+
+    .info-value {
+      color:var(--ink);
+      font-size:14px;
+      font-weight:600;
+      overflow-wrap:anywhere;
+    }
+
+    .info-value.muted {
+      color:#8a958d;
+      font-weight:400;
+    }
+
+    .info-note {
+      margin-top:6px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.45;
+    }
+
+    .form-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:17px 18px;
+    }
+
+    .form-group {
+      display:flex;
+      flex-direction:column;
+      min-width:0;
+      gap:6px;
+    }
+
+    .form-group.full { grid-column:1 / -1; }
+
+    .form-group label {
+      color:#435348;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .form-group input,
+    .form-group select {
+      width:100%;
+      min-height:43px;
+      padding:10px 12px;
+      border:1px solid #cfdad1;
+      border-radius:5px;
+      background:#fff;
+      color:var(--ink);
+      font-size:14px;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline:none;
+      border-color:var(--green-700);
+      box-shadow:0 0 0 3px rgba(29,112,71,.1);
+    }
+
+    .form-hint {
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .form-actions {
+      display:flex;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:22px;
+    }
+
+    .btn {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:42px;
+      padding:10px 17px;
+      border:1px solid #d3ddd5;
+      border-radius:5px;
+      background:#fff;
+      color:var(--green-900);
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .btn:hover {
+      background:var(--green-soft);
+      border-color:#b9cdbd;
+    }
+
+    .btn-green {
+      border-color:var(--green-900);
+      background:var(--green-900);
+      color:#fff;
+    }
+
+    .btn-green:hover {
+      border-color:var(--green-800);
+      background:var(--green-800);
+    }
+
+    .btn-danger {
+      border-color:#efd3d0;
+      background:#fff;
+      color:var(--danger);
+    }
+
+    .btn-danger:hover { background:var(--danger-bg); }
+
+    .account-list { display:grid; gap:12px; }
+
+    .account-item {
+      padding:16px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      background:#fbfcfb;
+    }
+
+    .account-top {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:15px;
+    }
+
+    .account-name {
+      color:var(--green-950);
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .account-number {
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .account-type {
+      display:inline-flex;
+      align-items:center;
+      margin-top:8px;
+      padding:3px 8px;
+      border-radius:20px;
+      background:var(--green-soft);
+      color:var(--green-900);
+      font-size:10px;
+      font-weight:800;
+      text-transform:capitalize;
+    }
+
+    .account-balance {
+      color:var(--green-900);
+      font-size:18px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .account-label {
+      margin-top:4px;
+      color:var(--muted);
+      font-size:11px;
+      text-align:right;
+    }
+
+    .empty-state {
+      padding:28px 15px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    .empty-icon {
+      margin-bottom:10px;
+      color:#8a9c8e;
+      font-size:28px;
+    }
+
+    .empty-state h3 {
+      margin-bottom:5px;
+      color:var(--green-900);
+      font-size:15px;
+    }
+
+    .empty-state p { font-size:13px; }
+
+    .security-list { display:grid; }
+
+    .security-row {
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:15px;
+      padding:17px 21px;
+      border-bottom:1px solid #edf0ed;
+    }
+
+    .security-row:last-child { border-bottom:0; }
+
+    .security-copy { min-width:0; }
+
+    .security-title {
+      color:var(--green-950);
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .security-description {
+      margin-top:4px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .status-pill {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+      padding:4px 9px;
+      border-radius:20px;
+      background:var(--success-bg);
+      color:var(--success);
+      font-size:10px;
+      font-weight:800;
+    }
+
+    .status-pill.neutral {
+      background:#f0f2f0;
+      color:#5f6d62;
+    }
+
+    .status-pill.warn {
+      background:var(--warning-bg);
+      color:#7a6430;
+    }
+
+    .history-list { display:grid; }
+
+    .history-row {
+      display:flex;
+      align-items:flex-start;
+      gap:13px;
+      padding:15px 21px;
+      border-bottom:1px solid #edf0ed;
+    }
+
+    .history-row:last-child { border-bottom:0; }
+
+    .history-icon {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:35px;
+      height:35px;
+      flex-shrink:0;
+      border-radius:50%;
+      background:var(--green-soft);
+      color:var(--green-900);
+      font-size:15px;
+    }
+
+    .history-details {
+      min-width:0;
+      flex:1;
+    }
+
+    .history-title {
+      color:var(--ink);
+      font-size:13px;
+      font-weight:700;
+      overflow-wrap:anywhere;
+    }
+
+    .history-meta {
+      margin-top:3px;
+      color:var(--muted);
+      font-size:11px;
+      overflow-wrap:anywhere;
+    }
+
+    .pref-row {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding:14px 0;
+      border-bottom:1px solid #edf0ed;
+    }
+
+    .pref-row:last-child { border-bottom:0; padding-bottom:0; }
+
+    .pref-label {
+      font-size:14px;
+      font-weight:700;
+      color:var(--green-950);
+    }
+
+    .pref-desc {
+      margin-top:3px;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .toggle {
+      position:relative;
+      width:44px;
+      height:24px;
+      flex-shrink:0;
+    }
+
+    .toggle input {
+      opacity:0;
+      width:0;
+      height:0;
+    }
+
+    .toggle span {
+      position:absolute;
+      inset:0;
+      border-radius:999px;
+      background:#c5d0c7;
+      cursor:pointer;
+      transition:background .2s;
+    }
+
+    .toggle span::before {
+      content:"";
+      position:absolute;
+      width:18px;
+      height:18px;
+      left:3px;
+      top:3px;
+      border-radius:50%;
+      background:#fff;
+      transition:transform .2s;
+    }
+
+    .toggle input:checked + span { background:var(--green-700); }
+    .toggle input:checked + span::before { transform:translateX(20px); }
+
+    .notice-box {
+      margin-top:14px;
+      padding:12px 14px;
+      border-left:3px solid var(--gold);
+      background:var(--warning-bg);
+      color:#67583b;
+      font-size:12px;
+      line-height:1.5;
+    }
+
+    .bank-footer {
+      margin-top:15px;
+      border-top:1px solid var(--border);
+      background:#fff;
+    }
+
+    .footer-inner {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      max-width:1180px;
+      margin:0 auto;
+      padding:22px 24px;
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .footer-brand {
+      color:var(--green-900);
+      font-weight:800;
+    }
+
+    .animate { animation:fadeUp .35s ease both; }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(7px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+
+    @media (max-width:900px) {
+      .header-inner { padding:0 16px; }
+      .nav-inner { padding:0 16px; overflow-x:auto; }
+      .nav-link { padding:0 10px; font-size:12px; }
+      .secondary-inner { padding:0 16px; gap:20px; }
+      .page-wrap { padding:22px 17px 40px; }
+      .profile-layout {
+        grid-template-columns:260px minmax(0,1fr);
+        gap:17px;
+      }
+      .panel-body { padding:18px; }
+    }
+
+    @media (max-width:680px) {
+      html { scroll-padding-top:130px; }
+      .header-inner { min-height:48px; padding:0 14px; gap:10px; }
+      .brand-logo { width:145px; max-width:42vw; max-height:32px; }
+      .header-actions { gap:10px; }
+      .header-action { font-size:12px; }
+      .signout-link { padding-left:10px; }
+      .nav-inner { min-height:35px; gap:2px; }
+      .nav-link { min-height:35px; padding:0 9px; font-size:11px; }
+      .secondary-inner { min-height:38px; gap:17px; }
+      .secondary-link { min-height:38px; font-size:12px; }
+      .page-heading {
+        align-items:flex-start;
+        flex-direction:column;
+        gap:13px;
+      }
+      .page-heading h1 { font-size:29px; }
+      .profile-layout { grid-template-columns:1fr; }
+      .profile-summary { padding:21px 18px; }
+      .quick-actions { grid-template-columns:1fr 1fr; }
+      .info-grid,
+      .form-grid { grid-template-columns:1fr; }
+      .form-group.full,
+      .info-item.full { grid-column:auto; }
+      .account-top { flex-direction:column; }
+      .account-label { text-align:left; }
+      .security-row,
+      .history-row,
+      .panel-heading,
+      .panel-body { padding:15px; }
+      .footer-inner { padding:19px 17px; }
+    }
+
+    @media (max-width:380px) {
+      .brand-logo { width:125px; max-width:42vw; max-height:29px; }
+      .header-actions { gap:7px; }
+      .header-action { font-size:11px; }
+      .signout-link { padding-left:7px; }
+      .nav-link { padding:0 7px; font-size:10px; }
+      .quick-actions { grid-template-columns:1fr; }
+      .page-heading h1 { font-size:26px; }
+      .profile-stats { gap:7px; }
+      .stat-value { font-size:15px; }
+    }
   </style>
 </head>
+
+<%
+  const safeUser = (typeof user !== 'undefined' && user) ? user : {
+    firstName:'Customer',
+    lastName:'',
+    email:'',
+    username:'user',
+    memberSince:'',
+    address:'',
+    city:'',
+    state:'',
+    zip:'',
+    phone:'',
+    dateOfBirth:'',
+    ssn:'',
+    ssnLast4:''
+  };
+
+  const initials = (
+    ((safeUser.firstName || 'C').trim()[0] || 'C') +
+    ((safeUser.lastName || '').trim()[0] || '')
+  ).toUpperCase();
+
+  const isAdmin = safeUser.isAdmin === 1 || safeUser.isAdmin === true;
+
+  const safeAccounts = (typeof accounts !== 'undefined' && Array.isArray(accounts))
+    ? accounts
+    : [];
+
+  const safeLogins = (typeof loginHistory !== 'undefined' && Array.isArray(loginHistory))
+    ? loginHistory
+    : [];
+
+  const memberSince = safeUser.memberSince || '—';
+
+  // Masked SSN only — never show full SSN
+  function maskSsn(user) {
+    const last4 = String(user.ssnLast4 || '').replace(/\D/g, '').slice(-4);
+    if (last4.length === 4) return '***-**-' + last4;
+
+    const raw = String(user.ssn || '').replace(/\D/g, '');
+    if (raw.length >= 4) return '***-**-' + raw.slice(-4);
+
+    return '***-**-****';
+  }
+
+  const ssnDisplay = maskSsn(safeUser);
+  const hasSsnOnFile = ssnDisplay !== '***-**-****' || Boolean(safeUser.ssn || safeUser.ssnLast4);
+
+  const memberId = safeUser.id
+    ? 'MBR-' + String(safeUser.id).padStart(6, '0')
+    : 'MBR-000000';
+
+  const phoneDisplay = safeUser.phone || safeUser.phoneNumber || 'Not on file';
+  const dobDisplay = safeUser.dateOfBirth || safeUser.dob || 'Not on file';
+%>
+
 <body>
-  <%
-    // SAFE VARIABLE INITIALIZATION TO PREVENT CRASHES
-    const safeUser = user || { firstName: 'Customer', lastName: '', email: '', username: 'user', memberSince: new Date().getFullYear(), address: '', city: '', state: '', zip: '' };
-    const initials = ((safeUser.firstName || 'C')[0] + (safeUser.lastName || 'U')[0]).toUpperCase();
-    const isAdmin = safeUser.isAdmin === 1;
-    
-    const safeAccounts = typeof accounts !== 'undefined' ? accounts : [];
-    const safeLogins = typeof loginHistory !== 'undefined' ? loginHistory : [];
-  %>
+  <header class="bank-header">
+    <div class="topbar">
+      <div class="header-inner">
+        <a class="brand" href="/dashboard" aria-label="AgriBank Texas home">
+          <img
+            class="brand-logo"
+            src="/images/agribank-logo.png"
+            alt="AgriBank Texas"
+          >
+        </a>
 
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><h2>Agri<span>Bank</span></h2><div class="sub">Texas Regional</div></div>
-    <nav class="sidebar-nav">
-      <div class="nav-section">Main</div>
-      <a href="/dashboard" class="nav-item"><span class="icon">📊</span> Dashboard</a>
-      <a href="/accounts" class="nav-item"><span class="icon">💳</span> Accounts</a>
-      <a href="/transactions" class="nav-item"><span class="icon">📋</span> Transactions</a>
-      <a href="/transfer" class="nav-item"><span class="icon">⇄</span> Transfer</a>
-      <div class="nav-section">Services</div>
-      <a href="/billpay" class="nav-item"><span class="icon">💸</span> Bill Pay</a>
-      <a href="/deposits" class="nav-item"><span class="icon">📱</span> Deposits</a>
-      <a href="/loans" class="nav-item"><span class="icon">🏦</span> Loans</a>
-      <div class="nav-section">Account</div>
-      <a href="/profile" class="nav-item active"><span class="icon">👤</span> Profile</a>
-      <a href="/notifications" class="nav-item"><span class="icon">🔔</span> Notifications</a>
-      <a href="/security" class="nav-item"><span class="icon">️</span> Security</a>
-      <a href="/help" class="nav-item"><span class="icon">❓</span> Help</a>
+        <div class="header-actions">
+          <a class="header-action" href="/notifications">Notifications</a>
+          <a class="header-action" href="/profile"><%= safeUser.firstName || 'Profile' %></a>
+          <a
+            class="header-action signout-link"
+            href="/logout"
+            onclick="return confirmSignOut(event)"
+          >Sign out</a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="primary-nav" aria-label="Main navigation">
+      <div class="nav-inner">
+        <a href="/accounts" class="nav-link">Accounts</a>
+        <a href="/transfer" class="nav-link">Pay &amp; transfer</a>
+        <a href="/deposits" class="nav-link">Collect &amp; deposit</a>
+        <a href="/profile" class="nav-link active">Access &amp; security</a>
+      </div>
     </nav>
-    <div class="sidebar-footer">
-      <a href="/logout" class="sidebar-user">
-        <div class="avatar"><%= initials %></div>
-        <div class="user-info"><div class="name"><%= safeUser.firstName %></div><div class="role"><%= isAdmin ? 'Administrator' : 'Member' %></div></div>
-      </a>
+
+    <nav class="secondary-nav" aria-label="Account navigation">
+      <div class="secondary-inner">
+        <a href="/dashboard" class="secondary-link">Overview</a>
+        <a href="/transactions" class="secondary-link">Activity</a>
+        <a href="/statements" class="secondary-link">Statements &amp; documents</a>
+        <a href="/profile" class="secondary-link active">Profile &amp; settings</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page-wrap">
+    <div class="breadcrumbs">
+      <a href="/dashboard">Home</a>
+      <span>/</span>
+      <a href="/profile">Access &amp; security</a>
+      <span>/</span>
+      <span>Profile &amp; settings</span>
     </div>
-  </aside>
 
-  <div class="main">
-    <header class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" onclick="toggleSidebar()">☰</button>
-        <div class="topbar-title"><h1>Profile & Settings</h1></div>
+    <div class="page-heading">
+      <div>
+        <div class="eyebrow">Account services</div>
+        <h1>Profile &amp; Settings</h1>
+        <p class="page-description">
+          Review personal information, identity details, linked accounts, security settings,
+          and communication preferences for your AgriBank Texas profile.
+        </p>
       </div>
-      <div class="topbar-right">
-        <a href="/notifications" class="topbar-btn">🔔</a>
-      </div>
-    </header>
 
-    <div class="content">
-      <a href="/dashboard" class="btn-text animate">← Back to Dashboard</a>
+      <a class="back-link" href="/dashboard">← Back to Dashboard</a>
+    </div>
 
-      <% if (typeof success !== 'undefined' && success) { %>
-        <div class="alert alert-success animate">✅ <%= success %></div>
-      <% } %>
-      <% if (typeof error !== 'undefined' && error) { %>
-        <div class="alert alert-error animate">⚠️ <%= error %></div>
-      <% } %>
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert alert-success" role="status"><%= success %></div>
+    <% } %>
 
-      <div class="profile-grid">
-        
-        <!-- LEFT COLUMN -->
-        <div>
-          <div class="widget profile-card animate">
-            <div class="widget-body">
-              <div class="avatar-lg"><%= initials %></div>
-              <div class="profile-name"><%= safeUser.firstName %> <%= safeUser.lastName %></div>
-              <div class="profile-role"><%= isAdmin ? 'System Administrator' : 'Premium Member' %></div>
-              
-              <div class="profile-stats">
-                <div class="stat-item">
-                  <div class="stat-val"><%= safeUser.memberSince || '2024' %></div>
-                  <div class="stat-label">Member Since</div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-val"><%= safeAccounts.length %></div>
-                  <div class="stat-label">Active Accts</div>
-                </div>
-              </div>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert alert-error" role="alert"><%= error %></div>
+    <% } %>
 
-              <div class="quick-actions">
-                <a href="#edit-form" class="action-btn primary">✏️ Edit Info</a>
-                <a href="#cards-section" class="action-btn">💳 Card Control</a>
-                <a href="#security-section" class="action-btn">🛡️ Security</a>
-                <a href="#" class="action-btn danger" onclick="if(confirm('Are you sure you want to sign out?')) window.location.href='/logout'">🚪 Sign Out</a>
-              </div>
+    <div class="profile-layout">
+      <aside class="profile-left">
+        <section class="panel profile-summary animate">
+          <div class="avatar" aria-hidden="true"><%= initials %></div>
+
+          <h2 class="profile-name">
+            <%= safeUser.firstName || 'Customer' %>
+            <%= safeUser.lastName || '' %>
+          </h2>
+
+          <p class="profile-role">
+            <%= isAdmin ? 'System Administrator' : 'Account Member' %>
+          </p>
+
+          <div class="profile-member-id">Member ID <%= memberId %></div>
+
+          <div class="profile-stats">
+            <div>
+              <div class="stat-value"><%= memberSince %></div>
+              <div class="stat-label">Member since</div>
+            </div>
+
+            <div>
+              <div class="stat-value"><%= safeAccounts.length %></div>
+              <div class="stat-label">Linked accounts</div>
             </div>
           </div>
 
-          <div class="widget animate">
-            <div class="widget-header"><h3>Recent Activity</h3><a href="/transactions" class="btn-text" style="margin:0;">View All</a></div>
-            <div class="widget-body">
-              <div class="login-list">
-                <div class="login-row">
-                  <div class="status-dot success"></div>
-                  <div class="login-meta">
-                    <div class="login-ip">Secure Login</div>
-                    <div class="login-time">Chrome on macOS · Today</div>
-                  </div>
-                </div>
-                <div class="login-row">
-                  <div class="status-dot success"></div>
-                  <div class="login-meta">
-                    <div class="login-ip">Mobile App Access</div>
-                    <div class="login-time">iOS 17 · Yesterday</div>
-                  </div>
+          <div class="quick-actions">
+            <a href="#edit-form" class="action-btn primary">Edit profile</a>
+            <a href="#identity-section" class="action-btn">Identity &amp; SSN</a>
+            <a href="#accounts-section" class="action-btn">My accounts</a>
+            <a href="#security-section" class="action-btn">Security</a>
+            <a
+              href="/logout"
+              class="action-btn danger"
+              onclick="return confirmSignOut(event)"
+            >Sign out</a>
+          </div>
+        </section>
+
+        <section class="panel animate">
+          <div class="panel-heading">
+            <div>
+              <h2>Contact information</h2>
+              <p>How we reach you</p>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Email address</span>
+                <div class="info-value"><%= safeUser.email || 'Not provided' %></div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Phone</span>
+                <div class="info-value"><%= phoneDisplay %></div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Username</span>
+                <div class="info-value"><%= safeUser.username || 'Not provided' %></div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Member ID</span>
+                <div class="info-value"><%= memberId %></div>
+              </div>
+
+              <div class="info-item full">
+                <span class="info-label">Mailing address</span>
+                <div class="info-value">
+                  <%= safeUser.address || 'Not provided' %><br>
+                  <%= [safeUser.city, safeUser.state, safeUser.zip].filter(Boolean).join(', ') || '' %>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- RIGHT COLUMN -->
-        <div>
-          <!-- PERSONAL INFO -->
-          <div class="widget animate" id="edit-form">
-            <div class="widget-header"><h3>Personal Information</h3></div>
-            <div class="widget-body">
-              <form action="/profile" method="POST">
+        <section class="panel animate" id="identity-section">
+          <div class="panel-heading">
+            <div>
+              <h2>Identity verification</h2>
+              <p>Protected personal details</p>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Social Security number</span>
+                <div class="info-value"><%= ssnDisplay %></div>
+                <p class="info-note">
+                  <%= hasSsnOnFile
+                    ? 'Only the last four digits are shown for security.'
+                    : 'SSN is not on file for this profile yet.' %>
+                </p>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Date of birth</span>
+                <div class="info-value"><%= dobDisplay %></div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Legal name</span>
+                <div class="info-value">
+                  <%= [safeUser.firstName, safeUser.lastName].filter(Boolean).join(' ') || 'Not provided' %>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <span class="info-label">Citizenship / residency</span>
+                <div class="info-value">United States</div>
+              </div>
+            </div>
+
+            <div class="notice-box">
+              For your protection, full Social Security numbers are never displayed online.
+              Contact AgriBank support if you need to update identity documents.
+            </div>
+          </div>
+        </section>
+      </aside>
+
+      <div class="profile-right">
+        <section class="panel animate" id="edit-form">
+          <div class="panel-heading">
+            <div>
+              <h2>Edit profile</h2>
+              <p>Keep your personal information up to date</p>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <p class="section-intro">
+              Update the details below and save your changes. Identity fields such as SSN
+              cannot be changed online.
+            </p>
+
+            <form action="/profile" method="POST">
+              <div class="form-grid">
                 <div class="form-group">
-                  <label class="form-label">Username</label>
-                  <input type="text" value="<%= safeUser.username %>" disabled class="form-input" autocomplete="off">
-                </div>
-                
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label">First Name</label>
-                    <input type="text" value="<%= safeUser.firstName %>" disabled class="form-input" autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" value="<%= safeUser.lastName %>" disabled class="form-input" autocomplete="off">
-                  </div>
+                  <label for="firstName">First name</label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    value="<%= safeUser.firstName || '' %>"
+                    autocomplete="given-name"
+                    required
+                  >
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Email Address</label>
-                  <input type="email" name="email" class="form-input" value="<%= safeUser.email || '' %>" required autocomplete="email">
+                  <label for="lastName">Last name</label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    value="<%= safeUser.lastName || '' %>"
+                    autocomplete="family-name"
+                    required
+                  >
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label">Street Address</label>
-                  <input type="text" name="address" class="form-input" value="<%= safeUser.address || '' %>" placeholder="123 Farm Road">
+                  <label for="email">Email address</label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value="<%= safeUser.email || '' %>"
+                    autocomplete="email"
+                    required
+                  >
+                  <span class="form-hint">Used for transfer codes and security alerts</span>
                 </div>
 
-                <div class="form-row">
-                  <div class="form-group">
-                    <label class="form-label">City</label>
-                    <input type="text" name="city" class="form-input" value="<%= safeUser.city || '' %>" placeholder="City">
-                  </div>
-                  <div class="form-group">
-                    <label class="form-label">State</label>
-                    <input type="text" name="state" class="form-input" value="<%= safeUser.state || '' %>" maxlength="2" placeholder="TX">
-                  </div>
-                </div>
-                
                 <div class="form-group">
-                  <label class="form-label">ZIP Code</label>
-                  <input type="text" name="zip" class="form-input" value="<%= safeUser.zip || '' %>" placeholder="78701">
+                  <label for="phone">Mobile phone</label>
+                  <input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value="<%= safeUser.phone || safeUser.phoneNumber || '' %>"
+                    autocomplete="tel"
+                    placeholder="(555) 555-5555"
+                  >
                 </div>
 
-                <button type="submit" class="btn-submit">Save Changes</button>
-              </form>
-            </div>
-          </div>
-
-          <!-- ACCOUNTS -->
-          <div class="widget animate">
-            <div class="widget-header"><h3>My Accounts</h3><a href="/accounts" class="btn-text" style="margin:0;">Manage All</a></div>
-            <div class="widget-body">
-              <% if (safeAccounts.length > 0) { %>
-                <% safeAccounts.forEach(acc => { %>
-                  <div class="acct-item">
-                    <div class="acct-info">
-                      <h4><%= acc.name %></h4>
-                      <p>****<%= acc.number || '0000' %></p>
-                    </div>
-                    <div class="acct-actions">
-                      <a href="/transactions?accountId=<%= acc.id %>" class="btn-mini">History</a>
-                      <a href="/transfer" class="btn-mini primary">Transfer</a>
-                    </div>
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <div style="padding:1rem; text-align:center; color:var(--text-secondary);">No accounts linked.</div>
-              <% } %>
-            </div>
-          </div>
-
-          <!-- CARD CONTROLS -->
-          <div class="widget animate" id="cards-section">
-            <div class="widget-header"><h3>Card Management</h3><a href="/credit-cards" class="btn-text" style="margin:0;">Apply for New</a></div>
-            <div class="widget-body">
-              <div class="card-grid">
-                <div class="bank-card dark">
-                  <div class="card-type">Visa Business</div>
-                  <div class="card-number">•••• •••• •••• 7721</div>
-                  <div class="card-details">
-                    <div class="card-holder">
-                      <label>Cardholder</label>
-                      <span><%= (safeUser.firstName || 'CARD') + ' ' + (safeUser.lastName || 'HOLDER') %></span>
-                    </div>
-                    <div class="card-expiry">
-                      <label>Expires</label>
-                      <span>12/28</span>
-                    </div>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-card" onclick="window.location.href='tel:+1800555AGRI'">📞 Report Lost</button>
-                    <button class="btn-card freeze">❄️ Freeze</button>
-                  </div>
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    value="<%= safeUser.username || '' %>"
+                    autocomplete="username"
+                    required
+                  >
                 </div>
-                <div class="bank-card gold">
-                  <div class="card-type">Rewards Platinum</div>
-                  <div class="card-number">•••• •••• •••• 4492</div>
-                  <div class="card-details">
-                    <div class="card-holder">
-                      <label>Cardholder</label>
-                      <span><%= (safeUser.firstName || 'CARD') + ' ' + (safeUser.lastName || 'HOLDER') %></span>
-                    </div>
-                    <div class="card-expiry">
-                      <label>Expires</label>
-                      <span>03/27</span>
-                    </div>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-card" onclick="alert('PIN change requests are submitted securely via Secure Message.')">🔒 Change PIN</button>
-                    <button class="btn-card" onclick="alert('Virtual card issued instantly. See your email for details.')">✨ Issue Virtual</button>
-                  </div>
+
+                <div class="form-group">
+                  <label for="ssnDisplay">Social Security number</label>
+                  <input
+                    id="ssnDisplay"
+                    type="text"
+                    value="<%= ssnDisplay %>"
+                    readonly
+                    disabled
+                  >
+                  <span class="form-hint">Masked for security — contact support to update</span>
+                </div>
+
+                <div class="form-group full">
+                  <label for="address">Street address</label>
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    value="<%= safeUser.address || '' %>"
+                    autocomplete="street-address"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input
+                    id="city"
+                    name="city"
+                    type="text"
+                    value="<%= safeUser.city || '' %>"
+                    autocomplete="address-level2"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <input
+                    id="state"
+                    name="state"
+                    type="text"
+                    value="<%= safeUser.state || '' %>"
+                    autocomplete="address-level1"
+                  >
+                </div>
+
+                <div class="form-group">
+                  <label for="zip">ZIP code</label>
+                  <input
+                    id="zip"
+                    name="zip"
+                    type="text"
+                    value="<%= safeUser.zip || '' %>"
+                    autocomplete="postal-code"
+                  >
                 </div>
               </div>
+
+              <div class="form-actions">
+                <button class="btn btn-green" type="submit">Save changes</button>
+                <button class="btn" type="reset">Reset form</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <section class="panel animate" id="accounts-section">
+          <div class="panel-heading">
+            <div>
+              <h2>Linked accounts</h2>
+              <p>Accounts associated with your profile</p>
             </div>
+            <span class="status-pill"><%= safeAccounts.length %> linked</span>
           </div>
 
-          <!-- SECURITY SECTION -->
-          <div class="widget animate" id="security-section">
-            <div class="widget-header"><h3>Security & Authentication</h3></div>
-            <div class="widget-body">
-              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid #f1f5f9;">
-                <div><strong>Password</strong><br><span style="font-size:0.8rem; color:#64748b;">Last changed 3 months ago</span></div>
-                <a href="/forgot-password" class="btn-mini primary">Change Password</a>
-              </div>
-              <div style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 0; border-bottom:1px solid #f1f5f9;">
-                <div><strong>Two-Factor Authentication</strong><br><span style="font-size:0.8rem; color:#10b981;">● Enabled (Authenticator App)</span></div>
-                <a href="/security" class="btn-mini">Manage 2FA</a>
-              </div>
-              <div style="padding:0.75rem 0;">
-                <strong style="display:block; margin-bottom:0.75rem;">Recent Login History</strong>
-                <% if (safeLogins.length > 0) { %>
-                  <% safeLogins.slice(0, 4).forEach(log => { %>
-                    <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0; font-size:0.85rem;">
+          <div class="panel-body">
+            <% if (safeAccounts.length > 0) { %>
+              <div class="account-list">
+                <% safeAccounts.forEach(function(account) {
+                  const accountType = account.type || account.accountType || 'Account';
+                  const accountNumber = String(
+                    account.accountNumber || account.number || account.id || ''
+                  );
+                  const accountName = account.name || accountType;
+                  const balance = Number(account.balance || 0);
+                %>
+                  <article class="account-item">
+                    <div class="account-top">
                       <div>
-                        <div style="font-weight:600;"><%= log.ipAddress || 'Unknown IP' %></div>
-                        <div style="font-size:0.75rem; color:#64748b;"><%= log.device || 'Device Unknown' %> · <%= new Date(log.timestamp || Date.now()).toLocaleDateString() %></div>
+                        <div class="account-name"><%= accountName %></div>
+                        <div class="account-number">
+                          Account ending in <%= accountNumber.slice(-4) || '—' %>
+                        </div>
+                        <span class="account-type"><%= accountType %></span>
                       </div>
-                      <span style="color:<%= log.status === 'SUCCESS' ? '#10b981' : '#ef4444' %>">● <%= log.status || 'UNKNOWN' %></span>
+                      <div>
+                        <div class="account-balance">
+                          <%= balance.toLocaleString('en-US', {
+                            style:'currency',
+                            currency:'USD'
+                          }) %>
+                        </div>
+                        <div class="account-label">Available balance</div>
+                      </div>
                     </div>
-                  <% }) %>
-                <% } else { %>
-                  <div style="padding:0.75rem; color:#64748b; font-size:0.9rem;">No recent activity recorded.</div>
-                <% } %>
+                  </article>
+                <% }); %>
+              </div>
+            <% } else { %>
+              <div class="empty-state">
+                <div class="empty-icon" aria-hidden="true">▤</div>
+                <h3>No linked accounts</h3>
+                <p>There are currently no accounts associated with this profile.</p>
+              </div>
+            <% } %>
+          </div>
+        </section>
+
+        <section class="panel animate" id="security-section">
+          <div class="panel-heading">
+            <div>
+              <h2>Security &amp; access</h2>
+              <p>Protect your online banking session</p>
+            </div>
+          </div>
+
+          <div class="security-list">
+            <div class="security-row">
+              <div class="security-copy">
+                <div class="security-title">Account password</div>
+                <div class="security-description">
+                  Use a strong, unique password. Change it regularly.
+                </div>
+              </div>
+              <a class="btn" href="/change-password">Change password</a>
+            </div>
+
+            <div class="security-row">
+              <div class="security-copy">
+                <div class="security-title">Transfer authorization</div>
+                <div class="security-description">
+                  Email verification codes are required before transfers are completed.
+                </div>
+              </div>
+              <span class="status-pill">Enabled</span>
+            </div>
+
+            <div class="security-row">
+              <div class="security-copy">
+                <div class="security-title">Login alerts</div>
+                <div class="security-description">
+                  Get notified when your account is signed in from a new device.
+                </div>
+              </div>
+              <span class="status-pill">Recommended</span>
+            </div>
+
+            <div class="security-row">
+              <div class="security-copy">
+                <div class="security-title">Two-step verification</div>
+                <div class="security-description">
+                  Extra protection at sign-in using a one-time code.
+                </div>
+              </div>
+              <span class="status-pill warn">Available</span>
+            </div>
+
+            <div class="security-row">
+              <div class="security-copy">
+                <div class="security-title">Account type</div>
+                <div class="security-description">Your access level on this profile.</div>
+              </div>
+              <span class="status-pill neutral">
+                <%= isAdmin ? 'Administrator' : 'Member' %>
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel animate" id="preferences-section">
+          <div class="panel-heading">
+            <div>
+              <h2>Communication preferences</h2>
+              <p>Choose how AgriBank contacts you</p>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="pref-row">
+              <div>
+                <div class="pref-label">Email statements</div>
+                <div class="pref-desc">Receive monthly statements by email</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked disabled>
+                <span></span>
+              </label>
+            </div>
+
+            <div class="pref-row">
+              <div>
+                <div class="pref-label">Security alerts</div>
+                <div class="pref-desc">Login and transfer verification messages</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked disabled>
+                <span></span>
+              </label>
+            </div>
+
+            <div class="pref-row">
+              <div>
+                <div class="pref-label">Product updates</div>
+                <div class="pref-desc">Occasional offers and agricultural banking news</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" disabled>
+                <span></span>
+              </label>
+            </div>
+
+            <div class="notice-box">
+              Preference toggles are shown for display. Connect them to your backend when you are ready to store communication settings.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel animate" id="login-history-section">
+          <div class="panel-heading">
+            <div>
+              <h2>Recent login activity</h2>
+              <p>Recent sign-ins on this profile</p>
+            </div>
+          </div>
+
+          <div class="history-list">
+            <% if (safeLogins.length > 0) { %>
+              <% safeLogins.forEach(function(login) {
+                const loginDate = login.timestamp || login.createdAt || login.loginAt || login.date || '';
+                const loginDevice = login.device || login.browser || 'Device not specified';
+                const loginLocation = login.ipAddress || login.location || 'Location not specified';
+                const loginStatus = login.status || 'SUCCESS';
+              %>
+                <div class="history-row">
+                  <div class="history-icon" aria-hidden="true">↗</div>
+                  <div class="history-details">
+                    <div class="history-title">
+                      <%= loginStatus === 'SUCCESS' ? 'Successful sign-in' : 'Sign-in attempt — ' + loginStatus %>
+                    </div>
+                    <div class="history-meta">
+                      <%= loginDate ? new Date(loginDate).toLocaleString() : 'Date not available' %>
+                    </div>
+                    <div class="history-meta"><%= loginDevice %></div>
+                    <div class="history-meta"><%= loginLocation %></div>
+                  </div>
+                </div>
+              <% }); %>
+            <% } else { %>
+              <div class="empty-state">
+                <div class="empty-icon" aria-hidden="true">◷</div>
+                <h3>No recent login activity</h3>
+                <p>Login history will appear here when available.</p>
+              </div>
+            <% } %>
+          </div>
+        </section>
+
+        <section class="panel animate">
+          <div class="panel-heading">
+            <div>
+              <h2>Account actions</h2>
+              <p>Common profile tasks</p>
+            </div>
+          </div>
+
+          <div class="panel-body">
+            <div class="security-list">
+              <div class="security-row">
+                <div class="security-copy">
+                  <div class="security-title">Profile information</div>
+                  <div class="security-description">Review and update your personal details.</div>
+                </div>
+                <a class="btn" href="#edit-form">Edit profile</a>
+              </div>
+
+              <div class="security-row">
+                <div class="security-copy">
+                  <div class="security-title">Download statements</div>
+                  <div class="security-description">View and export account documents.</div>
+                </div>
+                <a class="btn" href="/statements">Statements</a>
+              </div>
+
+              <div class="security-row">
+                <div class="security-copy">
+                  <div class="security-title">Sign out</div>
+                  <div class="security-description">End your session on this device.</div>
+                </div>
+                <a
+                  class="btn btn-danger"
+                  href="/logout"
+                  onclick="return confirmSignOut(event)"
+                >Sign out</a>
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
     </div>
-  </div>
+  </main>
 
-  <nav class="mobile-nav">
-    <div class="mobile-nav-grid">
-      <a href="/dashboard" class="mob-nav-item"><span class="mob-icon">📊</span>Home</a>
-      <a href="/accounts" class="mob-nav-item"><span class="mob-icon">💳</span>Accts</a>
-      <a href="/transfer" class="mob-nav-item"><span class="mob-icon">⇄</span>Send</a>
-      <a href="/billpay" class="mob-nav-item"><span class="mob-icon">💸</span>Bills</a>
-      <a href="/profile" class="mob-nav-item active"><span class="mob-icon">👤</span>Profile</a>
+  <footer class="bank-footer">
+    <div class="footer-inner">
+      <span class="footer-brand">AgriBank Texas</span>
+      <span>Account services · Transfers · Customer support</span>
     </div>
-  </nav>
+  </footer>
 
   <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('show');
+    function confirmSignOut(event) {
+      const confirmed = window.confirm('Are you sure you want to sign out?');
+      if (!confirmed) {
+        event.preventDefault();
+        return false;
+      }
+      return true;
     }
   </script>
 </body>
 </html>
-

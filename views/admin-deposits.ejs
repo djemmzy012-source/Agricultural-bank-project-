@@ -1,0 +1,278 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deposit Review | AgriBank Texas</title>
+  <style>
+    :root {
+      --green: #164d35;
+      --green-dark: #103a29;
+      --gold: #c6a45b;
+      --bg: #f4f7f4;
+      --border: #dfe7e1;
+      --text: #20352a;
+      --muted: #6d7c72;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font: 14px/1.5 Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 16px 5%;
+    }
+
+    .brand {
+      color: var(--green);
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    nav {
+      background: var(--green);
+      padding: 13px 5%;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+    }
+
+    main {
+      width: min(1200px, 92%);
+      margin: 32px auto;
+    }
+
+    .heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 { margin-bottom: 5px; font-size: 27px; }
+    p { color: var(--muted); }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 22px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filters a, button {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 9px 12px;
+      background: white;
+      color: var(--text);
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .filters a.active, button.primary {
+      background: var(--green);
+      color: white;
+      border-color: var(--green);
+    }
+
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 4px 9px;
+      border-radius: 20px;
+      background: #fff1cc;
+      color: #805c05;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .actions { min-width: 245px; }
+    .actions form { margin: 0 0 10px; }
+    .actions input, .actions textarea {
+      width: 100%;
+      margin-bottom: 7px;
+      padding: 9px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font: inherit;
+    }
+
+    .actions textarea { resize: vertical; min-height: 54px; }
+    .danger { color: #a12a2a; }
+    .hold { color: #805c05; }
+    .empty { padding: 25px; text-align: center; color: var(--muted); }
+
+    @media (max-width: 600px) {
+      main { margin: 20px auto; }
+      .panel { padding: 13px; }
+      h1 { font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">AgriBank Texas</div>
+  </header>
+
+  <nav>
+    <a href="/admin">Admin overview</a>
+    <a href="/admin/users">Users</a>
+    <a href="/admin/deposits">Deposit review</a>
+    <a href="/dashboard">Customer dashboard</a>
+    <a href="/logout">Sign out</a>
+  </nav>
+
+  <main>
+    <div class="heading">
+      <div>
+        <h1>Deposit review</h1>
+        <p>Review  deposit requests and record your decision.</p>
+      </div>
+    </div>
+
+    <section class="panel">
+      <div class="filters">
+        <% ['Pending', 'Approved', 'Rejected'].forEach(s => { %>
+          <a
+            class="<%= selectedStatus === s ? 'active' : '' %>"
+            href="/admin/deposits?status=<%= encodeURIComponent(s) %>">
+            <%= s %>
+          </a>
+        <% }) %>
+      </div>
+
+      <div class="table-wrap" style="margin-top:18px">
+        <table>
+          <thead>
+            <tr>
+              <th>Request</th>
+              <th>Customer</th>
+              <th>Account</th>
+              <th>Amount</th>
+              <th>Status / date</th>
+              <th>Review action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (!deposits.length) { %>
+              <tr>
+                <td colspan="6" class="empty">No deposits in this category.</td>
+              </tr>
+            <% } %>
+
+            <% deposits.forEach(d => { %>
+              <tr>
+                <td>
+                  <strong>#<%= d.id %></strong><br>
+                  <small><%= d.checkNumber || 'No check number' %></small>
+                  <% if (d.memo) { %>
+                    <br><small><%= d.memo %></small>
+                  <% } %>
+
+                  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
+                    <a href="/admin/deposits/<%= d.id %>/image/front" target="_blank">
+                      <img src="/admin/deposits/<%= d.id %>/image/front"
+                           alt="Cheque front"
+                           style="width:110px;height:75px;object-fit:cover;border-radius:6px;border:1px solid #ccc;">
+                      <small>Front</small>
+                    </a>
+                    <a href="/admin/deposits/<%= d.id %>/image/back" target="_blank">
+                      <img src="/admin/deposits/<%= d.id %>/image/back"
+                           alt="Cheque back"
+                           style="width:110px;height:75px;object-fit:cover;border-radius:6px;border:1px solid #ccc;">
+                      <small>Back</small>
+                    </a>
+                  </div>
+                </td>
+                <td>
+                  <strong><%= d.firstName %> <%= d.lastName %></strong><br>
+                  <small><%= d.username %></small>
+                </td>
+                <td>
+                  <%= d.accountName %><br>
+                  <small><%= d.accountNumber %></small>
+                </td>
+                <td><strong><%= formatMoney(d.amount) %></strong></td>
+                <td>
+                  <span class="status"><%= d.status %></span><br>
+                  <small><%= formatDate(d.created_at) %></small>
+                  <% if (d.holdUntil) { %>
+                    <br><small>Hold until: <%= formatDate(d.holdUntil) %></small>
+                  <% } %>
+                </td>
+                <td class="actions">
+                  <% if (d.status === 'pending') { %>
+                    <form method="POST"
+                          action="/admin/deposits/<%= d.id %>/review">
+                      <input type="hidden" name="action" value="approve">
+                      <button class="primary" type="submit">Approve</button>
+                    </form>
+
+                    <form method="POST"
+                          action="/admin/deposits/<%= d.id %>/review">
+                      <input type="hidden" name="action" value="reject">
+                      <textarea name="adminNote"
+                                placeholder="Reason for rejection"
+                                required></textarea>
+                      <button type="submit">Reject</button>
+                    </form>
+
+
+                  <% } else { %>
+                    <small>Reviewed: <%= formatDate(d.reviewed_at) %></small>
+                    <% if (d.adminNote) { %>
+                      <p class="danger"><%= d.adminNote %></p>
+                    <% } %>
+                  <% } %>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

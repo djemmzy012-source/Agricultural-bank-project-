@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Application | AgriBank Texas</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green:#0c3f24; --green-dark:#072a18; --green-soft:#e8f0ea;
+      --gold:#c7a45b; --bg:#f4f6f4; --ink:#1a1a1a; --muted:#555; --border:#e0e6e1;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"Source Sans 3",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    .topbar{background:var(--green);color:#fff;min-height:56px;display:flex;align-items:center;padding:0 20px;position:sticky;top:0;z-index:10}
+    .topbar-inner{max-width:920px;margin:0 auto;width:100%;display:flex;justify-content:space-between;align-items:center}
+    .brand-logo{width:160px;max-height:40px;object-fit:contain}
+    .wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px}
+    .card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:24px;margin-bottom:16px}
+    h1{font-family:"DM Serif Display",Georgia,serif;font-size:28px;font-weight:400;color:var(--green-dark);margin-bottom:8px}
+    h2{font-size:16px;color:var(--green-dark);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #edf0ed}
+    .sub{color:var(--muted);margin-bottom:18px;font-size:14px}
+    .alert{padding:12px 14px;border-radius:6px;margin-bottom:16px;font-size:14px}
+    .ok{background:#edf7ef;color:#24663c;border:1px solid #cfe5d2}
+    .err{background:#fff0ef;color:#a52c27;border:1px solid #f0ceca}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .full{grid-column:1/-1}
+    label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#3d4a41}
+    .req::after{content:" *";color:#a52c27}
+    input,select,textarea{width:100%;border:1px solid #cbd5ce;border-radius:6px;padding:10px 12px;font:inherit;background:#fff}
+    textarea{min-height:90px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(12,63,36,.12)}
+    .hint{font-size:11px;color:var(--muted);margin-top:4px}
+    .check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:13px;color:#333}
+    .check input{width:16px;height:16px;margin-top:3px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .btn{min-height:44px;padding:0 18px;border-radius:6px;border:1px solid transparent;font-weight:700;cursor:pointer}
+    .btn-green{background:var(--green);color:#fff}
+    .btn-outline{background:#fff;border-color:#cbd5ce}
+    .note{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.55}
+    .badge{display:inline-block;background:var(--green-soft);color:var(--green);font-size:12px;font-weight:800;padding:4px 8px;border-radius:4px;margin-bottom:10px}
+    .ag-only{display:none}
+    body.show-ag .ag-only{display:block}
+    body.show-ag .ag-only.grid{display:grid}
+    @media(max-width:720px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<%
+  const safeUser = (typeof user !== 'undefined' && user) ? user : {};
+  const selectedProduct = (typeof product !== 'undefined' && product) ? product : 'Personal Loan';
+  const isAg = /operating|equipment|land|farm|agri/i.test(selectedProduct);
+%>
+<body class="<%= isAg ? 'show-ag' : '' %>">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a href="/dashboard"><img class="brand-logo" src="/images/agribank-logo.png" alt="AgriBank"></a>
+      <a href="/loans" style="color:#fff;font-weight:600;font-size:14px">← Back to Loans</a>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Loan application</h1>
+    <p class="sub">
+      Complete all required sections. Your application is reviewed by authorized administrators only.
+      Submitting this form is a request for review, not an approval or commitment to lend.
+    </p>
+
+    <% if (typeof success !== 'undefined' && success) { %>
+      <div class="alert ok"><%= success %></div>
+    <% } %>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="alert err"><%= error %></div>
+    <% } %>
+
+    <form method="POST" action="/loans/apply">
+      <input type="hidden" name="productType" value="<%= selectedProduct %>">
+
+      <!-- 1. LOAN REQUEST -->
+      <section class="card">
+        <div class="badge"><%= selectedProduct %></div>
+        <h2>1. Loan request</h2>
+        <div class="grid">
+          <div>
+            <label class="req" for="amount">Requested amount ($)</label>
+            <input id="amount" name="amount" type="number" min="1000" step="100" required>
+          </div>
+          <div>
+            <label class="req" for="termMonths">Requested term (months)</label>
+            <input id="termMonths" name="termMonths" type="number" min="6" max="360" value="36" required>
+          </div>
+          <div class="full">
+            <label class="req" for="purpose">Primary purpose of funds</label>
+            <textarea id="purpose" name="purpose" required placeholder="Explain exactly how the funds will be used"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. PERSONAL IDENTITY -->
+      <section class="card">
+        <h2>2. Personal identity</h2>
+        <div class="grid">
+          <div>
+            <label class="req" for="firstName">Legal first name</label>
+            <input id="firstName" name="firstName" required value="<%= safeUser.firstName || '' %>">
+          </div>
+          <div>
+            <label class="req" for="lastName">Legal last name</label>
+            <input id="lastName" name="lastName" required value="<%= safeUser.lastName || '' %>">
+          </div>
+          <div>
+            <label class="req" for="dateOfBirth">Date of birth</label>
+            <input id="dateOfBirth" name="dateOfBirth" type="date" required>
+          </div>
+          <div>
+            <label class="req" for="ssnLast4">SSN last 4 digits</label>
+            <input id="ssnLast4" name="ssnLast4" maxlength="4" pattern="[0-9]{4}" placeholder="1234" required>
+            <div class="hint">Full SSN is not collected on this form.</div>
+          </div>
+          <div>
+            <label class="req" for="citizenship">Citizenship / residency</label>
+            <select id="citizenship" name="citizenship" required>
+              <option value="">Select</option>
+              <option>U.S. citizen</option>
+              <option>Permanent resident</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="req" for="phone">Mobile phone</label>
+            <input id="phone" name="phone" type="tel" required>
+          </div>
+          <div class="full">
+            <label class="req" for="email">Email</label>
+            <input id="email" name="email" type="email" required value="<%= safeUser.email || '' %>">
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. RESIDENCE -->
+      <section class="card">
+        <h2>3. Residence information</h2>
+        <div class="grid">
+          <div class="full">
+            <label class="req" for="address">Street address</label>
+            <input id="address" name="address" required value="<%= safeUser.address || '' %>">
+          </div>
+          <div>
+            <label class="req" for="city">City</label>
+            <input id="city" name="city" required value="<%= safeUser.city || '' %>">
+          </div>
+          <div>
+            <label class="req" for="state">State</label>
+            <input id="state" name="state" required value="<%= safeUser.state || '' %>">
+          </div>
+          <div>
+            <label class="req" for="zip">ZIP code</label>
+            <input id="zip" name="zip" required value="<%= safeUser.zip || '' %>">
+          </div>
+          <div>
+            <label class="req" for="housingStatus">Housing status</label>
+            <select id="housingStatus" name="housingStatus" required>
+              <option value="">Select</option>
+              <option>Own</option>
+              <option>Rent</option>
+              <option>Family / other</option>
+            </select>
+          </div>
+          <div>
+            <label for="yearsAtAddress">Years at current address</label>
+            <input id="yearsAtAddress" name="yearsAtAddress" type="number" min="0" step="0.5">
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. EMPLOYMENT / INCOME -->
+      <section class="card">
+        <h2>4. Employment &amp; income</h2>
+        <div class="grid">
+          <div>
+            <label class="req" for="employmentStatus">Employment status</label>
+            <select id="employmentStatus" name="employmentStatus" required>
+              <option value="">Select</option>
+              <option>Employed</option>
+              <option>Self-employed</option>
+              <option>Farm operator</option>
+              <option>Business owner</option>
+              <option>Retired</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="req" for="annualIncome">Annual income ($)</label>
+            <input id="annualIncome" name="annualIncome" type="number" min="0" step="100" required>
+          </div>
+          <div>
+            <label for="employerName">Employer / business name</label>
+            <input id="employerName" name="employerName">
+          </div>
+          <div>
+            <label for="jobTitle">Occupation / title</label>
+            <input id="jobTitle" name="jobTitle">
+          </div>
+          <div>
+            <label for="yearsEmployed">Years at current work</label>
+            <input id="yearsEmployed" name="yearsEmployed" type="number" min="0" step="0.5">
+          </div>
+          <div>
+            <label for="otherIncome">Other annual income ($)</label>
+            <input id="otherIncome" name="otherIncome" type="number" min="0" step="100">
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. EXPENSES / CREDIT -->
+      <section class="card">
+        <h2>5. Expenses &amp; credit profile</h2>
+        <div class="grid">
+          <div>
+            <label for="monthlyHousing">Monthly housing cost ($)</label>
+            <input id="monthlyHousing" name="monthlyHousing" type="number" min="0" step="10">
+          </div>
+          <div>
+            <label for="monthlyDebts">Monthly debt payments ($)</label>
+            <input id="monthlyDebts" name="monthlyDebts" type="number" min="0" step="10">
+            <div class="hint">Car, cards, other loans</div>
+          </div>
+          <div>
+            <label for="creditScoreRange">Credit score range (estimate)</label>
+            <select id="creditScoreRange" name="creditScoreRange">
+              <option value="">Prefer not to say</option>
+              <option>800+</option>
+              <option>740–799</option>
+              <option>670–739</option>
+              <option>580–669</option>
+              <option>Below 580</option>
+            </select>
+          </div>
+          <div>
+            <label for="bankruptcyHistory">Bankruptcy in last 7 years?</label>
+            <select id="bankruptcyHistory" name="bankruptcyHistory">
+              <option value="">Select</option>
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="existingLoans">Current loans / major obligations</label>
+            <textarea id="existingLoans" name="existingLoans" placeholder="List major loans, lenders, and approximate balances"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. AG DETAILS (shown for farm products) -->
+      <section class="card ag-only">
+        <h2>6. Agricultural operation details</h2>
+        <div class="grid">
+          <div>
+            <label for="farmAcres">Acres operated</label>
+            <input id="farmAcres" name="farmAcres" type="number" min="0" step="1">
+          </div>
+          <div>
+            <label for="farmType">Operation type</label>
+            <select id="farmType" name="farmType">
+              <option value="">Select</option>
+              <option>Crop</option>
+              <option>Livestock</option>
+              <option>Mixed</option>
+              <option>Ranch</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="primaryCrop">Primary crop / livestock</label>
+            <input id="primaryCrop" name="primaryCrop" placeholder="e.g. corn, cattle, cotton">
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. COLLATERAL -->
+      <section class="card">
+        <h2><%= isAg ? '7' : '6' %>. Collateral (if any)</h2>
+        <div class="grid">
+          <div>
+            <label for="collateralType">Collateral type</label>
+            <select id="collateralType" name="collateralType">
+              <option value="">None / unsecured</option>
+              <option>Vehicle</option>
+              <option>Equipment</option>
+              <option>Livestock</option>
+              <option>Real estate</option>
+              <option>Savings / CD</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="collateralValue">Estimated value ($)</label>
+            <input id="collateralValue" name="collateralValue" type="number" min="0" step="100">
+          </div>
+          <div class="full">
+            <label for="collateralDescription">Collateral description</label>
+            <textarea id="collateralDescription" name="collateralDescription" placeholder="Describe the collateral if offered"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. BANK RELATIONSHIP -->
+      <section class="card">
+        <h2><%= isAg ? '8' : '7' %>. Banking relationship</h2>
+        <div class="grid">
+          <div>
+            <label for="hasAgribankAccounts">Do you have AgriBank accounts?</label>
+            <select id="hasAgribankAccounts" name="hasAgribankAccounts">
+              <option>Yes</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div>
+            <label for="agribankCustomerYears">Years as customer</label>
+            <input id="agribankCustomerYears" name="agribankCustomerYears" type="number" min="0" step="1">
+          </div>
+          <div>
+            <label for="preferredContact">Preferred contact method</label>
+            <select id="preferredContact" name="preferredContact">
+              <option>Email</option>
+              <option>Phone</option>
+              <option>Either</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="additionalNotes">Additional information</label>
+            <textarea id="additionalNotes" name="additionalNotes" placeholder="Anything else that supports your request"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. CERTIFICATIONS -->
+      <section class="card">
+        <h2><%= isAg ? '9' : '8' %>. Certifications</h2>
+
+        <label class="check">
+          <input type="checkbox" name="certifyAccuracy" value="yes" required>
+          <span>I certify that the information in this application is true and complete to the best of my knowledge.</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="certifyAuthorize" value="yes" required>
+          <span>I authorize AgriBank Texas to review this application and, where permitted, verify information related to this request.</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" name="certifyNotGuarantee" value="yes" required>
+          <span>I understand this submission is an application for review only and is not a loan approval or commitment to lend.</span>
+        </label>
+
+        <div class="actions">
+          <button class="btn btn-green" type="submit">Submit loan application</button>
+          <a class="btn btn-outline" href="/loans">Cancel</a>
+        </div>
+
+        <p class="note">
+          Applications are reviewed by authorized administrators. You will be notified when the status changes.
+          Rates, fees, collateral requirements, and final terms are determined only if an application is approved.
+        </p>
+      </section>
+    </form>
+  </main>
+</body>
+</html>

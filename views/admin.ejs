@@ -1,45 +1,825 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">  <title>Admin Console</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0d3023">
+  <title>Administration | AgriBank Texas</title>
+
   <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial; padding:20px; }
-    h1 { color:#2c3e50; }
-    table { width:100%; border-collapse:collapse; margin-top:12px; }
-    th, td { padding:8px 12px; border-bottom:1px solid #ddd; }
-    a { color:#0a5; text-decoration:none; }
+    :root {
+      --green: #164734;
+      --green-dark: #0d3023;
+      --green-light: #e9f3ed;
+      --gold: #c6a45b;
+      --text: #24342c;
+      --muted: #718078;
+      --border: #e2e9e4;
+      --surface: #ffffff;
+      --background: #f4f7f5;
+      --danger: #a83232;
+      --shadow: 0 5px 20px rgba(24, 55, 39, .045);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+
+    a { color: inherit; }
+
+    .topbar {
+      background: var(--green-dark);
+      color: white;
+      border-bottom: 3px solid var(--gold);
+    }
+
+    .topbar-inner {
+      width: min(1480px, 100%);
+      margin: auto;
+      padding: 17px 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      color: var(--gold);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .brand-name {
+      font-size: 17px;
+      font-weight: 750;
+      letter-spacing: .3px;
+    }
+
+    .brand-subtitle {
+      margin-top: 3px;
+      color: #d0ddd5;
+      font-size: 12px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .admin-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #dce8e0;
+      font-size: 12px;
+    }
+
+    .indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #75c69a;
+    }
+
+    .logout {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 15px;
+      border: 1px solid #547566;
+      border-radius: 8px;
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .logout:hover { background: #244d3c; }
+
+    .layout {
+      width: min(1480px, 100%);
+      margin: auto;
+      padding: 25px 30px 48px;
+    }
+
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      padding: 7px;
+      margin-bottom: 28px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 15px;
+      border-radius: 7px;
+      color: #64736a;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+      transition: .15s ease;
+    }
+
+    .nav-link:hover {
+      background: var(--green-light);
+      color: var(--green);
+    }
+
+    .nav-link.active {
+      background: var(--green);
+      color: white;
+    }
+
+    .page-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: clamp(25px, 3vw, 34px);
+      letter-spacing: -.7px;
+    }
+
+    .page-description {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .welcome {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .welcome strong { color: var(--green); }
+
+    .section-label {
+      margin: 0 0 13px;
+      color: #77857c;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 29px;
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 21px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gold);
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-name {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .stat-icon {
+      width: 35px;
+      height: 35px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      background: var(--green-light);
+      color: var(--green);
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .stat-value {
+      margin-top: 16px;
+      color: var(--green-dark);
+      font-size: clamp(23px, 2.5vw, 30px);
+      font-weight: 800;
+      letter-spacing: -.7px;
+      overflow-wrap: anywhere;
+    }
+
+    .stat-caption {
+      margin-top: 5px;
+      color: #89948d;
+      font-size: 11px;
+    }
+
+    .section-card {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 21px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-header h2 {
+      margin: 0;
+      color: var(--green-dark);
+      font-size: 19px;
+    }
+
+    .section-header p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 40px;
+      padding: 10px 15px;
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      background: var(--green);
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .15s ease;
+    }
+
+    .button:hover { background: var(--green-dark); }
+
+    .button-outline {
+      background: white;
+      color: var(--green);
+    }
+
+    .button-outline:hover {
+      background: var(--green-light);
+      color: var(--green-dark);
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      min-width: 900px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th {
+      padding: 14px 18px;
+      background: #f7faf8;
+      color: #627168;
+      font-size: 11px;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .65px;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 15px 18px;
+      border-top: 1px solid #edf1ee;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tbody tr:hover { background: #fbfdfb; }
+
+    .user-id {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .username {
+      color: var(--green-dark);
+      font-weight: 750;
+    }
+
+    .email { overflow-wrap: anywhere; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+
+    .status-yes {
+      background: #e6f4eb;
+      color: #17633a;
+    }
+
+    .status-no {
+      background: #f0f2f1;
+      color: #68736c;
+    }
+
+    .status-locked {
+      background: #fbeaea;
+      color: var(--danger);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      min-width: 230px;
+    }
+
+    .action-link {
+      display: inline-block;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--green);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .action-link:hover {
+      background: var(--green-light);
+      border-color: #bdd5c5;
+    }
+
+    .empty-state {
+      padding: 32px 18px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .table-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .quick-links {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-top: 24px;
+    }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      text-decoration: none;
+      transition: .15s ease;
+    }
+
+    .quick-link:hover {
+      border-color: #b9d0c1;
+      background: #fbfdfb;
+      transform: translateY(-2px);
+    }
+
+    .quick-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--green-light);
+      color: var(--green);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .quick-link strong {
+      display: block;
+      color: var(--green-dark);
+      font-size: 13px;
+    }
+
+    .quick-link span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .environment-note {
+      margin-top: 25px;
+      padding: 12px 15px;
+      border: 1px solid #e5e9e5;
+      border-radius: 8px;
+      background: #f9fbf9;
+      color: #78857c;
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 950px) {
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner { padding: 15px; }
+
+      .brand-name { font-size: 14px; }
+      .brand-subtitle { font-size: 11px; }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        flex-basis: 38px;
+      }
+
+      .admin-indicator { display: none; }
+
+      .logout {
+        padding: 9px 11px;
+        font-size: 12px;
+      }
+
+      .layout { padding: 19px 14px 35px; }
+
+      .navigation {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+        margin-bottom: 23px;
+      }
+
+      .nav-link {
+        justify-content: center;
+        padding: 11px 7px;
+        font-size: 12px;
+      }
+
+      .page-heading { flex-direction: column; }
+
+      .welcome {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+
+      .stats-grid { gap: 10px; }
+
+      .stat-card { padding: 16px 13px; }
+      .stat-name { font-size: 11px; }
+      .stat-value { font-size: 23px; }
+
+      .section-header {
+        align-items: flex-start;
+        padding: 18px;
+      }
+
+      .section-header .button { width: 100%; }
+
+      .quick-links { grid-template-columns: 1fr; }
+
+      .table-footer { align-items: flex-start; }
+
+      footer { padding: 18px 14px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
+
 <body>
-  <h1>Admin Console</h1>
-  <p>Welcome, admin <strong><%= user.username %></strong></p>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">A</div>
+        <div>
+          <div class="brand-name">AgriBank Texas</div>
+          <div class="brand-subtitle">Administration Portal</div>
+        </div>
+      </div>
 
-  <h2>Users</h2>
-  <p><a href="/admin/export/users">Export All Users (CSV)</a></p>
-  <p>View all users, manage roles, lock/unlock accounts.</p>
+      <div class="topbar-right">
+        <div class="admin-indicator">
+          <span class="indicator-dot"></span>
+          Administrative access
+        </div>
+        <a class="logout" href="/logout">Log out</a>
+      </div>
+    </div>
+  </header>
 
-  <table>
-    <thead><tr><th>ID</th><th>Username</th><th>Email</th><th>Admin?</th><th>Locked?</th><th>Created</th><th>Actions</th></tr></thead>
-    <tbody>
-      <% users.forEach(u => { %>
-        <tr>
-          <td><%= u.id %></td>
-          <td><%= u.username %></td>
-          <td><%= u.email %></td>
-          <td><%= u.isAdmin === 1 ? 'Yes' : 'No' %></td>
-          <td><%= u.isLocked === 1 ? 'Yes' : 'No' %></td>
-          <td><%= new Date(u.created_at).toLocaleString() %></td>
-          <td>
-            <a href="/admin/users/<%= u.id %>">View</a> |
-            <a href="/admin/users/<%= u.id %>/export/billpay">Export BillPay</a> |
-            <a href="/admin/users/<%= u.id %>/export/transactions">Export Transactions</a>
-          </td>
-        </tr>
-      <% }) %>
-    </tbody>
-  </table>
+  <main class="layout">
+<nav class="navigation" aria-label="Administration navigation">
+  <a class="nav-link active" href="/admin">Overview</a>
+  <a class="nav-link" href="/admin/users">User Management</a>
+  <a class="nav-link" href="/admin/loans">Loan Management</a>
+  <a class="nav-link" href="/admin/deposits">Mobile Deposits</a>
+</nav>
 
-  <p><a href="/logout">Logout</a></p>
+    <div class="page-heading">
+      <div>
+        <h1>Admin Console</h1>
+        <p class="page-description">
+          Monitor account activity and manage banking operations.
+        </p>
+      </div>
+
+      <div class="welcome">
+        Signed in as <strong><%= user.username %></strong>
+      </div>
+    </div>
+
+    <p class="section-label">Institution overview</p>
+
+    <section class="stats-grid" aria-label="Institution overview">
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-name">Registered Users</span>
+          <span class="stat-icon" aria-hidden="true">U</span>
+        </div>
+        <div class="stat-value">
+          <%= Number(stats.users || 0).toLocaleString() %>
+        </div>
+        <div class="stat-caption">Total registered profiles</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-name">Administrators</span>
+          <span class="stat-icon" aria-hidden="true">A</span>
+        </div>
+        <div class="stat-value">
+          <%= Number(stats.admins || 0).toLocaleString() %>
+        </div>
+        <div class="stat-caption">Users with administrative access</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-name">Locked Accounts</span>
+          <span class="stat-icon" aria-hidden="true">!</span>
+        </div>
+        <div class="stat-value">
+          <%= Number(stats.locked || 0).toLocaleString() %>
+        </div>
+        <div class="stat-caption">Accounts currently restricted</div>
+      </article>
+
+      <article class="stat-card">
+        <div class="stat-top">
+          <span class="stat-name">Total Account Balances</span>
+          <span class="stat-icon" aria-hidden="true">$</span>
+        </div>
+        <div class="stat-value">
+          <%= Number(stats.deposits || 0).toLocaleString('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+          }) %>
+        </div>
+        <div class="stat-caption">Combined balances across accounts</div>
+      </article>
+
+    </section>
+
+    <section class="section-card" aria-labelledby="users-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="users-heading">User Accounts</h2>
+          <p>Review registered users and manage account records.</p>
+        </div>
+
+        <a class="button" href="/admin/export/users">
+          Export Users CSV
+        </a>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Admin</th>
+              <th>Account Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% if (users && users.length > 0) { %>
+              <% users.forEach(u => { %>
+                <tr>
+                  <td class="user-id"><%= u.id %></td>
+
+                  <td class="username"><%= u.username %></td>
+
+                  <td class="email">
+                    <%= u.email || 'Not provided' %>
+                  </td>
+
+                  <td>
+                    <span class="status <%= Number(u.isAdmin) === 1 ? 'status-yes' : 'status-no' %>">
+                      <%= Number(u.isAdmin) === 1 ? 'Yes' : 'No' %>
+                    </span>
+                  </td>
+
+                  <td>
+                    <% if (Number(u.isLocked) === 1) { %>
+                      <span class="status status-locked">Locked</span>
+                    <% } else { %>
+                      <span class="status status-yes">Active</span>
+                    <% } %>
+                  </td>
+
+                  <td>
+                    <%= u.created_at ? new Date(u.created_at).toLocaleString() : '—' %>
+                  </td>
+
+                  <td>
+                    <div class="actions">
+                      <a
+                        class="action-link"
+                        href="/admin/users/<%= encodeURIComponent(u.id) %>"
+                      >View</a>
+
+                      <a
+                        class="action-link"
+                        href="/admin/users/<%= encodeURIComponent(u.id) %>/export/billpay"
+                      >Export BillPay</a>
+
+                      <a
+                        class="action-link"
+                        href="/admin/users/<%= encodeURIComponent(u.id) %>/export/transactions"
+                      >Export Transactions</a>
+                    </div>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="7" class="empty-state">
+                  No user accounts are available.
+                </td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <span>Showing the latest <%= users ? users.length : 0 %> user records.</span>
+        <a class="button button-outline" href="/admin/users">
+          View All Users
+        </a>
+      </div>
+    </section>
+
+    <p class="section-label" style="margin-top:28px;">Administration tools</p>
+
+    <section class="quick-links" aria-label="Administration tools">
+
+      <a class="quick-link" href="/admin/users">
+        <span class="quick-icon" aria-hidden="true">U</span>
+        <span>
+          <strong>User Management</strong>
+          <span>Review and manage registered users</span>
+        </span>
+      </a>
+
+      <a class="quick-link" href="/admin/loans">
+        <span class="quick-icon" aria-hidden="true">L</span>
+        <span>
+          <strong>Loan Management</strong>
+          <span>Review submitted loan applications</span>
+        </span>
+      </a>
+
+      <a class="quick-link" href="/admin/export/users">
+        <span class="quick-icon" aria-hidden="true">↓</span>
+        <span>
+          <strong>Reports & Exports</strong>
+          <span>Export user account records</span>
+        </span>
+      </a>
+
+    </section>
+
+    <div class="environment-note">
+      Internal training environment. Account balances and transaction activity shown here
+      are simulated and do not represent real funds or actual banking services.
+    </div>
+
+  </main>
+
+  <footer>
+    AgriBank Texas &copy; <%= new Date().getFullYear() %> · Administrative Access
+  </footer>
 </body>
 </html>

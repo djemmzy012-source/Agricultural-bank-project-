@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deposit History | AgriBank Texas</title>
+  <style>
+    body {
+      margin: 0;
+      font: 14px/1.5 Arial, sans-serif;
+      color: #20352a;
+      background: #f4f7f4;
+    }
+    header { background: white; padding: 16px 5%; border-bottom: 1px solid #dfe7e1; }
+    nav { background: #164d35; padding: 13px 5%; display: flex; gap: 20px; flex-wrap: wrap; }
+    nav a { color: white; text-decoration: none; }
+    main { width: min(1000px, 92%); margin: 30px auto; }
+    .panel { background: white; padding: 20px; border: 1px solid #dfe7e1; border-radius: 12px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    th, td { padding: 13px; border-bottom: 1px solid #e3e9e4; text-align: left; }
+    th { color: #6d7c72; }
+    .status { font-weight: bold; }
+    .pending, .on-hold { color: #8a6500; }
+    .approved { color: #17633d; }
+    .rejected { color: #a12a2a; }
+    p { color: #6d7c72; }
+  </style>
+</head>
+<body>
+  <header><strong>AgriBank Texas</strong></header>
+  <nav>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/deposits">Make a deposit</a>
+    <a href="/deposits/history">Deposit history</a>
+    <a href="/profile">Profile</a>
+  </nav>
+
+  <main>
+    <h1>Deposit history</h1>
+    <p>Submitted requests and their current review status.</p>
+
+    <section class="panel">
+      <table>
+        <thead>
+          <tr>
+            <th>Date submitted</th>
+            <th>Account</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Review details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!deposits.length) { %>
+            <tr><td colspan="5">No deposit requests yet.</td></tr>
+          <% } %>
+
+          <% deposits.forEach(d => { %>
+            <tr>
+              <td><%= formatDate(d.created_at) %></td>
+              <td><%= d.accountName %> (<%= d.accountNumber %>)</td>
+              <td><%= formatMoney(d.amount) %></td>
+              <td class="status <%= d.status.toLowerCase().replace(' ', '-') %>">
+                <%= d.status %>
+              </td>
+              <td>
+                <% if (d.status === 'On hold') { %>
+                  On hold until <%= formatDate(d.holdUntil) %>
+                  <% if (d.holdReason) { %>
+                    <br><%= d.holdReason %>
+                  <% } %>
+                <% } else if (d.status === 'Rejected') { %>
+                  <%= d.rejectionReason || 'No reason provided.' %>
+                <% } else if (d.status === 'Pending') { %>
+                  Awaiting review.
+                <% } else { %>
+                  Review marked approved in demo mode.
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
